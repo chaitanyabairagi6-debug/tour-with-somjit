@@ -1,0 +1,480 @@
+<!-- ==========================================================================
+  TOUR WITH SOMJIT - WORDPRESS READY SINGLE-FILE EMBED CODE
+  ব্যবহারবিধি: ওয়ার্ডপ্রেসের পেজে 'Custom HTML' ব্লক অথবা এলিমেন্টরের 'HTML' উইজেটে 
+  পুরো কোডটি হুবহু কপি করে পেস্ট করে দিন।
+========================================================================== -->
+
+<!-- FontAwesome Icons & Google Bengali Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* CSS Reset & Variables */
+:root {
+  --forest-primary: #1b4332;
+  --forest-dark: #081c15;
+  --forest-light: #2d6a4f;
+  --forest-surface: #d8f3dc;
+  --forest-soft: #b7e4c7;
+  --amber-warm: #d97706;
+  --amber-light: #fef3c7;
+  --amber-accent: #f59e0b;
+  --blue-royal: #1e3a8a;
+  --blue-light: #eff6ff;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --whatsapp-green: #25d366;
+  --whatsapp-dark: #128c7e;
+  --font-bengali: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif;
+  --font-english: 'Outfit', sans-serif;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 30px -5px rgba(0,0,0,0.15);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+.tws-wrapper * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-bengali); }
+.tws-wrapper { color: var(--slate-800); background-color: #ffffff; line-height: 1.6; font-size: 16px; }
+
+/* A11y Font Sizing */
+.tws-wrapper.font-sm { font-size: 14.5px; }
+.tws-wrapper.font-lg { font-size: 18px; }
+.tws-wrapper.font-xl { font-size: 20px; }
+
+/* Dark Mode */
+.tws-wrapper.dark-mode { background-color: #0b131e; color: #e2e8f0; }
+.tws-wrapper.dark-mode .site-header { background: #0f172a; border-color: #334155; }
+.tws-wrapper.dark-mode .hero-section { background: linear-gradient(135deg, #0b1a13 0%, #081c15 100%); }
+.tws-wrapper.dark-mode .tour-card, .tws-wrapper.dark-mode .why-card, .tws-wrapper.dark-mode .vlog-card, .tws-wrapper.dark-mode .faq-item { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+.tws-wrapper.dark-mode .tour-card-title, .tws-wrapper.dark-mode .why-card h3, .tws-wrapper.dark-mode .section-title { color: #f8fafc; }
+.tws-wrapper.dark-mode .tour-price-box { background: #0f172a; border-color: #334155; }
+.tws-wrapper.dark-mode .faq-question-btn { background: #1e293b; color: #f8fafc; }
+
+/* Layout */
+.tws-container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+.section { padding: 4.5rem 0; }
+.section-header { text-align: center; max-width: 780px; margin: 0 auto 3rem auto; }
+.section-subtitle { display: inline-block; font-size: 0.92rem; font-weight: 700; color: var(--forest-primary); background: var(--forest-surface); padding: 4px 14px; border-radius: 999px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.section-title { font-size: 2.2rem; font-weight: 800; color: var(--slate-900); margin-bottom: 1rem; line-height: 1.3; }
+.section-description { font-size: 1.05rem; color: var(--slate-600); line-height: 1.7; }
+
+/* Accessibility & TV Bar */
+.a11y-bar { background: var(--forest-dark); color: #ffffff; padding: 8px 0; font-size: 0.88rem; }
+.a11y-bar-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.badge-pill { background: var(--amber-warm); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.78rem; margin-right: 6px; }
+.a11y-controls { display: flex; align-items: center; gap: 6px; }
+.font-ctrl-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 2px 9px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; }
+.font-ctrl-btn.active, .font-ctrl-btn:hover { background: var(--forest-primary); border-color: var(--forest-soft); }
+.theme-toggle-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 2px 10px; border-radius: 4px; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+
+/* Header */
+.site-header { background: #ffffff; border-bottom: 1px solid var(--slate-200); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+.header-container { display: flex; justify-content: space-between; align-items: center; height: 74px; }
+.brand-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand-logo-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--forest-primary); }
+.brand-text h1 { font-size: 1.35rem; font-weight: 800; color: var(--forest-primary); line-height: 1.1; margin: 0; }
+.brand-tagline { font-size: 0.82rem; color: var(--slate-600); font-weight: 500; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-link { text-decoration: none; color: var(--slate-700); font-weight: 600; font-size: 0.98rem; transition: color 0.2s; }
+.nav-link:hover, .nav-link.active { color: var(--forest-primary); }
+.header-cta-group { display: flex; align-items: center; gap: 10px; }
+.phone-pill-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--slate-100); color: var(--slate-900); padding: 7px 14px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.92rem; border: 1px solid var(--slate-200); }
+.whatsapp-pill-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--whatsapp-green); color: #ffffff; padding: 7px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.92rem; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+
+/* Hero */
+.hero-section { background: linear-gradient(135deg, #1b4332 0%, #081c15 100%); color: #ffffff; padding: 5rem 0 4rem 0; position: relative; }
+.hero-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 3rem; align-items: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(217, 119, 6, 0.25); border: 1px solid var(--amber-accent); color: #fbbf24; padding: 4px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 700; margin-bottom: 1.25rem; }
+.hero-title { font-size: 2.8rem; font-weight: 800; line-height: 1.25; margin-bottom: 1.25rem; color: #ffffff; }
+.hero-title .highlight { color: #f59e0b; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
+.hero-lead { font-size: 1.12rem; color: #d8f3dc; line-height: 1.8; margin-bottom: 1.75rem; }
+.hero-key-points { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2rem; }
+.hero-point { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 600; color: #ffffff; background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+.hero-point i { color: #f59e0b; font-size: 1.05rem; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary-hero { display: inline-flex; align-items: center; gap: 8px; background: var(--amber-warm); color: #ffffff; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; box-shadow: 0 6px 15px rgba(217, 119, 6, 0.4); border: none; cursor: pointer; }
+.btn-secondary-hero { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); color: #ffffff; padding: 13px 24px; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; }
+
+/* Host Card */
+.hero-host-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-xl); padding: 2rem; text-align: center; box-shadow: var(--shadow-xl); }
+.host-avatar-wrapper { position: relative; width: 140px; height: 140px; margin: 0 auto 1.25rem auto; }
+.host-main-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--amber-accent); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.host-verified-badge { position: absolute; bottom: 6px; right: 6px; background: #2563eb; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border: 2px solid #fff; }
+.host-name { font-size: 1.45rem; font-weight: 800; color: #ffffff; margin-bottom: 2px; }
+.host-title { font-size: 0.88rem; color: #fbbf24; font-weight: 600; margin-bottom: 1rem; }
+.host-trust-quote { font-size: 0.94rem; color: #e2e8f0; font-style: italic; background: rgba(0,0,0,0.25); padding: 12px 16px; border-radius: 10px; margin-bottom: 1.25rem; line-height: 1.6; border-left: 3px solid var(--amber-accent); }
+.host-social-links { display: flex; gap: 8px; justify-content: center; }
+.host-social-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-decoration: none; color: #fff; }
+.host-social-btn.yt { background: #ff0000; }
+.host-social-btn.fb { background: #1877f2; }
+
+/* Trust Strip */
+.trust-strip { background: var(--slate-50); border-bottom: 1px solid var(--slate-200); padding: 1.75rem 0; }
+.trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.trust-item { display: flex; align-items: center; gap: 14px; }
+.trust-icon-box { width: 50px; height: 50px; border-radius: 12px; background: var(--forest-surface); color: var(--forest-primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.trust-text h4 { font-size: 1.05rem; font-weight: 700; color: var(--slate-900); margin-bottom: 2px; }
+.trust-text p { font-size: 0.86rem; color: var(--slate-600); line-height: 1.4; }
+
+/* Tours Grid */
+.tour-filter-bar { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.filter-btn { background: var(--slate-100); border: 1px solid var(--slate-200); padding: 8px 18px; border-radius: 999px; font-weight: 700; font-size: 0.94rem; color: var(--slate-700); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.filter-btn.active, .filter-btn:hover { background: var(--forest-primary); color: #ffffff; border-color: var(--forest-primary); }
+.tours-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.tour-card { background: #ffffff; border: 1px solid var(--slate-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.tour-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+.tour-image-container { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--slate-800); display: flex; align-items: center; justify-content: center; }
+.tour-image-container img.tour-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.tour-img-bg { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; padding: 1rem; text-align: center; }
+.tour-img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.tour-img-dest { font-size: 1.25rem; font-weight: 800; }
+.tour-badge-top { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(4px); }
+.tour-duration-badge { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+.tour-host-badge { position: absolute; bottom: 12px; right: 12px; background: var(--forest-primary); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+.tour-card-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.tour-dates-row { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; color: var(--amber-warm); margin-bottom: 0.5rem; }
+.tour-card-title { font-size: 1.35rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.75rem; line-height: 1.35; }
+.tour-route-badge { font-size: 0.85rem; color: var(--slate-600); background: var(--slate-100); padding: 6px 10px; border-radius: 6px; margin-bottom: 1rem; line-height: 1.4; }
+.tour-highlights-list { list-style: none; margin-bottom: 1.25rem; flex: 1; }
+.tour-highlights-list li { font-size: 0.92rem; color: var(--slate-700); margin-bottom: 6px; position: relative; padding-left: 18px; line-height: 1.45; }
+.tour-highlights-list li::before { content: "✓"; position: absolute; left: 0; color: var(--whatsapp-green); font-weight: 800; }
+.tour-price-box { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+.price-label { font-size: 0.8rem; color: var(--slate-500); }
+.price-amount { font-size: 1.4rem; font-weight: 800; color: var(--forest-primary); line-height: 1; }
+.price-note { font-size: 0.76rem; color: var(--amber-warm); font-weight: 600; margin-top: 2px; }
+.tour-card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-view-details { background: var(--slate-100); border: 1px solid var(--slate-200); color: var(--slate-800); padding: 9px; border-radius: 6px; font-weight: 700; font-size: 0.92rem; cursor: pointer; text-align: center; }
+.btn-book-now { background: var(--forest-primary); color: #ffffff; border: none; padding: 9px; border-radius: 6px; font-weight: 700; font-size: 0.92rem; cursor: pointer; text-align: center; }
+
+/* Modals */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+.modal-overlay.active { display: flex; }
+.modal-dialog { background: #ffffff; border-radius: 16px; width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-xl); position: relative; }
+.modal-header { background: var(--forest-primary); color: #ffffff; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0; }
+.modal-close-btn { background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
+.modal-body { padding: 1.75rem 1.5rem; }
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 6px; color: var(--slate-800); }
+.form-select, .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--slate-200); border-radius: 8px; font-size: 0.95rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.calc-summary-box { background: var(--slate-50); border: 1px dashed var(--slate-300); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem; }
+.calc-row { display: flex; justify-content: space-between; font-size: 0.92rem; margin-bottom: 6px; }
+.calc-row.total { font-weight: 800; font-size: 1.15rem; color: var(--forest-primary); border-top: 1px solid var(--slate-200); padding-top: 8px; margin-top: 6px; }
+.btn-submit-booking { width: 100%; background: var(--whatsapp-green); color: #ffffff; border: none; padding: 13px; border-radius: 8px; font-weight: 800; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,211,102,0.3); }
+
+/* Food Section */
+.food-section { background: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%); }
+.food-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.food-tag { display: inline-block; background: #fff; border: 1px solid #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 700; margin: 4px; box-shadow: var(--shadow-sm); }
+.food-feature-box { background: #fff; border: 1px solid var(--slate-200); border-radius: 16px; padding: 1.75rem; box-shadow: var(--shadow-md); }
+.food-menu-day { border-left: 3px solid var(--amber-warm); padding-left: 12px; margin-bottom: 1.25rem; font-size: 0.92rem; }
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero-grid, .food-layout, .trust-grid { grid-template-columns: 1fr; }
+  .tours-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+@media (max-width: 640px) {
+  .tours-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 2.1rem; }
+  .hero-key-points { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="tws-wrapper" id="twsWrapper">
+
+  <!-- 1. Top Accessibility Bar -->
+  <div class="a11y-bar">
+    <div class="tws-container a11y-bar-content">
+      <div>
+        <span class="badge-pill">২০২৬ বুকিং চলছে</span>
+        <span>সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ ও ঘরোয়া ভ্রমণ</span>
+      </div>
+      <div class="a11y-controls">
+        <span style="font-size:0.8rem; opacity:0.85;">অক্ষর সাইজ:</span>
+        <button class="font-ctrl-btn" onclick="setA11yFont('font-sm')">A-</button>
+        <button class="font-ctrl-btn active" onclick="setA11yFont('normal')">A</button>
+        <button class="font-ctrl-btn" onclick="setA11yFont('font-lg')">A+</button>
+        <button class="font-ctrl-btn" onclick="setA11yFont('font-xl')">A++</button>
+        <button class="theme-toggle-btn" onclick="toggleTwsTheme()"><i class="fas fa-moon"></i> ডার্ক মোড</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Sticky Header -->
+  <header class="site-header">
+    <div class="tws-container header-container">
+      <div class="brand-area">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Tour with Somjit Logo" class="brand-logo-img dyn-logo-img">
+        <div class="brand-text">
+          <h1>Tour with Somjit</h1>
+          <div class="brand-tagline">সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ গ্রুপ ট্যুর</div>
+        </div>
+      </div>
+
+      <div class="header-cta-group">
+        <a href="tel:+919433074880" class="phone-pill-btn"><i class="fas fa-phone-alt"></i> 9433074880</a>
+        <a href="https://wa.me/919433074880" target="_blank" class="whatsapp-pill-btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Hero Section -->
+  <section class="hero-section">
+    <div class="tws-container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge"><i class="fas fa-compass"></i> সোমজিৎ ভট্টাচার্য-এর অফিসিয়াল ট্যুর পোর্টাল</div>
+          <h2 class="hero-title">সোমজিৎ ভট্টাচার্য-এর সাথে নিশ্চিন্ত ও <span class="highlight">ঘরোয়া গ্রুপ ট্যুর ২০২৬</span></h2>
+          <p class="hero-lead">প্রবীণ নাগরিক ও পরিবারের প্রতিটি সদস্যের জন্য সম্পূর্ণ নিরাপদ, আরামদায়ক ও নিখুঁত পরিকল্পনার অনন্য অভিজ্ঞতা। লাদাখের বরফাবৃত গিরিপথ থেকে সুন্দরবনের রাজকীয় ইলিশ উৎসব—সোমজিৎ ভট্টাচার্য নিজে সাথে থেকে আপনাকে উপহার দেবেন একটি আজীবন মনে রাখার মতো আন্তরিক ভ্রমণ।</p>
+          
+          <div class="hero-key-points">
+            <div class="hero-point"><i class="fas fa-user-shield"></i> প্রথম দিন থেকে আমি সোমজিৎ ভট্টাচার্য সাথে থাকব</div>
+            <div class="hero-point"><i class="fas fa-lungs"></i> বড় অক্সিজেন সিলিন্ডার ও ক্যান ব্যাকআপ</div>
+            <div class="hero-point"><i class="fas fa-utensils"></i> বাঙালি কুকিং টিমের ঘরোয়া রান্না</div>
+            <div class="hero-point"><i class="fas fa-couch"></i> টেম্পো ট্রাভেলারে নো ব্যাক সিট</div>
+          </div>
+
+          <div class="hero-actions">
+            <button onclick="openWpBookingModal('ladakh-2026')" class="btn-primary-hero"><i class="fas fa-bolt"></i> সরাসরি সিট বুক করুন</button>
+            <a href="https://wa.me/919433074880" target="_blank" class="btn-secondary-hero"><i class="fab fa-whatsapp"></i> WhatsApp আলোচনা</a>
+          </div>
+        </div>
+
+        <div class="hero-host-card">
+          <div class="host-avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80" alt="Somjit Bhattacharyya" class="host-main-photo">
+            <div class="host-verified-badge"><i class="fas fa-check"></i></div>
+          </div>
+          <h3 class="host-name">সোমজিৎ ভট্টাচার্য</h3>
+          <div class="host-title">প্রতিষ্ঠাতা ও জনপ্রিয় বাংলা ট্রাভেল ভ্লগার</div>
+          <div class="host-trust-quote">"ট্যুরে আমরা শুধু স্থান দেখি না, একসাথে একটি পরিবার হয়ে উঠি। প্রবীণদের যত্ন, সঠিক খাবার আর সুরক্ষাই আমার প্রথম অগ্রাধিকার।"</div>
+          <div class="host-social-links">
+            <a href="https://youtube.com/@somjitbhattacharyya" target="_blank" class="host-social-btn yt"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://facebook.com/somjit.bhattacharyya" target="_blank" class="host-social-btn fb"><i class="fab fa-facebook"></i> Facebook</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Trust Strip -->
+  <section class="trust-strip">
+    <div class="tws-container">
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-heartbeat"></i></div>
+          <div class="trust-text"><h4>মেডিক্যাল অক্সিজেন ব্যাকআপ</h4><p>হাসপাতাল গ্রেড বড় সিলিন্ডার ও ক্যান</p></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-bread-slice"></i></div>
+          <div class="trust-text"><h4>নিজস্ব বাঙালি বাবুর্চি</h4><p>টাটকা ঘরোয়া বাঙালি খাবার সব মিল সহ</p></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-chair"></i></div>
+          <div class="trust-text"><h4>আরামদায়ক আসন</h4><p>টেম্পো ট্রাভেলারে নো ব্যাক সিট</p></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-hand-holding-heart"></i></div>
+          <div class="trust-text"><h4>প্রবীণ নাগরিকদের যত্ন</h4><p>ধীরেসুস্থে দর্শন ও পুষ্টিকর খাবার</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Tours Catalog -->
+  <section class="section">
+    <div class="tws-container">
+      <div class="section-header">
+        <span class="section-subtitle">আমাদের ২০২৬ সালের অফিশিয়াল ক্যালেন্ডার</span>
+        <h2 class="section-title">সোমজিৎ ভট্টাচার্য-এর সিগনেচার গ্রুপ ট্যুরসমূহ</h2>
+        <p class="section-description">সেরা মৌসুমে সর্বোচ্চ আরামদায়ক ব্যবস্থাপনায় পরিচালিত ট্যুরসমূহ।</p>
+      </div>
+
+      <div class="tours-grid">
+        
+        <!-- Ladakh -->
+        <div class="tour-card">
+          <div class="tour-image-container">
+            <div class="tour-img-bg" style="background: linear-gradient(135deg, #1e3a8a, #0f172a);">
+              <i class="fas fa-mountain tour-img-icon" style="color:#93c5fd;"></i>
+              <div class="tour-img-dest">লাদাখ মহাবিস্ময় ২০২৬</div>
+            </div>
+            <div class="tour-badge-top">অক্সিজেন ব্যাকআপ</div>
+            <div class="tour-duration-badge">১২ রাত / ১৩ দিন</div>
+          </div>
+          <div class="tour-card-body">
+            <div class="tour-dates-row"><i class="fas fa-calendar-alt"></i> ২৫শে মে – ১০ই জুন ২০২৬</div>
+            <h3 class="tour-card-title">লাদাখ মহাবিস্ময় গ্রুপ ট্যুর ২০২৬</h3>
+            <div class="tour-route-badge">শ্রীনগর ➔ কার্গিল ➔ লেহ ➔ নুব্রা ➔ প্যাংগং ➔ সোমোরিরি ➔ মানালি</div>
+            <ul class="tour-highlights-list">
+              <li>আমি সোমজিৎ ভট্টাচার্য নিজে শুরু থেকে সাথে থাকব</li>
+              <li>হাসপাতাল গ্রেড অক্সিজেন সিলিন্ডার ব্যাকআপ</li>
+              <li>বাঙালি কুকিং টিমের রান্না করা খাবার</li>
+            </ul>
+            <div class="tour-price-box">
+              <div>
+                <div class="price-label">প্যাকেজ শুরু মাত্র</div>
+                <div class="price-amount">₹৪৭,০০০</div>
+                <div class="price-note">টোকেন ₹৫,০০০</div>
+              </div>
+            </div>
+            <div class="tour-card-actions">
+              <button onclick="openWpBookingModal('ladakh-2026')" class="btn-book-now" style="grid-column: span 2;"><i class="fas fa-ticket-alt"></i> সিট বুক করুন</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sundarban -->
+        <div class="tour-card">
+          <div class="tour-image-container">
+            <div class="tour-img-bg" style="background: linear-gradient(135deg, #065f46, #064e3b);">
+              <i class="fas fa-fish tour-img-icon" style="color:#6ee7b7;"></i>
+              <div class="tour-img-dest">দ্বিতীয় সুন্দরবন ইলিশ উৎসব ২০২৬</div>
+            </div>
+            <div class="tour-badge-top">১০+ ইলিশ পদ</div>
+            <div class="tour-duration-badge">২ রাত / ৩ দিন</div>
+          </div>
+          <div class="tour-card-body">
+            <div class="tour-dates-row"><i class="fas fa-calendar-alt"></i> ২৪শে – ২৬শে জুলাই ২০২৬</div>
+            <h3 class="tour-card-title">দ্বিতীয় সুন্দরবন ইলিশ উৎসব ২০২৬</h3>
+            <div class="tour-route-badge">কলকাতা ধর্মতলা ⇄ এসি বাস ⇄ দয়াপুর এসি রিসর্ট ⇄ বিলাসবহুল লঞ্চ</div>
+            <ul class="tour-highlights-list">
+              <li>১০+ পদের রাজকীয় ইলিশ মহোৎসব</li>
+              <li>দয়াপুরে প্রিমিয়াম লাক্সারী রিসর্টে থাকা</li>
+              <li>এম ভি দেবী অন্নপূর্ণা ২ লঞ্চে সাফারি</li>
+            </ul>
+            <div class="tour-price-box">
+              <div>
+                <div class="price-label">জনপ্রতি প্যাকেজ মূল্য</div>
+                <div class="price-amount">₹৭,৫০০</div>
+                <div class="price-note">টোকেন ₹২,০০০</div>
+              </div>
+            </div>
+            <div class="tour-card-actions">
+              <button onclick="openWpBookingModal('sundarban-2026')" class="btn-book-now" style="grid-column: span 2;"><i class="fas fa-ticket-alt"></i> সিট বুক করুন</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spiti -->
+        <div class="tour-card">
+          <div class="tour-image-container">
+            <div class="tour-img-bg" style="background: linear-gradient(135deg, #312e81, #1e1b4b);">
+              <i class="fas fa-snowflake tour-img-icon" style="color:#c7d2fe;"></i>
+              <div class="tour-img-dest">কিন্নর স্পিতি ভ্যালি ২০২৬</div>
+            </div>
+            <div class="tour-badge-top">চন্দ্রতাল ট্রেক</div>
+            <div class="tour-duration-badge">১০ রাত / ১১ দিন</div>
+          </div>
+          <div class="tour-card-body">
+            <div class="tour-dates-row"><i class="fas fa-calendar-alt"></i> ১৮ই সেপ্টেম্বর – ২রা অক্টোবর ২০২৬</div>
+            <h3 class="tour-card-title">কিন্নর স্পিতি ভ্যালি গ্র্যান্ড ট্যুর ২০২৬</h3>
+            <div class="tour-route-badge">শিমলা ➔ সাংলা ➔ ছিটকুল ➔ কল্পা ➔ নাকো ➔ কাজা ➔ মানালি</div>
+            <ul class="tour-highlights-list">
+              <li>চন্দ্রতাল ট্রেকে অক্সিজেন সিলিন্ডার সাপোর্ট</li>
+              <li>৫০০ বছরের প্রাচীন গিউ মমি ও টাবো মনাস্ট্রি</li>
+              <li>হিক্কিম সর্বোচ্চ পোস্ট অফিস ও চিচাম ব্রিজ</li>
+            </ul>
+            <div class="tour-price-box">
+              <div>
+                <div class="price-label">প্যাকেজ শুরু মাত্র</div>
+                <div class="price-amount">₹৩১,৫০০</div>
+                <div class="price-note">টোকেন ₹৫,০০০</div>
+              </div>
+            </div>
+            <div class="tour-card-actions">
+              <button onclick="openWpBookingModal('spiti-2026')" class="btn-book-now" style="grid-column: span 2;"><i class="fas fa-ticket-alt"></i> সিট বুক করুন</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Booking Modal for WordPress -->
+<div id="wpBookingModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>ট্যুর সিট বুকিং ও WhatsApp কনফার্মেশন</h3>
+      <button onclick="closeWpBookingModal()" class="modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="wpBookingForm" onsubmit="submitWpBooking(event)">
+        <div class="form-group">
+          <label class="form-label">আপনার নাম *</label>
+          <input type="text" id="wpGuestName" class="form-input" placeholder="পুরো নাম লিখুন" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">বয়স *</label>
+            <input type="number" id="wpGuestAge" class="form-input" placeholder="উদাঃ 52" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">যাত্রী সংখ্যা *</label>
+            <input type="number" id="wpGuestCount" class="form-input" min="1" value="2" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">WhatsApp মোবাইল নম্বর *</label>
+          <input type="tel" id="wpGuestPhone" class="form-input" placeholder="10 ডিজিট নম্বর" required>
+        </div>
+        <button type="submit" class="btn-submit-booking"><i class="fab fa-whatsapp"></i> WhatsApp-এ বুকিং নিশ্চিত করুন</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function setA11yFont(sizeClass) {
+  var wrapper = document.getElementById('twsWrapper');
+  if(!wrapper) return;
+  wrapper.className = wrapper.className.replace(/\bfont-\w+\b/g, "");
+  if(sizeClass !== 'normal') wrapper.classList.add(sizeClass);
+}
+
+function toggleTwsTheme() {
+  var wrapper = document.getElementById('twsWrapper');
+  if(wrapper) wrapper.classList.toggle('dark-mode');
+}
+
+var currentWpTour = 'ladakh-2026';
+function openWpBookingModal(tourId) {
+  currentWpTour = tourId || 'ladakh-2026';
+  var m = document.getElementById('wpBookingModal');
+  if(m) m.classList.add('active');
+}
+
+function closeWpBookingModal() {
+  var m = document.getElementById('wpBookingModal');
+  if(m) m.classList.remove('active');
+}
+
+function submitWpBooking(e) {
+  e.preventDefault();
+  var name = document.getElementById('wpGuestName').value;
+  var age = document.getElementById('wpGuestAge').value;
+  var count = document.getElementById('wpGuestCount').value;
+  var phone = document.getElementById('wpGuestPhone').value;
+
+  var msg = "নমস্কার সোমজিৎ ভট্টাচার্য 🙏\nআমি ওয়েবসাইট থেকে " + currentWpTour + " ট্যুর বুকিংয়ের জন্য আবেদন করছি।\n\nনাম: " + name + " (" + age + " বছর)\nযাত্রী সংখ্যা: " + count + " জন\nমোবাইল: " + phone;
+  window.open("https://wa.me/919433074880?text=" + encodeURIComponent(msg), "_blank");
+  closeWpBookingModal();
+}
+</script>

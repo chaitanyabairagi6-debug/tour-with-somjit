@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour with Somjit - সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ ও ঘরোয়া গ্রুপ ট্যুর ২০২৬</title>
+  <meta name="description" content="বাংলা ট্রাভেল ভ্লগার সোমজিৎ ভট্টাচার্য-এর সাথে লাদাখ, সুন্দরবন ইলিশ উৎসব, স্পিতি ভ্যালি, রাঁচি ও পুরুলিয়া গ্রুপ ট্যুর ২০২৬। সিনিয়র সিটিজেন ও পরিবারের জন্য নিরাপদ ও ঘরোয়া বাঙালি ভ্রমণ।">
+  <meta name="keywords" content="Tour with Somjit, Somjit Bhattacharyya, Bengali Group Tour 2026, Ladakh Group Tour Bengali, Sundarban Hilsa Festival, Spiti Valley Tour, Bengali Cook Tour">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/somjit_avatar.png">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- 1. Top Accessibility Bar -->
+  <div class="a11y-bar">
+    <div class="container a11y-bar-content">
+      <div class="a11y-greeting">
+        <span class="badge-pill clickable-hero-badge" onclick="openFeaturedTourDetails()" style="cursor:pointer;" title="বর্তমানে চলমান ট্যুরের বিবরণ দেখতে ক্লিক করুন">
+          <i class="fas fa-calendar-check"></i> ২০২৬ বুকিং চলছে (বিস্তারিত দেখুন)
+        </span>
+        <span class="dyn-tagline">সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ ও ঘরোয়া ভ্রমণ</span>
+      </div>
+      <div class="a11y-controls">
+        <span style="font-size:0.8rem; opacity:0.85; margin-left:6px;">অক্ষর সাইজ:</span>
+        <button class="font-ctrl-btn" data-size="font-sm" title="ছোট ফন্ট">A-</button>
+        <button class="font-ctrl-btn active" data-size="normal" title="সাধারণ ফন্ট">A</button>
+        <button class="font-ctrl-btn" data-size="font-lg" title="বড় ফন্ট">A+</button>
+        <button class="font-ctrl-btn" data-size="font-xl" title="খুব বড় ফন্ট (প্রবীণদের জন্য)">A++</button>
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="ডার্ক/লাইট মোড পরিবর্তন">
+          <i class="fas fa-moon"></i> ডার্ক মোড
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Sticky Header & Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#home" class="brand-area">
+        <img src="assets/images/somjit_avatar.png" alt="Tour with Somjit Logo" class="brand-logo-img dyn-logo-img">
+        <div class="brand-text">
+          <h1 class="dyn-agency-name">Tour with Somjit</h1>
+          <div class="brand-tagline dyn-tagline">সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ গ্রুপ ট্যুর</div>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link active">হোম</a></li>
+          <li><a href="#tours" class="nav-link">ট্যুর তালিকা</a></li>
+          <li><a href="#why-us" class="nav-link">আমাদের বিশেষত্ব</a></li>
+          <li><a href="#food" class="nav-link">ইলিশ ও রাজকীয় ভোজ</a></li>
+          <li><a href="#vlogs" class="nav-link">ভিডিও ভ্লগ</a></li>
+          <li><a href="#faq" class="nav-link">সাধারণ জিজ্ঞাসা</a></li>
+          <li><a href="#about-company" class="nav-link">কোম্পানি ও টিম</a></li>
+          <li><a href="#contact" class="nav-link">যোগাযোগ</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta-group">
+        <a href="tel:+919433074880" class="phone-pill-btn dyn-primary-phone-link">
+          <i class="fas fa-phone-alt"></i> <span class="dyn-primary-phone">9433074880</span>
+        </a>
+        <a href="https://wa.me/919433074880?text=%E0%A6%A8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8B%E0%A6%AE%E0%A6%9C%E0%A6%BF%E0%A7%8e%20%E0%A6%AD%E0%A6%9F%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%9A%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%AF%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC-%E0%A6%8F%E0%A6%B0%20%E0%A6%9F%E0%A7%8D%E0%A6%AF%E0%A7%81%E0%A6%B0%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A7%A4" target="_blank" class="whatsapp-pill-btn dyn-whatsapp-link">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a class='admin-pill-btn' href='/admin' target='_blank' title='অফিশিয়াল অ্যাডমিন কন্ট্রোল প্যানেল'>
+          <i class="fas fa-lock"></i> অ্যাডমিন
+        </a>
+        <button id="mobileMenuBtn" class="menu-toggle-btn" aria-label="মেনু খুলুন">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div id="mobileNavDrawer" class="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <div style="font-size:1.2rem; font-weight:800; color:var(--forest-primary);" class="dyn-agency-name">Tour with Somjit</div>
+      <button id="closeMobileNavBtn" style="background:none; border:none; font-size:1.5rem; color:var(--slate-600); cursor:pointer;">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav-list">
+      <li class="mobile-nav-item"><a href="#home"><i class="fas fa-home"></i> হোম</a></li>
+      <li class="mobile-nav-item"><a href="#tours"><i class="fas fa-mountain"></i> ট্যুর তালিকা ২০২৬</a></li>
+      <li class="mobile-nav-item"><a href="#why-us"><i class="fas fa-shield-alt"></i> আমাদের বিশেষত্ব</a></li>
+      <li class="mobile-nav-item"><a href="#food"><i class="fas fa-utensils"></i> ইলিশ ও রাজকীয় ভোজ</a></li>
+      <li class="mobile-nav-item"><a href="#vlogs"><i class="fab fa-youtube"></i> ট্রাভেল ভিডিও</a></li>
+      <li class="mobile-nav-item"><a href="#faq"><i class="fas fa-question-circle"></i> সাধারণ প্রশ্নোত্তর</a></li>
+      <li class="mobile-nav-item"><a href="#about-company"><i class="fas fa-building"></i> কোম্পানি ও টিম</a></li>
+      <li class="mobile-nav-item"><a href="#contact"><i class="fas fa-phone-volume"></i> সরাসরি যোগাযোগ</a></li>
+      <li class="mobile-nav-item"><a href='/admin' style='color:var(--amber-warm);' target='_blank'><i class="fas fa-user-cog"></i> অফিসিয়াল অ্যাডমিন প্যানেল</a></li>
+    </ul>
+    <div style="margin-top:auto; padding-top:1.5rem; border-top:1px solid var(--slate-200);">
+      <a href="tel:+919433074880" class="btn-primary-hero dyn-primary-phone-link" style="width:100%; justify-content:center; margin-bottom:10px;">
+        <i class="fas fa-phone-alt"></i> <span class="dyn-primary-phone">9433074880</span> কল করুন
+      </a>
+      <a href="https://wa.me/919433074880" target="_blank" class="btn-submit-booking dyn-whatsapp-link" style="font-size:0.95rem;">
+        <i class="fab fa-whatsapp"></i> সরাসরি WhatsApp করুন
+      </a>
+    </div>
+  </div>
+
+  <!-- 3. Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge clickable-hero-badge" id="dynHeroBadge" onclick="openFeaturedTourDetails()" style="cursor:pointer;" title="বর্তমানে চলমান ট্যুরের বিবরণ দেখতে ক্লিক করুন">
+            <i class="fas fa-compass"></i> সোমজিৎ ভট্টাচার্য-এর অফিসিয়াল ট্যুর পোর্টাল (বুকিং ওপেন)
+          </div>
+          <h2 class="hero-title" id="dynHeroHeadline">
+            সোমজিৎ ভট্টাচার্য-এর সাথে নিশ্চিন্ত ও <span class="highlight">ঘরোয়া গ্রুপ ট্যুর ২০২৬</span>
+          </h2>
+          <p class="hero-lead" id="dynHeroSubtext">
+            প্রবীণ নাগরিক ও পরিবারের প্রতিটি সদস্যের জন্য সম্পূর্ণ নিরাপদ, আরামদায়ক ও নিখুঁত পরিকল্পনার অনন্য অভিজ্ঞতা। লাদাখের বরফাবৃত গিরিপথ থেকে সুন্দরবনের রাজকীয় ইলিশ উৎসব—আমি সোমজিৎ ভট্টাচার্য নিজে সাথে থেকে আপনাকে উপহার দেব একটি আজীবন মনে রাখার মতো আন্তরিক ভ্রমণ।
+          </p>
+
+          <div class="hero-key-points" id="dynHeroPointsGrid">
+            <div class="hero-point">
+              <i class="fas fa-user-shield"></i>
+              <span>প্রথম দিন থেকে আমি সোমজিৎ ভট্টাচার্য নিজে সাথে থাকব</span>
+            </div>
+            <div class="hero-point">
+              <i class="fas fa-lungs"></i>
+              <span>বড় অক্সিজেন সিলিন্ডার ও ক্যান ব্যাকআপ</span>
+            </div>
+            <div class="hero-point">
+              <i class="fas fa-utensils"></i>
+              <span>নিজস্ব বাঙালি কুকিং টিমের ঘরোয়া রান্না</span>
+            </div>
+            <div class="hero-point">
+              <i class="fas fa-couch"></i>
+              <span>টেম্পো ট্রাভেলারে নো ব্যাক সিট ও রোটেশন</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#tours" class="btn-primary-hero">
+              <i class="fas fa-map-marked-alt"></i> ট্যুর তালিকা ও প্যাকেজ দেখুন
+            </a>
+            <button onclick="openBookingModal('ladakh-2026')" class="btn-secondary-hero">
+              <i class="fas fa-bolt"></i> সরাসরি সিট বুক করুন
+            </button>
+          </div>
+        </div>
+
+        <!-- Host Card -->
+        <div class="hero-host-card">
+          <div class="host-avatar-wrapper">
+            <img src="assets/images/somjit_host.jpg" alt="Somjit Bhattacharyya Travel Vlogger" id="dynHostMainPhoto" class="host-main-photo">
+            <div class="host-verified-badge" title="অফিসিয়াল হোস্ট">
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+          <h3 class="host-name" id="dynHostName">সোমজিৎ ভট্টাচার্য</h3>
+          <div class="host-title" id="dynHostTitle">প্রতিষ্ঠাতা ও জনপ্রিয় বাংলা ট্রাভেল ভ্লগার</div>
+          
+          <div class="host-trust-quote" id="dynHostQuote">
+            "ট্যুরে আমরা শুধু স্থান দেখি না, একসাথে একটি পরিবার হয়ে উঠি। প্রবীণদের যত্ন, সঠিক পুষ্টিকর খাবার আর সর্বোচ্চ সুরক্ষাই আমার প্রথম অগ্রাধিকার।"
+          </div>
+
+          <div class="host-social-links">
+            <a href="https://youtube.com/@somjitbhattacharyya" target="_blank" class="host-social-btn yt" id="dynHostYtBtn">
+              <i class="fab fa-youtube"></i> YouTube চ্যানেল
+            </a>
+            <a href="https://facebook.com/somjit.bhattacharyya" target="_blank" class="host-social-btn fb" id="dynHostFbBtn">
+              <i class="fab fa-facebook"></i> Facebook পেজ
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Senior Citizen Care & Trust Badges Strip -->
+  <section class="trust-strip">
+    <div class="container">
+      <div class="trust-grid" id="dynTrustStripGrid">
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-heartbeat"></i></div>
+          <div class="trust-text">
+            <h4>মেডিক্যাল অক্সিজেন ব্যাকআপ</h4>
+            <p>লাদাখ ও স্পিতিতে হাসপাতাল গ্রেড বড় সিলিন্ডার ও অক্সিজেন ক্যান</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-bread-slice"></i></div>
+          <div class="trust-text">
+            <h4>নিজস্ব বাঙালি বাবুর্চি</h4>
+            <p>টাটকা ঘরোয়া বাঙালি খাবার, লাঞ্চ সহ সব মিল অন্তর্ভুক্ত</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-chair"></i></div>
+          <div class="trust-text">
+            <h4>আরামদায়ক আসন ব্যবস্থা</h4>
+            <p>টেম্পো ট্রাভেলারে পেছনের খারাপ সিটে কাউকে বসানো হয় না</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <div class="trust-icon-box"><i class="fas fa-hand-holding-heart"></i></div>
+          <div class="trust-text">
+            <h4>প্রবীণ নাগরিকদের বিশেষ যত্ন</h4>
+            <p>ধীরেসুস্থে দর্শন, কম মশলার সুষম খাবার ও পারিবারিক স্নেহ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Signature Tours Catalog Section -->
+  <section id="tours" class="section tours-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle" id="dynTourSectionSubtitle">আমাদের ২০২৬ সালের অফিশিয়াল ক্যালেন্ডার</span>
+        <h2 class="section-title" id="dynTourSectionTitle">সোমজিৎ ভট্টাচার্য-এর সিগনেচার গ্রুপ ট্যুরসমূহ</h2>
+        <p class="section-description">
+          প্রতিটি ট্যুর নিখুঁত সময়ে, সেরা মৌসুমে এবং সর্বোচ্চ আরামদায়ক ব্যবস্থাপনায় পরিচালিত হবে। আপনার পছন্দের গন্তব্যটি বেছে নিয়ে বিস্তারিত দেখুন।
+        </p>
+      </div>
+
+      <!-- Monthly Tour Interactive Calendar -->
+      <div class="monthly-calendar-wrapper">
+        <div class="monthly-calendar-title">
+          <i class="fas fa-calendar-alt"></i> মাস ভিত্তিক ট্যুর ক্যালেন্ডার ২০২৬ (মাসের নামের ওপর টাচ করুন):
+        </div>
+        <div class="months-bar" id="monthlyCalendarBar">
+          <button class="month-btn active" data-month="all">সব মাস</button>
+          <button class="month-btn" data-month="1">জানুয়ারি</button>
+          <button class="month-btn" data-month="2">ফেব্রুয়ারি</button>
+          <button class="month-btn has-tour" data-month="3" data-tour-id="purulia-2026">🌸 মার্চ (পুরুলিয়া)</button>
+          <button class="month-btn" data-month="4">এপ্রিল</button>
+          <button class="month-btn has-tour" data-month="5" data-tour-id="ladakh-2026">🏔️ মে-জুন (লাদাখ)</button>
+          <button class="month-btn has-tour" data-month="7" data-tour-id="sundarban-2026">🐟 জুলাই (সুন্দরবন)</button>
+          <button class="month-btn has-tour" data-month="8" data-tour-id="ranchi-2026">🌊 আগস্ট (রাঁচি)</button>
+          <button class="month-btn has-tour" data-month="9" data-tour-id="spiti-2026">❄️ সেপ্টেম্বর (স্পিতি)</button>
+          <button class="month-btn" data-month="10">অক্টোবর</button>
+          <button class="month-btn has-tour" data-month="11" data-tour-id="dooars-2026">🐅 নভেম্বর (ডুয়ার্স)</button>
+          <button class="month-btn" data-month="12">ডিসেম্বর</button>
+        </div>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="tour-filter-bar">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-globe"></i> সব ট্যুর</button>
+        <button class="filter-btn" data-filter="ladakh"><i class="fas fa-mountain"></i> লাদাখ</button>
+        <button class="filter-btn" data-filter="sundarban"><i class="fas fa-fish"></i> সুন্দরবন ইলিশ উৎসব</button>
+        <button class="filter-btn" data-filter="ranchi"><i class="fas fa-water"></i> রাঁচি ও নেতারহাট</button>
+        <button class="filter-btn" data-filter="spiti"><i class="fas fa-snowflake"></i> স্পিতি ভ্যালি</button>
+        <button class="filter-btn" data-filter="purulia"><i class="fas fa-tree"></i> পুরুলিয়া</button>
+        <button class="filter-btn" data-filter="dooars"><i class="fas fa-paw"></i> ডুয়ার্স</button>
+      </div>
+
+      <!-- Dynamic Tours Grid (Auto synced with Admin & Tour Banner Images) -->
+      <div class="tours-grid" id="dynToursGrid">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Why Choose Somjit Bhattacharyya Section -->
+  <section id="why-us" class="section why-us-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">আমাদের প্রতি ভ্রমণপ্রেমীদের অগাধ বিশ্বাস</span>
+        <h2 class="section-title">কেন আপনি সোমজিৎ ভট্টাচার্য-এর সাথে যাবেন?</h2>
+        <p class="section-description">
+          আমরা সাধারণ কমার্শিয়াল ট্রাভেল এজেন্সি নই। প্রতিটি ট্যুর পরিচালিত হয় একটি আন্তরিক পারিবারিক পরিমণ্ডলে।
+        </p>
+      </div>
+
+      <div class="why-grid" id="dynWhyUsGrid">
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-user-friends"></i></div>
+          <h3>সোমজিৎ ভট্টাচার্য-এর প্রত্যক্ষ নেতৃত্ব</h3>
+          <p>আমি সোমজিৎ ভট্টাচার্য নিজে প্রতিটি ট্যুরে শুরু থেকে শেষ পর্যন্ত আপনাদের সাথে থাকি এবং প্রত্যেকের ব্যক্তিগত সুবিধা-অসুবিধার তদারকি করি।</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-briefcase-medical"></i></div>
+          <h3>মেডিক্যাল ও সুরক্ষা ফার্স্ট</h3>
+          <p>উচ্চ উচ্চতার ট্যুরে পর্যাপ্ত অক্সিজেন সিলিন্ডার, ফার্স্ট এইড ও ব্যাকআপ সাপোর্ট থাকে যাতে প্রবীণ নাগরিকরা সম্পূর্ণ স্বাচ্ছন্দ্যে ঘুরে বেড়াতে পারেন।</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-utensil-spoon"></i></div>
+          <h3>খাঁটি বাঙালি বাবুর্চি ও ফ্রেশ মিল</h3>
+          <p>বাইরের অস্বাস্থ্যকর খাবার নয়, পাহাড়ে বা জঙ্গলে আমাদের নিজস্ব কুকিং টিমের রান্না করা গরম ভাত, ডাল, মাছ, চিকেন ও বাঙালি পদ পরিবেশন করা হয়।</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon"><i class="fas fa-handshake"></i></div>
+          <h3>১০০% স্বচ্ছতা ও লুকানো চার্জ নেই</h3>
+          <p>হোটেল, গাড়ি, সব মিল, পারমিট থেকে এন্ট্রি ফি—সবকিছু আগে থেকেই স্পষ্ট। কোনো লুকানো চার্জ বা পেছনের খারাপ সিটের ভোগান্তি নেই।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Royal Food & Sundarban Hilsa Festival Feature -->
+  <section id="food" class="section food-section">
+    <div class="container">
+      <div class="food-layout">
+        <div class="food-info">
+          <span class="food-card-badge" id="dynFoodBadge"><i class="fas fa-crown"></i> পেটুক বাঙালির রাজকীয় রসনা তৃপ্তি</span>
+          <h2 class="food-title" id="dynFoodTitle">১০+ পদের রাজকীয় ইলিশ ও খাঁটি বাঙালি ভোজন</h2>
+          <p class="food-desc" id="dynFoodDesc">
+            ভ্রমণে যদি রসনা তৃপ্তি না থাকে তবে ভ্রমণ অসম্পূর্ণ! "Tour with Somjit"-এর প্রতিটি সফরে আমরা নিশ্চিত করি সর্বোচ্চ মানের টাটকা ও ঘরোয়া বাঙালি আহার। বিশেষ করে সুন্দরবন ইলিশ উৎসবে থাকছে পদ্মার টাটকা ইলিশের অবিস্মরণীয় বৈচিত্র্য।
+          </p>
+
+          <div class="food-items-tags" id="dynFoodTags">
+            <span class="food-tag">🐟 খাঁটি সর্ষে ইলিশ</span>
+            <span class="food-tag">🍃 কলাপাতা ইলিশ পাতুরি</span>
+            <span class="food-tag">🍚 সুগন্ধি ইলিশ বিরিয়ানি</span>
+            <span class="food-tag">🍤 গলদা চিংড়ি মালাইকারি</span>
+            <span class="food-tag">🍲 কচুর শাক দিয়ে ইলিশ মাথা</span>
+            <span class="food-tag">🍗 কষা মটন ও চিকেন</span>
+            <span class="food-tag">☕ খাঁটি দার্জিলিং চা</span>
+          </div>
+
+          <button onclick="openBookingModal('sundarban-2026')" class="btn-primary-hero">
+            <i class="fas fa-ticket-alt"></i> ইলিশ উৎসবে সিট বুক করুন (₹৭,৫০০)
+          </button>
+        </div>
+
+        <div class="food-feature-box">
+          <h3 style="font-size:1.35rem; font-weight:800; color:var(--forest-primary); margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-concierge-bell"></i> সুন্দরবন ইলিশ উৎসবের মেনু হাইলাইটস:
+          </h3>
+
+          <div class="food-menu-day">
+            <h4><i class="fas fa-sun"></i> প্রথম দিন (লাঞ্চ ও ডিনার)</h4>
+            <p id="dynFoodDay1"><strong>লাঞ্চ:</strong> গরম ভাত, সোনা মুগ ডাল, বেগুনী, তোপসে ফ্রাই, গলদা চিংড়ি মালাইকারি, ইলিশ ভাপা, চাটনি, পাপড় ও রসগোল্লা।<br><strong>ডিনার:</strong> ফ্রাইড রাইস, চিলি চিকেন বা গরম রুটি ও কষা মটন কারি।</p>
+          </div>
+
+          <div class="food-menu-day">
+            <h4><i class="fas fa-ship"></i> দ্বিতীয় দিন (লঞ্চে ইলিশ মহোৎসব)</h4>
+            <p id="dynFoodDay2"><strong>ব্রেকফাস্ট:</strong> রাধাবল্লভী, ছোলার ডাল ও জিলিপি।<br><strong>লাঞ্চ:</strong> ভাত, ইলিশের তেল, ইলিশ মাথা দিয়ে কচুর শাক, সর্ষে ইলিশ, ইলিশ পাতুরি ও মিষ্টি দই।<br><strong>ইভনিং:</strong> চিকেন পকোড়া ও চা।<br><strong>ডিনার:</strong> কাচ্চি বিরিয়ানি ও চিকেন চাপ।</p>
+          </div>
+
+          <div class="food-menu-day">
+            <h4><i class="fas fa-star"></i> তৃতীয় দিন (সমাপনী ইলিশ স্পেশাল)</h4>
+            <p id="dynFoodDay3"><strong>লাঞ্চ:</strong> বিশেষ রাজকীয় ইলিশ বিরিয়ানি, ইলিশ দোপেঁয়াজা, আম-কাসুন্দি চাটনি ও মিষ্টিমুখ।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Travel Vlogs & YouTube Videos Section -->
+  <section id="vlogs" class="section vlog-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">আমাদের ভ্রমণ ভিডিও ও গাইড</span>
+        <h2 class="section-title">সোমজিৎ ভট্টাচার্য-এর জনপ্রিয় ট্রাভেল ভ্লগসমূহ</h2>
+        <p class="section-description">
+          ট্যুরে যাওয়ার আগে দেখে নিন আসল গন্তব্যের চোখ জুড়ানো প্রাকৃতিক দৃশ্য, রাস্তাঘাটের পরিস্থিতি এবং প্রকৃত অভিজ্ঞতা।
+        </p>
+      </div>
+
+      <!-- Dynamic YouTube Vlogs Grid (Controlled via Admin) -->
+      <div class="vlog-grid" id="dynVlogsGrid">
+        <!-- Injected via JS -->
+      </div>
+
+      <div style="text-align:center; margin-top:2.5rem;">
+        <a href="https://youtube.com/@somjitbhattacharyya" target="_blank" class="btn-primary-hero" style="background:#ff0000; box-shadow:0 10px 20px rgba(255,0,0,0.3);">
+          <i class="fab fa-youtube"></i> সোমজিৎ ভট্টাচার্য-এর YouTube চ্যানেল সাবস্ক্রাইব করুন
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Mature Traveler FAQ Accordion -->
+  <section id="faq" class="section faq-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">আপনার মনের সমস্ত প্রশ্নের উত্তর</span>
+        <h2 class="section-title">সাধারণ প্রশ্নোত্তর (FAQ)</h2>
+        <p class="section-description">
+          বয়োজ্যেষ্ঠ সদস্য, পরিবার ও একক ভ্রমণকারীদের সুবিধার জন্য প্রয়োজনীয় সকল তথ্য নিচে দেওয়া হলো।
+        </p>
+      </div>
+
+      <!-- Dynamic FAQ Container -->
+      <div class="faq-accordion-container" id="dynFaqAccordion">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 9.5. Official Company & Team Profile Section -->
+  <section id="about-company" class="section" style="background:#f8fafc; border-top:1px solid #e2e8f0; border-bottom:1px solid #e2e8f0;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle" id="dynAboutBadge"><i class="fas fa-building"></i> আমাদের পরিচিতি ও টিম</span>
+        <h2 class="section-title" id="dynAboutTitle">Tour with Somjit - অফিশিয়াল কোম্পানি বিবরণ</h2>
+        <p class="section-description" id="dynAboutTagline" style="font-weight:700; color:var(--forest-primary);">
+          Explore More. Experience More. | YOUR JOURNEY, OUR PASSION.
+        </p>
+      </div>
+
+      <div style="background:#fff; border-radius:16px; border:1px solid #e2e8f0; padding:2rem; box-shadow:0 4px 20px rgba(0,0,0,0.04); margin-bottom:2rem;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; align-items:center;">
+          <div>
+            <h3 style="font-size:1.4rem; color:var(--forest-primary); margin-bottom:0.75rem;">সোমজিৎ ভট্টাচার্য-এর আন্তরিক ভ্রমণ পরিবার</h3>
+            <p id="dynAboutDesc" style="color:var(--slate-600); line-height:1.7; font-size:0.98rem; margin-bottom:1.25rem;">
+              সোমজিৎ ভট্টাচার্য-এর আন্তরিক পরিচালনায় নিরাপদ, আরামদায়ক ও ঘরোয়া বাংলা গ্রুপ ট্যুর সংস্থা। আমরা প্রতিটি সফরকে পারিবারিক স্নেহ ও সর্বোচ্চ সুরক্ষা দিয়ে সাজাই।
+            </p>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:0.92rem; color:var(--slate-700);">
+              <div><i class="fas fa-map-marker-alt" style="color:#d97706; width:20px;"></i> <strong id="dynAboutAddress">Fatakgora, Chandannagar, Hooghly, West Bengal - 712136</strong></div>
+              <div><i class="fas fa-envelope" style="color:#2563eb; width:20px;"></i> <span id="dynAboutEmail">iamsomjit@gmail.com</span></div>
+              <div><i class="fas fa-phone-alt" style="color:#16a34a; width:20px;"></i> +91 <span id="dynAboutPhone1">9433074880</span> / <span id="dynAboutPhone2">8910073441</span></div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <img src="assets/images/somjit_card.jpg" alt="Tour with Somjit Visiting Card" style="max-width:100%; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.12); border:2px solid #e2e8f0;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members Grid -->
+      <h3 id="dynTeamSubHeading" style="font-size:1.3rem; text-align:center; margin-bottom:1.5rem; color:var(--forest-primary);">
+        <i class="fas fa-users"></i> আমাদের নিবেদিতপ্রাণ ম্যানেজমেন্ট টিম
+      </h3>
+      <div id="dynTeamGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.25rem;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Direct Booking & Helpline Contact Section -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info-block">
+          <span style="background:rgba(245,158,11,0.25); color:#fbbf24; padding:4px 14px; border-radius:999px; font-size:0.85rem; font-weight:700; display:inline-block; margin-bottom:0.75rem;">
+            <i class="fas fa-headset"></i> ২৪x৭ হেল্পলাইন ও বুকিং ডেস্ক
+          </span>
+          <h3>সরাসরি যোগাযোগ ও সিট নিশ্চিত করুন</h3>
+          <p>
+            যেকোনো প্রশ্ন, কাস্টমাইজেশন বা সিট বুকিং সংক্রান্ত তথ্যের জন্য সরাসরি সোমজিৎ ভট্টাচার্য অথবা আমাদের ডেডিকেটেড অ্যাডমিন টিমের সাথে যোগাযোগ করুন।
+          </p>
+
+          <div class="contact-phone-cards">
+            <!-- Somjit Bhattacharyya Direct -->
+            <div class="phone-contact-row">
+              <div class="phone-contact-meta">
+                <h5>সোমজিৎ ভট্টাচার্য (হোস্ট ও ডিরেক্টর)</h5>
+                <span>+91 <span class="dyn-primary-phone">9433074880</span> / 8910073441</span>
+              </div>
+              <div class="phone-contact-actions">
+                <a href="tel:+919433074880" class="contact-act-btn call dyn-primary-phone-link"><i class="fas fa-phone-alt"></i> কল</a>
+                <a href="https://wa.me/919433074880" target="_blank" class="contact-act-btn wa dyn-whatsapp-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+              </div>
+            </div>
+
+            <!-- Sharmistha Sarkar Admin -->
+            <div class="phone-contact-row">
+              <div class="phone-contact-meta">
+                <h5 id="dynAdminName">শর্মিষ্ঠা সরকার (Admin Team)</h5>
+                <span>+91 <span id="dynAdminPhone">9432426448</span> / 9123094168</span>
+              </div>
+              <div class="phone-contact-actions">
+                <a href="tel:+919432426448" class="contact-act-btn call"><i class="fas fa-phone-alt"></i> কল</a>
+                <a href="https://wa.me/919432426448" target="_blank" class="contact-act-btn wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Booking CTA Card -->
+        <div class="booking-cta-card">
+          <div style="font-size:3rem; color:var(--forest-primary); margin-bottom:0.5rem;"><i class="fas fa-clipboard-check"></i></div>
+          <h4>অনলাইন সিট রিজার্ভেশন</h4>
+          <p>আপনার পছন্দের ট্যুর ও যাত্রী সংখ্যা নির্বাচন করে তাৎক্ষণিক লাইভ মূল্য হিসাব করুন এবং এক ক্লিকে বুকিং পাঠান।</p>
+          <button onclick="openBookingModal('ladakh-2026')" class="btn-primary-hero" style="width:100%; justify-content:center; margin-bottom:12px;">
+            <i class="fas fa-calculator"></i> বুকিং ও লাইভ ক্যালকুলেটর খুলুন
+          </button>
+          <div style="font-size:0.85rem; color:var(--slate-500);">
+            <i class="fas fa-lock"></i> কোনো অগ্রিম পেমেন্ট ছাড়া বিনামূল্যে কোটেশন পান
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3 class="dyn-agency-name">Tour with Somjit</h3>
+          <p id="dynFooterAbout">সোমজিৎ ভট্টাচার্য-এর আন্তরিক পরিচালনায় নিরাপদ, বিশ্বস্ত ও ঘরোয়া বাংলা গ্রুপ ট্যুর। প্রবীণ নাগরিক ও পরিবারের প্রতিটি সদস্যের জন্য তৈরি অবিস্মরণীয় ভ্রমণের ঠিকানা।</p>
+          <div style="display:flex; gap:12px; margin-top:1rem;">
+            <a href="https://youtube.com/@somjitbhattacharyya" target="_blank" style="color:#ff0000; font-size:1.4rem;"><i class="fab fa-youtube"></i></a>
+            <a href="https://facebook.com/somjit.bhattacharyya" target="_blank" style="color:#3b82f6; font-size:1.4rem;"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/919433074880" target="_blank" style="color:#22c55e; font-size:1.4rem;" class="dyn-whatsapp-link"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>ট্যুর ২০২৬ ক্যালেন্ডার</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('ladakh-2026')">লাদাখ মহাবিস্ময় (মে-জুন)</a></li>
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('sundarban-2026')">সুন্দরবন ইলিশ উৎসব (জুলাই-আগস্ট)</a></li>
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('ranchi-2026')">রাঁচি ও নেতারহাট (আগস্ট)</a></li>
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('spiti-2026')">কিন্নর স্পিতি ভ্যালি (সেপ্টেম্বর)</a></li>
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('purulia-2026')">পুরুলিয়া পলাশ উৎসব (মার্চ)</a></li>
+            <li><a href="javascript:void(0)" onclick="openItineraryModal('dooars-2026')">ডুয়ার্স প্রিমিয়াম সাফারি (নভেম্বর)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>যোগাযোগ ও অ্যাডমিন</h4>
+          <p style="margin-bottom:0.5rem;"><i class="fas fa-map-marker-alt" style="color:#fbbf24;"></i> <span id="dynAddress">কলকাতা, পশ্চিমবঙ্গ, ভারত</span></p>
+          <p style="margin-bottom:0.5rem;"><i class="fas fa-phone-alt" style="color:#6ee7b7;"></i> +91 <span class="dyn-primary-phone">9433074880</span> / 8910073441</p>
+          <p style="margin-bottom:0.5rem;"><i class="fas fa-user-shield" style="color:#93c5fd;"></i> অ্যাডমিন: +91 9432426448</p>
+          <div style="margin-top:1rem;">
+            <a href='/admin' style='display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); color:#fbbf24; padding:6px 12px; border-radius:6px; font-size:0.85rem; font-weight:700;' target='_blank'>
+              <i class="fas fa-lock"></i> অফিসিয়াল অ্যাডমিন কন্ট্রোল প্যানেল
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom" id="dynFooterCopyright">
+        &copy; ২০২৬ Tour with Somjit. সর্বস্বত্ব সংরক্ষিত। ডিজাইন ও ডেভেলপমেন্ট: সোমজিৎ ভট্টাচার্য অফিশিয়াল ওয়েব টিম।
+      </div>
+    </div>
+  </footer>
+
+  <!-- 12. Floating Action Bar for Mobile & Quick Access -->
+  <div class="floating-action-bar">
+    <a href="tel:+919433074880" class="float-btn call dyn-primary-phone-link" title="কল করুন">
+      <i class="fas fa-phone-alt"></i> কল
+    </a>
+    <a href="https://wa.me/919433074880?text=%E0%A6%A8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A7%8B%E0%A6%AE%E0%A6%9C%E0%A6%BF%E0%A7%8e%E0%A6%A6%E0%A6%BE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%9F%E0%A7%8D%E0%A6%AF%E0%A7%81%E0%A6%B0%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A7%A4" target="_blank" class="float-btn wa dyn-whatsapp-link" title="WhatsApp বার্তা পাঠান">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+    <button onclick="openBookingModal('ladakh-2026')" class="float-btn book" style="border:none; cursor:pointer;" title="সিট বুকিং করুন">
+      <i class="fas fa-ticket-alt"></i> বুকিং
+    </button>
+  </div>
+
+  <!-- 13. Smart TV QR Code Modal for Senior & TV Viewers -->
+  <div id="tvQrModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width:480px; text-align:center;">
+      <div class="modal-header" style="background:#2563eb;">
+        <h3><i class="fas fa-tv"></i> স্মার্ট টিভি / বড় পর্দা বুকিং QR কোড</h3>
+        <button id="closeTvQrModalBtn" class="modal-close-btn" aria-label="বন্ধ করুন">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding:2rem 1.5rem;">
+        <div style="background:#f1f5f9; padding:1.25rem; border-radius:16px; display:inline-block; margin-bottom:1.25rem; border:2px dashed #2563eb;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwa.me%2F919433074880%3Ftext%3D%E0%A6%A8%E0%A6%AE%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A6%BE%E0%A6%B0%2520%E0%A6%B8%E0%A7%8B%E0%A6%AE%E0%A6%9C%E0%A6%BF%E0%A7%8e%E0%A6%A6%E0%A6%BE%252C%2520%E0%A6%86%E0%A6%AE%E0%A6%BF%2520%E0%A6%9F%E0%A6%BF%E0%A6%AD%E0%A6%BF%2520%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%2520%E0%A6%93%E0%A7%9F%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%2520%E0%A6%A6%E0%A7%87%E0%A6%96%E0%A7%87%2520%E0%A6%AF%E0%A7%8B%E0%A6%97%E0%A6%BE%E0%A6%AF%E0%A7%8B%E0%A6%97%2520%E0%A6%95%E0%A6%B0%E0%A6%9B%E0%A6%BF%E0%A7%A4" alt="WhatsApp QR Code" style="width:240px; height:240px; border-radius:8px; margin:0 auto;">
+        </div>
+
+        <h4 style="font-size:1.25rem; font-weight:800; color:var(--slate-900); margin-bottom:0.5rem;">
+          📱 মোবাইল দিয়ে স্ক্যান করুন
+        </h4>
+        <p style="font-size:0.95rem; color:var(--slate-600); line-height:1.6; margin-bottom:1.5rem;">
+          আপনার স্মার্টফোনের ক্যামেরা বা WhatsApp দিয়ে এই QR কোডটি স্ক্যান করলেই কোনো নম্বর সেভ করা ছাড়াই সরাসরি সোমজিৎ ভট্টাচার্য-এর অফিসিয়াল WhatsApp চ্যাট খুলে যাবে।
+        </p>
+
+        <a href="https://wa.me/919433074880" target="_blank" class="btn-submit-booking dyn-whatsapp-link" style="font-size:1rem;">
+          <i class="fab fa-whatsapp"></i> সরাসরি WhatsApp খুলুন
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14. Interactive Booking & Live Price Calculation Modal -->
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fas fa-calendar-check"></i> ট্যুর সিট বুকিং ও লাইভ হিসাব</h3>
+        <button id="closeBookingModalBtn" class="modal-close-btn" aria-label="বন্ধ করুন">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="bookingForm">
+          <div class="form-group">
+            <label class="form-label">গন্তব্য ও ট্যুর নির্বাচন করুন <span class="req">*</span></label>
+            <select id="bookingTourSelect" class="form-select" required></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">রুম ও প্যাকেজের ধরন <span class="req">*</span></label>
+            <select id="bookingPlanSelect" class="form-select" required></select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">মোট যাত্রী সংখ্যা <span class="req">*</span></label>
+              <input type="number" id="bookingPersonsInput" class="form-input" min="1" max="50" value="1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">মূল যাত্রীর বয়স <span class="req">*</span></label>
+              <input type="number" id="bookingGuestAge" class="form-input" min="1" max="100" placeholder="উদাঃ 52" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">মূল যাত্রীর নাম <span class="req">*</span></label>
+              <input type="text" id="bookingGuestName" class="form-input" placeholder="আপনার পুরো নাম" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp মোবাইল নম্বর <span class="req">*</span></label>
+              <input type="tel" id="bookingGuestPhone" class="form-input" placeholder="10 ডিজিট নম্বর" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <!-- Real-time Live Calculation Box -->
+          <div class="calc-summary-box">
+            <div class="calc-summary-title">
+              <span><i class="fas fa-receipt"></i> মূল্য হিসাব বিবরণী</span>
+              <span id="calcBookingId" class="booking-id-preview">TWS-2026-XXXX</span>
+            </div>
+            <div class="calc-row">
+              <span>জনপ্রতি প্যাকেজ দর:</span>
+              <span id="calcUnitPrice">₹0</span>
+            </div>
+            <div class="calc-row">
+              <span>মোট প্যাকেজ মূল্য:</span>
+              <span id="calcTotalAmount">₹0</span>
+            </div>
+            <div class="calc-row" style="color:var(--amber-warm); font-weight:700;">
+              <span>প্রাথমিক টোকেন মানি (সিট বুকিং):</span>
+              <span id="calcTokenAmount">₹0</span>
+            </div>
+            <div class="calc-row total">
+              <span>ট্যুর শুরুর পূর্বে প্রদেয়:</span>
+              <span id="calcBalanceAmount">₹0</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit-booking">
+            <i class="fab fa-whatsapp"></i> WhatsApp-এ বুকিং নিশ্চিত করুন
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15. Day-Wise Detailed Itinerary Modal -->
+  <div id="itineraryModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="itineraryModalTitle"><i class="fas fa-map-signs"></i> বিস্তারিত ভ্রমণসূচী</h3>
+        <button id="closeItineraryModalBtn" class="modal-close-btn" aria-label="বন্ধ করুন">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="itineraryModalContent">
+        <!-- Dynamic content injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Master Database & App Logic -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

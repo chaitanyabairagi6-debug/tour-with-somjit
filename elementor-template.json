@@ -1,0 +1,110 @@
+{
+  "version": "0.4",
+  "title": "Tour with Somjit - 2026 Bengali Tourism Template",
+  "type": "page",
+  "content": [
+    {
+      "id": "hero_section_tws",
+      "elType": "section",
+      "settings": {
+        "layout": "boxed",
+        "background_background": "gradient",
+        "background_color": "#09261a",
+        "background_color_b": "#1a4a37",
+        "padding": { "unit": "px", "top": "80", "right": "20", "bottom": "80", "left": "20" }
+      },
+      "elements": [
+        {
+          "id": "hero_col_left",
+          "elType": "column",
+          "settings": { "_column_size": 60 },
+          "elements": [
+            {
+              "id": "hero_badge",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "সোমজিৎ ভট্টাচার্য-এর অফিসিয়াল ট্যুর পোর্টাল",
+                "header_size": "h4",
+                "custom_css": "color: #fcd34d; font-weight: 700;"
+              }
+            },
+            {
+              "id": "hero_title",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "সোমজিৎদা-এর সাথে নিশ্চিন্ত ও ঘরোয়া গ্রুপ ট্যুর ২০২৬",
+                "header_size": "h1",
+                "custom_css": "color: #ffffff; font-size: 38px; font-weight: 800;"
+              }
+            },
+            {
+              "id": "hero_text",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>প্রবীণ নাগরিক ও পরিবারের প্রতিটি সদস্যের জন্য সম্পূর্ণ নিরাপদ, আরামদায়ক ও নিখুঁত পরিকল্পনার অনন্য অভিজ্ঞতা। হাসপাতাল গ্রেড অক্সিজেন ব্যাকআপ ও নিজস্ব বাঙালি বাবুর্চি।</p>",
+                "custom_css": "color: #d1fae5; font-size: 18px;"
+              }
+            },
+            {
+              "id": "hero_cta_btn",
+              "elType": "widget",
+              "widgetType": "button",
+              "settings": {
+                "text": "ট্যুর তালিকা ও প্যাকেজ দেখুন",
+                "link": { "url": "#tours" },
+                "button_type": "warning"
+              }
+            }
+          ]
+        },
+        {
+          "id": "hero_col_right",
+          "elType": "column",
+          "settings": { "_column_size": 40 },
+          "elements": [
+            {
+              "id": "host_profile_card",
+              "elType": "widget",
+              "widgetType": "image-box",
+              "settings": {
+                "image": { "url": "assets/images/somjit_host.jpg" },
+                "title_text": "সোমজিৎ ভট্টাচার্য",
+                "description_text": "প্রতিষ্ঠাতা ও বাংলা ট্রাভেল ভ্লগার\n\"ট্যুরে আমরা একসাথে একটি পরিবার হয়ে উঠি।\"",
+                "position": "top"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tours_section_tws",
+      "elType": "section",
+      "settings": {
+        "layout": "boxed",
+        "padding": { "unit": "px", "top": "70", "right": "20", "bottom": "70", "left": "20" }
+      },
+      "elements": [
+        {
+          "id": "tours_heading_col",
+          "elType": "column",
+          "settings": { "_column_size": 100 },
+          "elements": [
+            {
+              "id": "tours_title",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "সোমজিৎদার ২০২৬ সিগনেচার ট্যুর ক্যালেন্ডার",
+                "align": "center"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
