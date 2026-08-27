@@ -341,37 +341,17 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   filter: brightness(1.1);
 }
 
-.brand-logo-img {
-  height: 48px;
-  max-width: 220px;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  display: block;
-}
-
 .hero-host-area {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
-
-.host-cutout-wrap {
-  display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .hero-host-cutout {
-  width: 290px;
-  height: 290px;
-  max-width: 82vw;
-  max-height: 82vw;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4.5px solid var(--gold-primary);
-  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.45), 0 4px 20px rgba(0, 0, 0, 0.5);
-  background: var(--navy-primary);
+  max-height: 410px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
 }
 
 /* ========================================================
@@ -1454,17 +1434,10 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   .hero-inner-grid {
     grid-template-columns: 1fr;
     text-align: center;
-    padding: 24px 16px;
-    gap: 16px;
+    padding: 26px 16px;
   }
   .hero-cta-pill-group {
     justify-content: center;
-    margin-bottom: 8px;
-  }
-  .hero-host-cutout {
-    width: 210px;
-    height: 210px;
-    margin: 8px auto 0;
   }
   .host-intro-card {
     grid-template-columns: 1fr;

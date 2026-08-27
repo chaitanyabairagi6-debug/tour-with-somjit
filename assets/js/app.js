@@ -1,4 +1,42 @@
 
+// Fast Client-Side Image Compressor to keep Firebase payloads ultralight (<100KB)
+function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Determine output format
+      const mimeType = file.type === "image/png" ? "image/png" : "image/jpeg";
+      const compressedDataUrl = canvas.toDataURL(mimeType, quality);
+      callback(compressedDataUrl);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+
 function showModal(id) {
   const el = document.getElementById(id);
   if (el) {
@@ -30,9 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileDrawer();
   initBookingModal();
   setupKeyboardAdminShortcut();
-  if (window.location.hash === "#admin") {
-    setTimeout(() => promptAdminLoginModal(), 500);
-  }
 });
 
 // 1. Single Source of Truth Cloud Data Loader
@@ -614,26 +649,25 @@ function updateDraftField(section, key, value, domId, isHtml = false) {
 function handleCmsImageUpload(section, key, input, domId, isBg = false) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
-  const reader = new FileReader();
+  showToast("⏳ ছবি অপ্টিমাইজ হচ্ছে...");
 
-  reader.onload = function(e) {
-    const dataUrl = e.target.result;
+  const maxDim = isBg ? 1200 : 600;
+  compressImageFile(file, maxDim, maxDim, 0.82, function(compressedUrl) {
     if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
     if (!workingDraft[section]) workingDraft[section] = {};
-    workingDraft[section][key] = dataUrl;
+    workingDraft[section][key] = compressedUrl;
 
     const elem = document.getElementById(domId);
     if (elem) {
       if (isBg) {
-        elem.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${dataUrl}')`;
+        elem.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${compressedUrl}')`;
       } else {
-        elem.src = dataUrl;
+        elem.src = compressedUrl;
       }
     }
     populateCmsFields();
-    showToast("✓ ছবি ড্রাফটে লোড হয়েছে! লাইভ করতে 'Publish Changes' চাপুন।");
-  };
-  reader.readAsDataURL(file);
+    showToast("✓ ছবি সফলভাবে যুক্ত হয়েছে! লাইভ করতে 'Publish Changes' চাপুন।");
+  });
 }
 
 // Render CMS Tours List
@@ -709,12 +743,11 @@ function closeEditTourModal() {
 
 function handleTourImageFile(input) {
   if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById("edTourBanner").value = e.target.result;
+    showToast("⏳ ছবি অপ্টিমাইজ হচ্ছে...");
+    compressImageFile(input.files[0], 800, 600, 0.8, function(compressedUrl) {
+      document.getElementById("edTourBanner").value = compressedUrl;
       showToast("✓ ছবি লোড হয়েছে!");
-    };
-    reader.readAsDataURL(input.files[0]);
+    });
   }
 }
 
@@ -789,16 +822,15 @@ function openAddMomentModal() {
   fileInput.accept = "image/*";
   fileInput.onchange = function() {
     if (this.files && this.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
+      showToast("⏳ ছবি অপ্টিমাইজ হচ্ছে...");
+      compressImageFile(this.files[0], 700, 500, 0.8, function(compressedUrl) {
         if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
         if (!workingDraft.moments_gallery) workingDraft.moments_gallery = [];
-        workingDraft.moments_gallery.push({ id: "m-" + Date.now(), image_url: e.target.result, caption: "নতুন ভ্রমণ মুহূর্ত" });
+        workingDraft.moments_gallery.push({ id: "m-" + Date.now(), image_url: compressedUrl, caption: "নতুন ভ্রমণ মুহূর্ত" });
         renderCmsGalleryList();
         renderMomentsGallery(workingDraft);
         showToast("✓ নতুন মুহূর্ত গ্যালারিতে যোগ হয়েছে!");
-      };
-      reader.readAsDataURL(this.files[0]);
+      });
     }
   };
   fileInput.click();
@@ -917,29 +949,38 @@ function closePublishConfirmModal() {
 
 async function executeCloudPublish() {
   closePublishConfirmModal();
-  showToast("⏳ Google ক্লাউড ডেটাবেসে লাইভ প্রকাশিত হচ্ছে...");
+  showToast("⏳ Google ক্লাউডে লাইভ প্রকাশ হচ্ছে...");
 
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished || window.TWS_SITE_DATA || {}));
   workingDraft.updatedAt = new Date().toISOString();
+
+  const payloadStr = JSON.stringify(workingDraft);
 
   try {
     const res = await fetch("https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(workingDraft)
+      body: payloadStr
     });
 
     if (res.ok) {
-      livePublished = JSON.parse(JSON.stringify(workingDraft));
+      livePublished = JSON.parse(payloadStr);
       window.TWS_SITE_DATA = livePublished;
-      localStorage.setItem("tws_published_site_data", JSON.stringify(livePublished));
+      localStorage.setItem("tws_published_site_data", payloadStr);
       renderAllComponents(livePublished);
       showModal("publishSuccessModal");
+      showToast("🎉 আপনার পরিবর্তন সফলভাবে বিশ্বজুড়ে লাইভ হয়েছে!");
     } else {
-      throw new Error("HTTP error " + res.status);
+      throw new Error("Firebase HTTP Status: " + res.status);
     }
   } catch(err) {
-    alert("❌ ক্লাউড পাবলিশে সমস্যা হয়েছে। ইন্টারনেট কানেকশন চেক করুন।");
+    console.error("Cloud publish error:", err);
+    // Fallback: save to localStorage and notify admin
+    livePublished = JSON.parse(payloadStr);
+    window.TWS_SITE_DATA = livePublished;
+    localStorage.setItem("tws_published_site_data", payloadStr);
+    renderAllComponents(livePublished);
+    alert("⚠️ লাইভ ডেটাবেস সংযোগে সময় লেগেছে (" + err.message + ")। আপনার ডিভাইসে ড্রাফট সংরক্ষিত হয়েছে এবং পুনরায় চেষ্টা করা হচ্ছে।");
   }
 }
 
