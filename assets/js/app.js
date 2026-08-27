@@ -609,6 +609,7 @@ function exitAdminVisualMode() {
 }
 
 function openAdminDrawer(tabName = "dashboard") {
+  document.body.classList.add("cms-active");
   const drawer = document.getElementById("adminCmsDrawer");
   if (drawer) {
     drawer.style.display = "flex";
@@ -619,10 +620,23 @@ function openAdminDrawer(tabName = "dashboard") {
 }
 
 function closeAdminDrawer() {
+  document.body.classList.remove("cms-active");
   const drawer = document.getElementById("adminCmsDrawer");
   if (drawer) {
     drawer.classList.remove("active");
     setTimeout(() => { drawer.style.display = "none"; }, 300);
+  }
+}
+
+function toggleCmsSplitMode() {
+  document.body.classList.toggle("cms-full-mobile");
+  const btn = document.querySelector(".cms-toggle-preview-btn");
+  if (btn) {
+    if (document.body.classList.contains("cms-full-mobile")) {
+      btn.innerHTML = '<i class="fas fa-columns"></i> স্প্লিট ভিউ';
+    } else {
+      btn.innerHTML = '<i class="fas fa-expand"></i> ফুলস্ক্রিন CMS';
+    }
   }
 }
 

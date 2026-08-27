@@ -55,6 +55,7 @@
   </div>
 
   <!-- ১. হেডার সেকশন -->
+  <div id="sitePageWrapper" class="site-page-wrapper">
   <header class="header">
     <div class="header-logo">
       <img id="dynHeaderLogo" src="assets/images/somjit_profile_avatar.png" alt="Somjit Bhattacharyya" class="header-somjit-avatar">
@@ -304,6 +305,7 @@
       </div>
     </div>
   </footer>
+</div><!-- End #sitePageWrapper -->
 
   <!-- ফিক্সড বটম WhatsApp বার -->
   <a href="https://wa.me/919433074880?text=নমস্কার%20সোমজিৎ%20ভট্টাচার্য,%20ট্যুর%20বুকিং%20সম্পর্কে%20জানতে%20চাই।" id="dynFixedBottomWa" target="_blank" class="fixed-bottom-bar">
@@ -528,8 +530,13 @@
   <!-- ১৫. সম্পূর্ণ ওয়েবসাইট ইউনিভার্সাল CMS ড্রয়ার -->
   <div id="adminCmsDrawer" class="admin-cms-drawer" style="display:none;">
     <div class="cms-drawer-header">
-      <div class="cms-drawer-brand"><i class="fas fa-sliders-h" style="color:#f59e0b;"></i> <span>Tour with Somjit CMS</span></div>
-      <button type="button" class="cms-close-btn" onclick="closeAdminDrawer()">&times;</button>
+      <div class="cms-drawer-brand">
+        <i class="fas fa-sliders-h" style="color:#f59e0b;"></i> <span>Tour with Somjit CMS</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button type="button" class="cms-toggle-preview-btn" onclick="toggleCmsSplitMode()" title="স্প্লিট / ফুলস্ক্রিন ভিউ"><i class="fas fa-columns"></i> স্প্লিট ভিউ</button>
+        <button type="button" class="cms-close-btn" onclick="closeAdminDrawer()">&times;</button>
+      </div>
     </div>
 
     <!-- CMS Quick Section Dropdown Selector (১ ক্লিকে যেকোনো সেকশন সিলেক্ট) -->

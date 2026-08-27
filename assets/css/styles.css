@@ -818,3 +818,70 @@ body.drawer-open {
 .mobile-nav-drawer.active {
   right: 0;
 }
+
+/* =========================================================================
+   SPLIT-SCREEN LIVE CMS PREVIEW (WEBSITE FULLY VISIBLE ON THE LEFT)
+   ========================================================================= */
+
+.site-page-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* When CMS is Active on Desktop / Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+  body.cms-active .site-page-wrapper {
+    width: calc(100% - 480px) !important;
+    margin-right: 480px !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .admin-cms-drawer {
+    width: 480px !important;
+  }
+}
+
+/* When CMS is Active on Mobile (max-width: 767px) - Perfect Split View */
+@media (max-width: 767px) {
+  body.cms-active .site-page-wrapper {
+    width: 48vw !important;
+    transform: scale(0.48);
+    transform-origin: top left;
+    height: 208vh;
+    overflow-y: scroll;
+    border-right: 3px solid var(--gold-primary);
+    background: #ffffff;
+  }
+
+  body.cms-active .admin-cms-drawer {
+    width: 52vw !important;
+    right: 0 !important;
+  }
+
+  /* Full Screen CMS mode on mobile if user toggles off split */
+  body.cms-active.cms-full-mobile .site-page-wrapper {
+    display: none;
+  }
+  body.cms-active.cms-full-mobile .admin-cms-drawer {
+    width: 100vw !important;
+  }
+}
+
+.cms-toggle-preview-btn {
+  background: #334155;
+  color: #fbbf24;
+  border: 1px solid #475569;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cms-toggle-preview-btn:hover {
+  background: var(--gold-primary);
+  color: var(--navy-dark);
+}
