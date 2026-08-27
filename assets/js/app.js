@@ -1,6 +1,6 @@
 // =========================================================================
-// Tour with Somjit - Master Application Engine
-// Features: Firebase RTDB Sync, Google Sheets Auto-Sync Webhook, In-Page CMS
+// Tour with Somjit - Master Application Engine (v6.0.0)
+// Complete Universal CMS, Tour Editor, Clean Banners, Public Reviews
 // =========================================================================
 
 let livePublished = null;
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupKeyboardAdminShortcut();
 });
 
-// 1. Single Source of Truth Cloud Data Loader
+// 1. Single Source of Truth Cloud Loader
 async function initCloudPublishedData() {
   const cacheBuster = "?t=" + Date.now();
   const cloudUrl = "https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json" + cacheBuster;
@@ -45,13 +45,30 @@ async function initCloudPublishedData() {
 // 2. Component Renderers
 function renderAllComponents(data) {
   if (!data) return;
+  renderHeaderAndBranding(data);
   renderHostHero(data);
   renderAnnualToursGrid(data);
   renderWhyUsGrid(data);
   renderMomentsGallery(data);
   renderCustomerReviews(data);
   renderHomeFaqs(data);
+  renderAboutAndPolicies(data);
+  renderFooterAndContact(data);
   populateTourDropdown(data);
+}
+
+// Header & Branding
+function renderHeaderAndBranding(data) {
+  const brand = data.branding || {};
+  const contact = data.contact || {};
+
+  const titleElem = document.getElementById("dynSiteTitle");
+  const subElem = document.getElementById("dynSiteSubtitle");
+  const phoneLink = document.getElementById("dynHeaderPhoneLink");
+
+  if (titleElem) titleElem.textContent = brand.site_title || "Tour with Somjit";
+  if (subElem) subElem.textContent = brand.tagline || "সোমজিৎ ভট্টাচার্য";
+  if (phoneLink && contact.primary_phone) phoneLink.href = `tel:${contact.primary_phone.replace(/\D/g, '')}`;
 }
 
 // Host Hero
@@ -60,19 +77,26 @@ function renderHostHero(data) {
   const social = data.social_links || {};
 
   const nameElem = document.getElementById("dynHostName");
+  const taglineElem = document.getElementById("dynHostTagline");
   const bioElem = document.getElementById("dynHostBio");
   const avatarElem = document.getElementById("dynHostAvatar");
   const ytLink = document.getElementById("dynYtLink");
   const fbLink = document.getElementById("dynFbLink");
+  const drawerYt = document.getElementById("dynDrawerYt");
+  const drawerFb = document.getElementById("dynDrawerFb");
 
   if (nameElem) nameElem.textContent = host.name || "Somjit Bhattacharyya";
+  if (taglineElem) taglineElem.textContent = host.title || "বাংলা ট্রাভেল ভ্লগার ও ট্যুর হোস্ট";
   if (bioElem) bioElem.textContent = host.bio || "";
   if (avatarElem && host.avatar) avatarElem.src = host.avatar;
+  
   if (ytLink && social.youtube) ytLink.href = social.youtube;
   if (fbLink && social.facebook) fbLink.href = social.facebook;
+  if (drawerYt && social.youtube) drawerYt.href = social.youtube;
+  if (drawerFb && social.facebook) drawerFb.href = social.facebook;
 }
 
-// 6 Annual Tours Grid (1:1 Aspect Ratio Banners, NO TEXT ON BANNER)
+// 6 Annual Tours Grid — 100% CLEAN 1:1 BANNERS (ZERO TEXT / BADGES OVERLAY)
 function renderAnnualToursGrid(data) {
   const container = document.getElementById("annualToursGrid");
   if (!container) return;
@@ -82,17 +106,12 @@ function renderAnnualToursGrid(data) {
 
   tours.forEach(tour => {
     const imgUrl = tour.banner_image || "assets/images/tour_purulia_square.jpg";
-    const category = tour.category || "গ্রুপ ট্যুর";
-    const status = tour.status || "BOOKING OPEN";
-    const isUpcoming = status.includes("UPCOMING");
     const waText = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${tour.title}' সম্পর্কে বিস্তারিত জানতে ও সিট বুকিং করতে চাই।`);
 
     html += `
       <div class="tour-card-sq">
         <div class="tour-banner-sq-wrap" onclick="openTourDetailsModal('${tour.id}')" title="সম্পূর্ণ ট্যুর প্ল্যান দেখুন">
           <img class="tour-banner-sq-img" src="${imgUrl}" alt="${escapeAttr(tour.title)}" loading="lazy">
-          <div class="tour-badge-category">${escapeHtml(category)}</div>
-          <div class="tour-badge-status ${isUpcoming ? 'upcoming' : ''}">${escapeHtml(status)}</div>
         </div>
         <div class="tour-card-sq-body">
           <h3 class="tour-sq-title">${escapeHtml(tour.title)}</h3>
@@ -129,7 +148,7 @@ function renderWhyUsGrid(data) {
   container.innerHTML = features.map(f => `
     <div class="speciality-card">
       <div class="speciality-icon-box">
-        <i class="${f.icon}"></i>
+        <i class="${f.icon || 'fa-solid fa-check'}"></i>
       </div>
       <div>
         <h4 class="speciality-title">${escapeHtml(f.title)}</h4>
@@ -139,7 +158,7 @@ function renderWhyUsGrid(data) {
   `).join("");
 }
 
-// Past Moments Gallery
+// Moments Gallery
 function renderMomentsGallery(data) {
   const track = document.getElementById("momentsTrack");
   if (!track) return;
@@ -166,13 +185,13 @@ function renderCustomerReviews(data) {
       <p class="review-comment">"${escapeHtml(r.comment)}"</p>
       <div style="margin-top:auto;">
         <div class="review-author-name">${escapeHtml(r.name)}</div>
-        <div class="review-author-loc">${escapeHtml(r.location)} • <span style="color:#d97706;">${escapeHtml(r.tour)}</span></div>
+        <div class="review-author-loc">${escapeHtml(r.location || '')} ${r.tour ? `• <span style="color:#d97706;">${escapeHtml(r.tour)}</span>` : ''}</div>
       </div>
     </div>
   `).join("");
 }
 
-// FAQ Accordion
+// FAQs
 function renderHomeFaqs(data) {
   const container = document.getElementById("homeFaqContainer");
   if (!container) return;
@@ -207,6 +226,43 @@ function toggleAccordion(id) {
   }
 }
 
+// About & Policies
+function renderAboutAndPolicies(data) {
+  const policies = data.policies || {};
+  const childList = document.getElementById("dynChildPolicyList");
+  const cancelList = document.getElementById("dynCancelPolicyList");
+  const aboutText = document.getElementById("dynAboutText");
+
+  if (aboutText && data.about_company) aboutText.textContent = data.about_company;
+
+  if (childList && policies.child_policy) {
+    childList.innerHTML = policies.child_policy.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+  }
+  if (cancelList && policies.cancellation_policy) {
+    cancelList.innerHTML = policies.cancellation_policy.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+  }
+}
+
+// Footer & Contact
+function renderFooterAndContact(data) {
+  const contact = data.contact || {};
+  const p1 = document.getElementById("dynFooterPhone1");
+  const p2 = document.getElementById("dynFooterPhone2");
+  const wa = document.getElementById("dynFooterWa");
+  const addr = document.getElementById("dynFooterAddress");
+
+  if (p1 && contact.primary_phone) {
+    p1.textContent = contact.primary_phone;
+    p1.href = `tel:${contact.primary_phone.replace(/\D/g, '')}`;
+  }
+  if (p2 && contact.secondary_phone) {
+    p2.textContent = contact.secondary_phone;
+    p2.href = `tel:${contact.secondary_phone.replace(/\D/g, '')}`;
+  }
+  if (wa && contact.whatsapp_numbers) wa.textContent = contact.whatsapp_numbers;
+  if (addr && contact.address) addr.textContent = contact.address;
+}
+
 // 3. Tour Details Modal & Itinerary
 let selectedTourForDetails = null;
 
@@ -219,8 +275,6 @@ function openTourDetailsModal(tourId) {
 
   document.getElementById("dtTourTitle").textContent = tour.title;
   document.getElementById("dtCoverImg").src = tour.banner_image || "assets/images/tour_purulia_square.jpg";
-  document.getElementById("dtCategoryBadge").textContent = tour.category || "গ্রুপ ট্যুর";
-  document.getElementById("dtStatusBadge").textContent = tour.status || "BOOKING OPEN";
   document.getElementById("dtDates").textContent = tour.dates || "২০২৬";
   document.getElementById("dtDuration").textContent = tour.duration || "ট্যুর";
   document.getElementById("dtStarting").textContent = tour.starting_point || "কলকাতা";
@@ -356,7 +410,59 @@ async function handleGroupBookingSubmit(e) {
   window.open(`https://wa.me/918116472937?text=${encodeURIComponent(waMsg)}`, "_blank");
 }
 
-// 5. Lightbox Modal
+// 5. Public Customer Review Submission Modal
+function openAddReviewModal() {
+  showModal("addReviewModal");
+}
+
+function closeAddReviewModal() {
+  hideModal("addReviewModal");
+}
+
+async function handlePublicReviewSubmit(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("revGuestName").value.trim();
+  const phone = document.getElementById("revGuestPhone").value.trim();
+  const city = document.getElementById("revGuestCity").value.trim();
+  const tour = document.getElementById("revTourName").value.trim();
+  const rating = parseInt(document.querySelector('input[name="revStar"]:checked')?.value || "5", 10);
+  const comment = document.getElementById("revComment").value.trim();
+
+  const newReview = {
+    id: "rev-" + Date.now(),
+    name: name,
+    phone: phone,
+    location: city,
+    tour: tour,
+    rating: rating,
+    comment: comment,
+    createdAt: new Date().toISOString()
+  };
+
+  // Push to local datasets
+  if (!livePublished.customer_reviews) livePublished.customer_reviews = [];
+  livePublished.customer_reviews.unshift(newReview);
+
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.customer_reviews) workingDraft.customer_reviews = [];
+  workingDraft.customer_reviews.unshift(newReview);
+
+  renderCustomerReviews(livePublished);
+  closeAddReviewModal();
+  showToast("🎉 আপনার রিভিউ সফলভাবে জমা হয়েছে!");
+
+  // Save to Firebase Cloud
+  try {
+    fetch(`https://tour-with-somjit-default-rtdb.firebaseio.com/customer_reviews.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(livePublished.customer_reviews)
+    });
+  } catch(err) {}
+}
+
+// 6. Lightbox Modal
 let currentLightboxIdx = 0;
 
 function openLightboxModal(idx) {
@@ -397,7 +503,7 @@ function handleLightboxBackdropClick(e) {
   if (e.target.id === "galleryLightboxModal") closeLightboxModal();
 }
 
-// 6. Admin Authentication & Visual CMS
+// 7. Admin Authentication & Visual CMS
 function promptAdminLoginModal() {
   if (isAdminAuthenticated) {
     enterAdminVisualMode();
@@ -416,7 +522,7 @@ function handleAdminLoginSubmit() {
     closeAdminLoginModal();
     enterAdminVisualMode();
     openAdminDrawer("dashboard");
-    showToast("✓ অ্যাডমিন মোড সক্রিয় হয়েছে!");
+    showToast("✓ অ্যাডমিন CMS মোড সক্রিয় হয়েছে!");
   } else {
     alert("❌ ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।");
   }
@@ -477,8 +583,315 @@ function switchCmsTab(tabId) {
   });
 }
 
+// 8. Universal CMS Dashboard Population
+function populateCmsDashboard() {
+  const data = workingDraft || livePublished;
+  if (!data) return;
 
-// Leads Manager
+  const toursCount = Object.keys(data.tours || {}).length;
+  const dashCount = document.getElementById("dashToursCount");
+  if (dashCount) dashCount.textContent = toursCount;
+
+  // Render Tours List in CMS
+  const toursContainer = document.getElementById("cmsToursListContainer");
+  if (toursContainer) {
+    const tours = Object.values(data.tours || {});
+    toursContainer.innerHTML = tours.map(t => `
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="color:#1b3b5a; font-size:14px;">${escapeHtml(t.title)}</strong>
+          <span style="background:#dcfce7; color:#16a34a; font-size:12px; padding:2px 8px; border-radius:4px; font-weight:700;">₹${Number(t.price).toLocaleString("en-IN")}</span>
+        </div>
+        <div style="font-size:12px; color:#64748b; margin-bottom:8px;">${escapeHtml(t.dates)} | ${escapeHtml(t.duration)}</div>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn-cms-action open-drawer" style="padding:4px 10px; font-size:12px;" onclick="openEditTourModal('${t.id}')"><i class="fas fa-edit"></i> সম্পূর্ণ এডিট</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Profile Fields
+  const host = data.host_profile || {};
+  const social = data.social_links || {};
+  if (document.getElementById("cmsHostName")) document.getElementById("cmsHostName").value = host.name || "";
+  if (document.getElementById("cmsHostTitle")) document.getElementById("cmsHostTitle").value = host.title || "";
+  if (document.getElementById("cmsHostBio")) document.getElementById("cmsHostBio").value = host.bio || "";
+  if (document.getElementById("cmsYtUrl")) document.getElementById("cmsYtUrl").value = social.youtube || "";
+  if (document.getElementById("cmsFbUrl")) document.getElementById("cmsFbUrl").value = social.facebook || "";
+
+  // Contact Fields
+  const contact = data.contact || {};
+  if (document.getElementById("cmsPhone1")) document.getElementById("cmsPhone1").value = contact.primary_phone || "";
+  if (document.getElementById("cmsPhone2")) document.getElementById("cmsPhone2").value = contact.secondary_phone || "";
+  if (document.getElementById("cmsWaNums")) document.getElementById("cmsWaNums").value = contact.whatsapp_numbers || "";
+  if (document.getElementById("cmsAddress")) document.getElementById("cmsAddress").value = contact.address || "";
+  if (document.getElementById("cmsSheetsWebhook")) document.getElementById("cmsSheetsWebhook").value = contact.google_sheets_webhook || "";
+
+  // Policies & About
+  if (document.getElementById("cmsAboutText")) document.getElementById("cmsAboutText").value = data.about_company || "";
+  const pol = data.policies || {};
+  if (document.getElementById("cmsChildPolicy")) document.getElementById("cmsChildPolicy").value = (pol.child_policy || []).join("\n");
+  if (document.getElementById("cmsCancelPolicy")) document.getElementById("cmsCancelPolicy").value = (pol.cancellation_policy || []).join("\n");
+
+  // Why Us
+  const whyUsContainer = document.getElementById("cmsWhyUsContainer");
+  if (whyUsContainer) {
+    const features = data.why_us_features || [];
+    whyUsContainer.innerHTML = features.map((f, idx) => `
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:10px;">
+        <label class="cms-label">ফিচার ${idx + 1} শিরোনাম</label>
+        <input type="text" value="${escapeAttr(f.title)}" class="cms-input" style="margin-bottom:6px;" oninput="updateWhyUsItem(${idx}, 'title', this.value)">
+        <label class="cms-label">বিবরণ</label>
+        <textarea class="cms-input" style="height:55px; resize:none;" oninput="updateWhyUsItem(${idx}, 'desc', this.value)">${escapeHtml(f.desc)}</textarea>
+      </div>
+    `).join("");
+  }
+
+  // FAQ Editor
+  const faqContainer = document.getElementById("cmsFaqContainer");
+  if (faqContainer) {
+    const faqs = data.faqs || [];
+    faqContainer.innerHTML = faqs.map((faq, idx) => `
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <label class="cms-label">প্রশ্ন ${idx + 1}</label>
+          <button type="button" style="color:#ef4444; font-size:12px;" onclick="deleteFaqItem(${idx})"><i class="fas fa-trash"></i> ডিলিট</button>
+        </div>
+        <input type="text" value="${escapeAttr(faq.q)}" class="cms-input" style="margin-bottom:6px;" oninput="updateFaqItem(${idx}, 'q', this.value)">
+        <label class="cms-label">উত্তর</label>
+        <textarea class="cms-input" style="height:55px; resize:none;" oninput="updateFaqItem(${idx}, 'a', this.value)">${escapeHtml(faq.a)}</textarea>
+      </div>
+    `).join("");
+  }
+
+  // Reviews Manager
+  const revContainer = document.getElementById("cmsReviewsListContainer");
+  if (revContainer) {
+    const reviews = data.customer_reviews || [];
+    revContainer.innerHTML = reviews.map((r, idx) => `
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>${escapeHtml(r.name)}</strong> (${r.rating || 5} ⭐)
+          <button type="button" style="color:#ef4444; font-size:12px;" onclick="deleteCmsReview(${idx})"><i class="fas fa-trash"></i> ডিলিট</button>
+        </div>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">"${escapeHtml(r.comment)}"</p>
+        <div style="font-size:11px; color:#94a3b8;">${escapeHtml(r.location || '')} | ${escapeHtml(r.tour || '')}</div>
+      </div>
+    `).join("");
+  }
+
+  fetchAndRenderLeads();
+}
+
+// 9. Rich Tour Editor & Creator Modals
+function openEditTourModal(tourId) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  const tour = workingDraft.tours[tourId];
+  if (!tour) return;
+
+  document.getElementById("cmsTourModalHeading").textContent = `ট্যুর এডিটর — ${tour.title}`;
+  document.getElementById("editTourId").value = tour.id;
+  document.getElementById("edTourTitle").value = tour.title || "";
+  document.getElementById("edTourDates").value = tour.dates || "";
+  document.getElementById("edTourDuration").value = tour.duration || "";
+  document.getElementById("edTourPrice").value = tour.price || "";
+  document.getElementById("edTourStarting").value = tour.starting_point || "";
+  document.getElementById("edTourHighlight").value = tour.short_highlight || "";
+  document.getElementById("edTourHotel").value = tour.hotel_info || "";
+  document.getElementById("edTourTransport").value = tour.transport_info || "";
+  document.getElementById("edTourFood").value = tour.food_info || "";
+  document.getElementById("edTourBannerUrl").value = tour.banner_image || "";
+
+  const prev = document.getElementById("edTourBannerPreview");
+  if (prev && tour.banner_image) {
+    prev.innerHTML = `<img src="${tour.banner_image}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;">`;
+  } else if (prev) {
+    prev.innerHTML = "";
+  }
+
+  showModal("cmsTourEditModal");
+}
+
+function openCreateTourModal() {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  const newId = "tour-" + Date.now();
+
+  document.getElementById("cmsTourModalHeading").textContent = "নতুন গ্রুপ ট্যুর যোগ করুন";
+  document.getElementById("editTourId").value = newId;
+  document.getElementById("edTourTitle").value = "";
+  document.getElementById("edTourDates").value = "";
+  document.getElementById("edTourDuration").value = "";
+  document.getElementById("edTourPrice").value = "";
+  document.getElementById("edTourStarting").value = "কলকাতা";
+  document.getElementById("edTourHighlight").value = "";
+  document.getElementById("edTourHotel").value = "";
+  document.getElementById("edTourTransport").value = "";
+  document.getElementById("edTourFood").value = "";
+  document.getElementById("edTourBannerUrl").value = "assets/images/tour_purulia_square.jpg";
+  document.getElementById("edTourBannerPreview").innerHTML = "";
+
+  showModal("cmsTourEditModal");
+}
+
+function closeCmsTourModal() { hideModal("cmsTourEditModal"); }
+
+function handleTourBannerFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const size = 800;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      
+      // Crop square
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+      
+      const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.82);
+      document.getElementById("edTourBannerUrl").value = compressedDataUrl;
+      document.getElementById("edTourBannerPreview").innerHTML = `<img src="${compressedDataUrl}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;">`;
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSaveCmsTour(e) {
+  e.preventDefault();
+  const id = document.getElementById("editTourId").value;
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.tours) workingDraft.tours = {};
+
+  const existing = workingDraft.tours[id] || { id: id, itinerary: [] };
+
+  existing.id = id;
+  existing.title = document.getElementById("edTourTitle").value.trim();
+  existing.dates = document.getElementById("edTourDates").value.trim();
+  existing.duration = document.getElementById("edTourDuration").value.trim();
+  existing.price = parseFloat(document.getElementById("edTourPrice").value) || 0;
+  existing.starting_point = document.getElementById("edTourStarting").value.trim();
+  existing.short_highlight = document.getElementById("edTourHighlight").value.trim();
+  existing.hotel_info = document.getElementById("edTourHotel").value.trim();
+  existing.transport_info = document.getElementById("edTourTransport").value.trim();
+  existing.food_info = document.getElementById("edTourFood").value.trim();
+  existing.banner_image = document.getElementById("edTourBannerUrl").value.trim() || existing.banner_image;
+
+  workingDraft.tours[id] = existing;
+
+  renderAnnualToursGrid(workingDraft);
+  populateTourDropdown(workingDraft);
+  populateCmsDashboard();
+  closeCmsTourModal();
+  showToast("✓ ট্যুর সংরক্ষিত হয়েছে! মূল সাইটে লাইভ করতে Publish চাপুন।");
+}
+
+function deleteCurrentCmsTour() {
+  const id = document.getElementById("editTourId").value;
+  if (confirm("আপনি কি নিশ্চিত এই ট্যুরটি মুছে ফেলতে চান?")) {
+    if (workingDraft && workingDraft.tours && workingDraft.tours[id]) {
+      delete workingDraft.tours[id];
+      renderAnnualToursGrid(workingDraft);
+      populateTourDropdown(workingDraft);
+      populateCmsDashboard();
+      closeCmsTourModal();
+      showToast("✓ ট্যুর মুছে ফেলা হয়েছে!");
+    }
+  }
+}
+
+// 10. Universal In-Line CMS Updaters
+function updateProfileField(key, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.host_profile) workingDraft.host_profile = {};
+  workingDraft.host_profile[key] = val;
+  renderHostHero(workingDraft);
+}
+
+function updateSocialLink(key, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.social_links) workingDraft.social_links = {};
+  workingDraft.social_links[key] = val;
+  renderHostHero(workingDraft);
+}
+
+function updateContactField(key, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.contact) workingDraft.contact = {};
+  workingDraft.contact[key] = val;
+  renderFooterAndContact(workingDraft);
+}
+
+function updateAboutText(val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  workingDraft.about_company = val;
+  renderAboutAndPolicies(workingDraft);
+}
+
+function updatePolicyList(key, text) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.policies) workingDraft.policies = {};
+  workingDraft.policies[key] = text.split("\n").map(s => s.trim()).filter(s => s.length > 0);
+  renderAboutAndPolicies(workingDraft);
+}
+
+function updateWhyUsItem(idx, field, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (workingDraft.why_us_features && workingDraft.why_us_features[idx]) {
+    workingDraft.why_us_features[idx][field] = val;
+    renderWhyUsGrid(workingDraft);
+  }
+}
+
+function updateFaqItem(idx, field, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (workingDraft.faqs && workingDraft.faqs[idx]) {
+    workingDraft.faqs[idx][field] = val;
+    renderHomeFaqs(workingDraft);
+  }
+}
+
+function addNewFaqItem() {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.faqs) workingDraft.faqs = [];
+  workingDraft.faqs.push({ q: "নতুন প্রশ্ন লিখুন", a: "এখানে উত্তর লিখুন" });
+  renderHomeFaqs(workingDraft);
+  populateCmsDashboard();
+}
+
+function deleteFaqItem(idx) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (workingDraft.faqs) {
+    workingDraft.faqs.splice(idx, 1);
+    renderHomeFaqs(workingDraft);
+    populateCmsDashboard();
+  }
+}
+
+function deleteCmsReview(idx) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (workingDraft.customer_reviews) {
+    workingDraft.customer_reviews.splice(idx, 1);
+    renderCustomerReviews(workingDraft);
+    populateCmsDashboard();
+  }
+}
+
+function updateSheetsWebhook(url) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.contact) workingDraft.contact = {};
+  workingDraft.contact.google_sheets_webhook = url;
+  showToast("✓ গুগল শিট Webhook ড্রাফটে সংরক্ষিত হয়েছে!");
+}
+
+// 11. Leads Manager
 async function fetchAndRenderLeads() {
   const container = document.getElementById("cmsLeadsListContainer");
   const dashCount = document.getElementById("dashLeadsCount");
@@ -531,68 +944,7 @@ async function fetchAndRenderLeads() {
   }
 }
 
-function populateCmsDashboard() {
-  const data = workingDraft || livePublished;
-  if (!data) return;
-  const toursCount = Object.keys(data.tours || {}).length;
-  const dashCount = document.getElementById("dashToursCount");
-  fetchAndRenderLeads();
-  if (dashCount) dashCount.textContent = toursCount;
-
-  // Render CMS Tours
-  const toursContainer = document.getElementById("cmsToursListContainer");
-  if (toursContainer) {
-    const tours = Object.values(data.tours || {});
-    toursContainer.innerHTML = tours.map(t => `
-      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <strong style="color:#1b3b5a; font-size:14px;">${escapeHtml(t.title)}</strong>
-          <span style="background:#dcfce7; color:#16a34a; font-size:12px; padding:2px 8px; border-radius:4px; font-weight:700;">₹${Number(t.price).toLocaleString("en-IN")}</span>
-        </div>
-        <div style="font-size:12px; color:#64748b; margin-bottom:8px;">${escapeHtml(t.dates)} | ${escapeHtml(t.duration)}</div>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="btn-cms-action open-drawer" style="padding:4px 8px; font-size:12px;" onclick="editCmsTour('${t.id}')"><i class="fas fa-edit"></i> এডিট</button>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  // Render CMS Gallery
-  const galContainer = document.getElementById("cmsGalleryListContainer");
-  if (galContainer) {
-    const moments = data.moments_gallery || [];
-    galContainer.innerHTML = moments.map((m, idx) => `
-      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
-        <img src="${m.image_url}" style="width:65px; height:45px; object-fit:cover; border-radius:4px;">
-        <input type="text" value="${escapeAttr(m.caption || '')}" class="cms-input" style="flex:1; font-size:13px;" oninput="updateMomentCaption(${idx}, this.value)">
-      </div>
-    `).join("");
-  }
-}
-
-function updateSocialLink(platform, url) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.social_links) workingDraft.social_links = {};
-  workingDraft.social_links[platform] = url;
-  renderHostHero(workingDraft);
-}
-
-function updateSheetsWebhook(url) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.contact) workingDraft.contact = {};
-  workingDraft.contact.google_sheets_webhook = url;
-  showToast("✓ গুগল শিট Webhook ড্রাফটে সংরক্ষিত হয়েছে!");
-}
-
-function updateMomentCaption(idx, caption) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (workingDraft.moments_gallery && workingDraft.moments_gallery[idx]) {
-    workingDraft.moments_gallery[idx].caption = caption;
-    renderMomentsGallery(workingDraft);
-  }
-}
-
-// 7. Cloud Publish Engine
+// 12. Cloud Publish Engine
 function openPublishConfirmModal() { showModal("publishConfirmModal"); }
 function closePublishConfirmModal() { hideModal("publishConfirmModal"); }
 
