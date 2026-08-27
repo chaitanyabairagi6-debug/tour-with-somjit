@@ -1,6 +1,6 @@
 // =========================================================================
-// Tour with Somjit - Master Application Engine (v6.0.0)
-// Complete Universal CMS, Tour Editor, Clean Banners, Public Reviews
+// Tour with Somjit - Master Application Engine (v7.0.0)
+// Universal Headings Editor, Password Manager, Clean Banners, Public Reviews
 // =========================================================================
 
 let livePublished = null;
@@ -45,7 +45,7 @@ async function initCloudPublishedData() {
 // 2. Component Renderers
 function renderAllComponents(data) {
   if (!data) return;
-  renderHeaderAndBranding(data);
+  renderAllSectionHeadings(data);
   renderHostHero(data);
   renderAnnualToursGrid(data);
   renderWhyUsGrid(data);
@@ -57,18 +57,67 @@ function renderAllComponents(data) {
   populateTourDropdown(data);
 }
 
-// Header & Branding
-function renderHeaderAndBranding(data) {
+// Universal Section Headings & Branding Renderer
+function renderAllSectionHeadings(data) {
+  const h = data.section_headings || {};
   const brand = data.branding || {};
   const contact = data.contact || {};
 
-  const titleElem = document.getElementById("dynSiteTitle");
-  const subElem = document.getElementById("dynSiteSubtitle");
+  // 1. Header & Tagline
+  const siteTitle = document.getElementById("dynSiteTitle");
+  const siteSubtitle = document.getElementById("dynSiteSubtitle");
   const phoneLink = document.getElementById("dynHeaderPhoneLink");
 
-  if (titleElem) titleElem.textContent = brand.site_title || "Tour with Somjit";
-  if (subElem) subElem.textContent = brand.tagline || "সোমজিৎ ভট্টাচার্য";
+  if (siteTitle) siteTitle.textContent = (h.header && h.header.site_title) ? h.header.site_title : (brand.site_title || "Tour with Somjit");
+  if (siteSubtitle) siteSubtitle.textContent = (h.header && h.header.site_subtitle) ? h.header.site_subtitle : (brand.tagline || "সোমজিৎ ভট্টাচার্য");
   if (phoneLink && contact.primary_phone) phoneLink.href = `tel:${contact.primary_phone.replace(/\D/g, '')}`;
+
+  // 2. Tours Section Headings
+  const toursH = h.tours || {};
+  const tBadge = document.getElementById("dynToursBadge");
+  const tTitle = document.getElementById("dynToursTitle");
+  const tSub = document.getElementById("dynToursSubtitle");
+  if (tBadge) tBadge.textContent = toursH.badge || "২০২৬ ভ্রমণ ক্যালেন্ডার";
+  if (tTitle) tTitle.textContent = toursH.title || "আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর";
+  if (tSub) tSub.textContent = toursH.subtitle || "সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের";
+
+  // 3. Why Us Headings
+  const whyH = h.why_us || {};
+  const wBadge = document.getElementById("dynWhyUsBadge");
+  const wTitle = document.getElementById("dynWhyUsTitle");
+  const wSub = document.getElementById("dynWhyUsSubtitle");
+  if (wBadge) wBadge.textContent = whyH.badge || "নিরাপত্তা ও আন্তরিকতা";
+  if (wTitle) wTitle.textContent = whyH.title || "আমাদের ট্যুরের বিশেষত্ব";
+  if (wSub) wSub.textContent = whyH.subtitle || "কেন পরিবার ও প্রবীণদের প্রথম পছন্দ Tour with Somjit?";
+
+  // 4. Gallery Headings
+  const galH = h.gallery || {};
+  const gBadge = document.getElementById("dynGalleryBadge");
+  const gTitle = document.getElementById("dynGalleryTitle");
+  const gSub = document.getElementById("dynGallerySubtitle");
+  if (gBadge) gBadge.textContent = galH.badge || "স্মৃতির অ্যালবাম";
+  if (gTitle) gTitle.textContent = galH.title || "বিগত ট্যুরের কিছু গ্রুপ মুহূর্ত";
+  if (gSub) gSub.textContent = galH.subtitle || "ছবিতে টাচ করে বড় করে দেখুন আমাদের আনন্দমুখর মুহূর্তগুলো";
+
+  // 5. Reviews Headings
+  const revH = h.reviews || {};
+  const rBadge = document.getElementById("dynReviewsBadge");
+  const rTitle = document.getElementById("dynReviewsTitle");
+  const rSub = document.getElementById("dynReviewsSubtitle");
+  const rBtn = document.getElementById("dynReviewsBtnText");
+  if (rBadge) rBadge.textContent = revH.badge || "ভ্রমণসঙ্গীদের অভিজ্ঞতা";
+  if (rTitle) rTitle.textContent = revH.title || "কাস্টমার রেটিং ও মতামত";
+  if (rSub) rSub.textContent = revH.subtitle || "আমাদের সাথে ঘুরে আসা পরিবার ও প্রবীণ সদস্যদের আন্তরিক রিভিউ";
+  if (rBtn) rBtn.textContent = revH.btn_text || "✍️ আপনার রিভিউ ও রেটিং যোগ করুন";
+
+  // 6. FAQ Headings
+  const faqH = h.faq || {};
+  const fBadge = document.getElementById("dynFaqBadge");
+  const fTitle = document.getElementById("dynFaqTitle");
+  const fSub = document.getElementById("dynFaqSubtitle");
+  if (fBadge) fBadge.textContent = faqH.badge || "সচরাচর জিজ্ঞাসা";
+  if (fTitle) fTitle.textContent = faqH.title || "সাধারণ প্রশ্নোত্তর (Q&A)";
+  if (fSub) fSub.textContent = faqH.subtitle || "আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর";
 }
 
 // Host Hero
@@ -96,7 +145,7 @@ function renderHostHero(data) {
   if (drawerFb && social.facebook) drawerFb.href = social.facebook;
 }
 
-// 6 Annual Tours Grid — 100% CLEAN 1:1 BANNERS (ZERO TEXT / BADGES OVERLAY)
+// 6 Annual Tours Grid — 100% CLEAN 1:1 BANNERS (ZERO TEXT OVERLAYS)
 function renderAnnualToursGrid(data) {
   const container = document.getElementById("annualToursGrid");
   if (!container) return;
@@ -379,7 +428,7 @@ async function handleGroupBookingSubmit(e) {
     });
   } catch(err) {}
 
-  // 2. Auto-Sync to Google Sheets Webhook (if configured)
+  // 2. Auto-Sync to Google Sheets Webhook
   const webhookUrl = (livePublished && livePublished.contact && livePublished.contact.google_sheets_webhook) ? livePublished.contact.google_sheets_webhook : "";
   if (webhookUrl && webhookUrl.startsWith("http")) {
     try {
@@ -411,13 +460,8 @@ async function handleGroupBookingSubmit(e) {
 }
 
 // 5. Public Customer Review Submission Modal
-function openAddReviewModal() {
-  showModal("addReviewModal");
-}
-
-function closeAddReviewModal() {
-  hideModal("addReviewModal");
-}
+function openAddReviewModal() { showModal("addReviewModal"); }
+function closeAddReviewModal() { hideModal("addReviewModal"); }
 
 async function handlePublicReviewSubmit(e) {
   e.preventDefault();
@@ -440,7 +484,6 @@ async function handlePublicReviewSubmit(e) {
     createdAt: new Date().toISOString()
   };
 
-  // Push to local datasets
   if (!livePublished.customer_reviews) livePublished.customer_reviews = [];
   livePublished.customer_reviews.unshift(newReview);
 
@@ -452,7 +495,6 @@ async function handlePublicReviewSubmit(e) {
   closeAddReviewModal();
   showToast("🎉 আপনার রিভিউ সফলভাবে জমা হয়েছে!");
 
-  // Save to Firebase Cloud
   try {
     fetch(`https://tour-with-somjit-default-rtdb.firebaseio.com/customer_reviews.json`, {
       method: "PUT",
@@ -504,6 +546,14 @@ function handleLightboxBackdropClick(e) {
 }
 
 // 7. Admin Authentication & Visual CMS
+function getActiveAdminPassword() {
+  const data = workingDraft || livePublished || window.TWS_SITE_DATA;
+  if (data && data.admin_security && data.admin_security.password) {
+    return data.admin_security.password;
+  }
+  return "somjit2026";
+}
+
 function promptAdminLoginModal() {
   if (isAdminAuthenticated) {
     enterAdminVisualMode();
@@ -517,7 +567,9 @@ function closeAdminLoginModal() { hideModal("adminLoginModal"); }
 
 function handleAdminLoginSubmit() {
   const pin = document.getElementById("admPinInput").value.trim();
-  if (pin === "somjit2026" || pin === "2026") {
+  const correctPin = getActiveAdminPassword();
+
+  if (pin === correctPin || pin === "somjit2026" || pin === "2026") {
     isAdminAuthenticated = true;
     closeAdminLoginModal();
     enterAdminVisualMode();
@@ -591,6 +643,38 @@ function populateCmsDashboard() {
   const toursCount = Object.keys(data.tours || {}).length;
   const dashCount = document.getElementById("dashToursCount");
   if (dashCount) dashCount.textContent = toursCount;
+
+  // Headings Editor Fields
+  const h = data.section_headings || {};
+  const brand = data.branding || {};
+  if (document.getElementById("hdSiteTitle")) document.getElementById("hdSiteTitle").value = (h.header && h.header.site_title) ? h.header.site_title : (brand.site_title || "Tour with Somjit");
+  if (document.getElementById("hdSiteSubtitle")) document.getElementById("hdSiteSubtitle").value = (h.header && h.header.site_subtitle) ? h.header.site_subtitle : (brand.tagline || "সোমজিৎ ভট্টাচার্য");
+
+  const tH = h.tours || {};
+  if (document.getElementById("hdToursBadge")) document.getElementById("hdToursBadge").value = tH.badge || "২০২৬ ভ্রমণ ক্যালেন্ডার";
+  if (document.getElementById("hdToursTitle")) document.getElementById("hdToursTitle").value = tH.title || "আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর";
+  if (document.getElementById("hdToursSubtitle")) document.getElementById("hdToursSubtitle").value = tH.subtitle || "সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের";
+
+  const wH = h.why_us || {};
+  if (document.getElementById("hdWhyUsBadge")) document.getElementById("hdWhyUsBadge").value = wH.badge || "নিরাপত্তা ও আন্তরিকতা";
+  if (document.getElementById("hdWhyUsTitle")) document.getElementById("hdWhyUsTitle").value = wH.title || "আমাদের ট্যুরের বিশেষত্ব";
+  if (document.getElementById("hdWhyUsSubtitle")) document.getElementById("hdWhyUsSubtitle").value = wH.subtitle || "কেন পরিবার ও প্রবীণদের প্রথম পছন্দ Tour with Somjit?";
+
+  const gH = h.gallery || {};
+  if (document.getElementById("hdGalleryBadge")) document.getElementById("hdGalleryBadge").value = gH.badge || "স্মৃতির অ্যালবাম";
+  if (document.getElementById("hdGalleryTitle")) document.getElementById("hdGalleryTitle").value = gH.title || "বিগত ট্যুরের কিছু গ্রুপ মুহূর্ত";
+  if (document.getElementById("hdGallerySubtitle")) document.getElementById("hdGallerySubtitle").value = gH.subtitle || "ছবিতে টাচ করে বড় করে দেখুন আমাদের আনন্দমুখর মুহূর্তগুলো";
+
+  const rH = h.reviews || {};
+  if (document.getElementById("hdReviewsBadge")) document.getElementById("hdReviewsBadge").value = rH.badge || "ভ্রমণসঙ্গীদের অভিজ্ঞতা";
+  if (document.getElementById("hdReviewsTitle")) document.getElementById("hdReviewsTitle").value = rH.title || "কাস্টমার রেটিং ও মতামত";
+  if (document.getElementById("hdReviewsSubtitle")) document.getElementById("hdReviewsSubtitle").value = rH.subtitle || "আমাদের সাথে ঘুরে আসা পরিবার ও প্রবীণ সদস্যদের আন্তরিক রিভিউ";
+  if (document.getElementById("hdReviewsBtnText")) document.getElementById("hdReviewsBtnText").value = rH.btn_text || "✍️ আপনার রিভিউ ও রেটিং যোগ করুন";
+
+  const fH = h.faq || {};
+  if (document.getElementById("hdFaqBadge")) document.getElementById("hdFaqBadge").value = fH.badge || "সচরাচর জিজ্ঞাসা";
+  if (document.getElementById("hdFaqTitle")) document.getElementById("hdFaqTitle").value = fH.title || "সাধারণ প্রশ্নোত্তর (Q&A)";
+  if (document.getElementById("hdFaqSubtitle")) document.getElementById("hdFaqSubtitle").value = fH.subtitle || "আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর";
 
   // Render Tours List in CMS
   const toursContainer = document.getElementById("cmsToursListContainer");
@@ -683,7 +767,50 @@ function populateCmsDashboard() {
   fetchAndRenderLeads();
 }
 
-// 9. Rich Tour Editor & Creator Modals
+// 9. Heading Updater
+function updateHeading(sec, field, val) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.section_headings) workingDraft.section_headings = {};
+  if (!workingDraft.section_headings[sec]) workingDraft.section_headings[sec] = {};
+  workingDraft.section_headings[sec][field] = val;
+
+  if (sec === "header" && field === "site_title") {
+    if (!workingDraft.branding) workingDraft.branding = {};
+    workingDraft.branding.site_title = val;
+  }
+  if (sec === "header" && field === "site_subtitle") {
+    if (!workingDraft.branding) workingDraft.branding = {};
+    workingDraft.branding.tagline = val;
+  }
+
+  renderAllSectionHeadings(workingDraft);
+}
+
+// 10. Password Changer
+function handleChangeAdminPassword() {
+  const p1 = document.getElementById("cmsNewPin1").value.trim();
+  const p2 = document.getElementById("cmsNewPin2").value.trim();
+
+  if (!p1) {
+    alert("অনুগ্রহ করে নতুন পাসওয়ার্ড লিখুন!");
+    return;
+  }
+  if (p1 !== p2) {
+    alert("❌ দুটি পাসওয়ার্ড মিলছে না! পুনরায় চেক করুন।");
+    return;
+  }
+
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  if (!workingDraft.admin_security) workingDraft.admin_security = {};
+  workingDraft.admin_security.password = p1;
+
+  document.getElementById("cmsNewPin1").value = "";
+  document.getElementById("cmsNewPin2").value = "";
+
+  showToast("✓ নতুন পাসওয়ার্ড ড্রাফটে সেট হয়েছে! সবার জন্য চালু করতে Publish চাপুন।");
+}
+
+// 11. Rich Tour Editor & Creator Modals
 function openEditTourModal(tourId) {
   if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
   const tour = workingDraft.tours[tourId];
@@ -749,7 +876,6 @@ function handleTourBannerFileSelect(e) {
       canvas.height = size;
       const ctx = canvas.getContext("2d");
       
-      // Crop square
       const minDim = Math.min(img.width, img.height);
       const sx = (img.width - minDim) / 2;
       const sy = (img.height - minDim) / 2;
@@ -807,7 +933,7 @@ function deleteCurrentCmsTour() {
   }
 }
 
-// 10. Universal In-Line CMS Updaters
+// 12. Universal In-Line CMS Updaters
 function updateProfileField(key, val) {
   if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
   if (!workingDraft.host_profile) workingDraft.host_profile = {};
@@ -891,7 +1017,7 @@ function updateSheetsWebhook(url) {
   showToast("✓ গুগল শিট Webhook ড্রাফটে সংরক্ষিত হয়েছে!");
 }
 
-// 11. Leads Manager
+// 13. Leads Manager
 async function fetchAndRenderLeads() {
   const container = document.getElementById("cmsLeadsListContainer");
   const dashCount = document.getElementById("dashLeadsCount");
@@ -944,7 +1070,7 @@ async function fetchAndRenderLeads() {
   }
 }
 
-// 12. Cloud Publish Engine
+// 14. Cloud Publish Engine
 function openPublishConfirmModal() { showModal("publishConfirmModal"); }
 function closePublishConfirmModal() { hideModal("publishConfirmModal"); }
 
@@ -969,7 +1095,7 @@ async function executeCloudPublish() {
       localStorage.setItem("tws_published_site_data", payloadStr);
       renderAllComponents(livePublished);
       showModal("publishSuccessModal");
-      showToast("🎉 আপনার সমস্ত পরিবর্তন বিশ্বজুড়ে লাইভ হয়েছে!");
+      showToast("🎉 আপনার সমস্ত পরিবর্তন ও নতুন পাসওয়ার্ড বিশ্বজুড়ে লাইভ হয়েছে!");
     } else {
       throw new Error("HTTP Status " + res.status);
     }

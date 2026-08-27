@@ -26,7 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/styles.css?v=6.0.0">
+  <link rel="stylesheet" href="assets/css/styles.css?v=7.0.0">
 </head>
 <body class="public-mode">
 
@@ -130,17 +130,17 @@
     </div>
   </section>
 
-  <!-- ৩. ভ্রমণের তালিকা — বছরের ৬টি গ্রুপ ট্যুর (CLEAN 1:1 BANNERS, ZERO TEXT OVERLAY) -->
+  <!-- ৩. ভ্রমণের তালিকা — বছরের ৬টি গ্রুপ ট্যুর (১০০% ক্লিন ১:১ ব্যানার) -->
   <section id="annual-tours" class="section-annual-tours">
     <div class="container">
       <div class="section-main-heading">
-        <span class="sec-badge" id="dynToursSecBadge">২০২৬ ভ্রমণ ক্যালেন্ডার</span>
-        <h2 class="sec-title" id="dynToursSecTitle">আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর</h2>
-        <p class="sec-subtitle" id="dynToursSecSubtitle">সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের</p>
+        <span class="sec-badge" id="dynToursBadge">২০২৬ ভ্রমণ ক্যালেন্ডার</span>
+        <h2 class="sec-title" id="dynToursTitle">আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর</h2>
+        <p class="sec-subtitle" id="dynToursSubtitle">সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের</p>
       </div>
 
       <div class="tours-grid-square" id="annualToursGrid">
-        <!-- Rendered with 100% clean images (NO BADGES ON TOP) -->
+        <!-- Rendered with 100% clean images -->
       </div>
     </div>
   </section>
@@ -155,43 +155,43 @@
       </div>
 
       <div class="speciality-grid" id="whyUsGrid">
-        <!-- Dynamically rendered via JS -->
+        <!-- Dynamically rendered -->
       </div>
     </div>
   </section>
 
-  <!-- ৫. বিগত ট্যুরের গ্রুপ ছবি (Gallery with Lightbox) -->
+  <!-- ৫. বিগত ট্যুরের গ্রুপ ছবি -->
   <section id="gallery" class="section-gallery-area">
     <div class="container">
       <div class="section-main-heading">
-        <span class="sec-badge">স্মৃতির অ্যালবাম</span>
-        <h2 class="sec-title">বিগত ট্যুরের কিছু গ্রুপ মুহূর্ত</h2>
-        <p class="sec-subtitle">ছবিতে টাচ করে বড় করে দেখুন আমাদের আনন্দমুখর মুহূর্তগুলো</p>
+        <span class="sec-badge" id="dynGalleryBadge">স্মৃতির অ্যালবাম</span>
+        <h2 class="sec-title" id="dynGalleryTitle">বিগত ট্যুরের কিছু গ্রুপ মুহূর্ত</h2>
+        <p class="sec-subtitle" id="dynGallerySubtitle">ছবিতে টাচ করে বড় করে দেখুন আমাদের আনন্দমুখর মুহূর্তগুলো</p>
       </div>
 
       <div class="moments-scroll-track" id="momentsTrack">
-        <!-- Dynamically rendered via JS with click-to-lightbox -->
+        <!-- Dynamically rendered -->
       </div>
     </div>
   </section>
 
-  <!-- ৬. কাস্টমার রেটিং ও মতামত + কাস্টমার নিজে রিভিউ লেখার বাটন -->
+  <!-- ৬. কাস্টমার রেটিং ও মতামত -->
   <section id="reviews" class="section-reviews-area">
     <div class="container">
       <div class="section-main-heading">
-        <span class="sec-badge">ভ্রমণসঙ্গীদের অভিজ্ঞতা</span>
-        <h2 class="sec-title">কাস্টমার রেটিং ও মতামত</h2>
-        <p class="sec-subtitle">আমাদের সাথে ঘুরে আসা পরিবার ও প্রবীণ সদস্যদের আন্তরিক রিভিউ</p>
+        <span class="sec-badge" id="dynReviewsBadge">ভ্রমণসঙ্গীদের অভিজ্ঞতা</span>
+        <h2 class="sec-title" id="dynReviewsTitle">কাস্টমার রেটিং ও মতামত</h2>
+        <p class="sec-subtitle" id="dynReviewsSubtitle">আমাদের সাথে ঘুরে আসা পরিবার ও প্রবীণ সদস্যদের আন্তরিক রিভিউ</p>
       </div>
 
       <div style="text-align:center; margin-bottom:20px;">
         <button type="button" class="btn-write-review" onclick="openAddReviewModal()">
-          <i class="fas fa-edit"></i> ✍️ আপনার রিভিউ ও রেটিং যোগ করুন
+          <i class="fas fa-edit"></i> <span id="dynReviewsBtnText">✍️ আপনার রিভিউ ও রেটিং যোগ করুন</span>
         </button>
       </div>
 
       <div class="reviews-grid" id="customerReviewsGrid">
-        <!-- Dynamically rendered reviews -->
+        <!-- Dynamically rendered -->
       </div>
     </div>
   </section>
@@ -200,9 +200,9 @@
   <section id="faq" class="section-faq-area">
     <div class="container">
       <div class="section-main-heading">
-        <span class="sec-badge">সচরাচর জিজ্ঞাসা</span>
-        <h2 class="sec-title">সাধারণ প্রশ্নোত্তর (Q&A)</h2>
-        <p class="sec-subtitle">আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর</p>
+        <span class="sec-badge" id="dynFaqBadge">সচরাচর জিজ্ঞাসা</span>
+        <h2 class="sec-title" id="dynFaqTitle">সাধারণ প্রশ্নোত্তর (Q&A)</h2>
+        <p class="sec-subtitle" id="dynFaqSubtitle">আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর</p>
       </div>
 
       <div class="accordion-wrapper" id="homeFaqContainer">
@@ -300,7 +300,7 @@
     </div>
   </footer>
 
-  <!-- ফিক্সড বটম WhatsApp বার (NO AI BOT) -->
+  <!-- ফিক্সড বটম WhatsApp বার -->
   <a href="https://wa.me/918116472937?text=নমস্কার%20সোমজিৎ%20ভট্টাচার্য,%20ট্যুর%20বুকিং%20সম্পর্কে%20জানতে%20চাই।" id="dynFixedBottomWa" target="_blank" class="fixed-bottom-bar">
     <i class="fa-brands fa-whatsapp"></i> সরাসরি WhatsApp-এ বুকিং করুন
   </a>
@@ -438,7 +438,7 @@
     </div>
   </div>
 
-  <!-- ১২. কাস্টমারদের সরাসরি রিভিউ লেখার মডেল (Public Add Review Modal) -->
+  <!-- ১২. কাস্টমারদের সরাসরি রিভিউ লেখার মডেল -->
   <div id="addReviewModal" class="modal-overlay" style="display:none;">
     <div class="booking-modal-card" style="max-width:500px;">
       <div class="booking-modal-header">
@@ -530,12 +530,14 @@
     <!-- CMS Navigation Tabs -->
     <div class="cms-nav-tabs">
       <button class="cms-tab-btn active" data-tab="tabDashboard" onclick="switchCmsTab('tabDashboard')"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</button>
-      <button class="cms-tab-btn" data-tab="tabTours" onclick="switchCmsTab('tabTours')"><i class="fas fa-mountain"></i> ৬টি ট্যুর এডিটর</button>
-      <button class="cms-tab-btn" data-tab="tabProfile" onclick="switchCmsTab('tabProfile')"><i class="fas fa-user"></i> প্রোফাইল ও হেডার</button>
-      <button class="cms-tab-btn" data-tab="tabWhyUs" onclick="switchCmsTab('tabWhyUs')"><i class="fas fa-shield-alt"></i> বিশেষত্ব (Why Us)</button>
-      <button class="cms-tab-btn" data-tab="tabFaq" onclick="switchCmsTab('tabFaq')"><i class="fas fa-question-circle"></i> কিউ এন এ (FAQ)</button>
+      <button class="cms-tab-btn" data-tab="tabHeadings" onclick="switchCmsTab('tabHeadings')"><i class="fas fa-heading"></i> হেডিং ও ট্যাগলাইন</button>
+      <button class="cms-tab-btn" data-tab="tabTours" onclick="switchCmsTab('tabTours')"><i class="fas fa-mountain"></i> ৬টি ট্যুর</button>
+      <button class="cms-tab-btn" data-tab="tabProfile" onclick="switchCmsTab('tabProfile')"><i class="fas fa-user"></i> প্রোফাইল ও লিংক</button>
+      <button class="cms-tab-btn" data-tab="tabWhyUs" onclick="switchCmsTab('tabWhyUs')"><i class="fas fa-shield-alt"></i> বিশেষত্ব (৬টি কার্ড)</button>
+      <button class="cms-tab-btn" data-tab="tabFaq" onclick="switchCmsTab('tabFaq')"><i class="fas fa-question-circle"></i> প্রশ্নোত্তর (FAQ)</button>
       <button class="cms-tab-btn" data-tab="tabPolicies" onclick="switchCmsTab('tabPolicies')"><i class="fas fa-file-contract"></i> এবাউট ও পলিসি</button>
-      <button class="cms-tab-btn" data-tab="tabContact" onclick="switchCmsTab('tabContact')"><i class="fas fa-phone-alt"></i> যোগাযোগ ও ফুটার</button>
+      <button class="cms-tab-btn" data-tab="tabContact" onclick="switchCmsTab('tabContact')"><i class="fas fa-phone-alt"></i> ফোন ও ঠিকানা</button>
+      <button class="cms-tab-btn" data-tab="tabPassword" onclick="switchCmsTab('tabPassword')"><i class="fas fa-key"></i> পাসওয়ার্ড বদল</button>
       <button class="cms-tab-btn" data-tab="tabReviews" onclick="switchCmsTab('tabReviews')"><i class="fas fa-star"></i> কাস্টমার রিভিউ</button>
       <button class="cms-tab-btn" data-tab="tabLeads" onclick="switchCmsTab('tabLeads')"><i class="fas fa-users"></i> বুকিং লিডস</button>
       <button class="cms-tab-btn" data-tab="tabSheets" onclick="switchCmsTab('tabSheets')"><i class="fas fa-table"></i> গুগল শিট</button>
@@ -557,7 +559,56 @@
         </div>
       </div>
 
-      <!-- 2. TOURS MANAGER & EDITOR -->
+      <!-- 2. HEADINGS & TITLES (হেডিং ও ট্যাগলাইন এডিটর) -->
+      <div id="tabHeadings" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-heading"></i> ওয়েবসাইটের সমস্ত সেকশন হেডিং এডিটর</h4>
+          
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">১. হেডার ব্র্যান্ডিং ও ট্যাগলাইন</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">সাইটের নাম (Site Title)</label><input type="text" id="hdSiteTitle" class="cms-input" oninput="updateHeading('header', 'site_title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">হেডার সাবটাইটেল (Tagline)</label><input type="text" id="hdSiteSubtitle" class="cms-input" oninput="updateHeading('header', 'site_subtitle', this.value)"></div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">২. ট্যুর সেকশন হেডিং</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">হলুদ ব্যাজ (Badge)</label><input type="text" id="hdToursBadge" class="cms-input" oninput="updateHeading('tours', 'badge', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">প্রধান শিরোনাম (Title)</label><input type="text" id="hdToursTitle" class="cms-input" oninput="updateHeading('tours', 'title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">সাবটাইটেল (Subtitle)</label><input type="text" id="hdToursSubtitle" class="cms-input" oninput="updateHeading('tours', 'subtitle', this.value)"></div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">৩. আমাদের বিশেষত্ব (Why Us) হেডিং</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">হলুদ ব্যাজ (Badge)</label><input type="text" id="hdWhyUsBadge" class="cms-input" oninput="updateHeading('why_us', 'badge', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">প্রধান শিরোনাম (Title)</label><input type="text" id="hdWhyUsTitle" class="cms-input" oninput="updateHeading('why_us', 'title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">সাবটাইটেল (Subtitle)</label><input type="text" id="hdWhyUsSubtitle" class="cms-input" oninput="updateHeading('why_us', 'subtitle', this.value)"></div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">৪. গ্যালারি সেকশন হেডিং</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">হলুদ ব্যাজ (Badge)</label><input type="text" id="hdGalleryBadge" class="cms-input" oninput="updateHeading('gallery', 'badge', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">প্রধান শিরোনাম (Title)</label><input type="text" id="hdGalleryTitle" class="cms-input" oninput="updateHeading('gallery', 'title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">সাবটাইটেল (Subtitle)</label><input type="text" id="hdGallerySubtitle" class="cms-input" oninput="updateHeading('gallery', 'subtitle', this.value)"></div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">৫. কাস্টমার রেটিং ও রিভিউ হেডিং</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">হলুদ ব্যাজ (Badge)</label><input type="text" id="hdReviewsBadge" class="cms-input" oninput="updateHeading('reviews', 'badge', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">প্রধান শিরোনাম (Title)</label><input type="text" id="hdReviewsTitle" class="cms-input" oninput="updateHeading('reviews', 'title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">সাবটাইটেল (Subtitle)</label><input type="text" id="hdReviewsSubtitle" class="cms-input" oninput="updateHeading('reviews', 'subtitle', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">রিভিউ বোতামের লেখা (Button Text)</label><input type="text" id="hdReviewsBtnText" class="cms-input" oninput="updateHeading('reviews', 'btn_text', this.value)"></div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#1b3b5a; font-size:14px;">৬. কিউ এন এ / FAQ হেডিং</strong>
+            <div class="cms-form-group" style="margin-top:6px;"><label class="cms-label">হলুদ ব্যাজ (Badge)</label><input type="text" id="hdFaqBadge" class="cms-input" oninput="updateHeading('faq', 'badge', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">প্রধান শিরোনাম (Title)</label><input type="text" id="hdFaqTitle" class="cms-input" oninput="updateHeading('faq', 'title', this.value)"></div>
+            <div class="cms-form-group"><label class="cms-label">সাবটাইটেল (Subtitle)</label><input type="text" id="hdFaqSubtitle" class="cms-input" oninput="updateHeading('faq', 'subtitle', this.value)"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TOURS MANAGER & EDITOR -->
       <div id="tabTours" class="cms-tab-pane">
         <div class="cms-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -568,7 +619,7 @@
         </div>
       </div>
 
-      <!-- 3. PROFILE & HEADER -->
+      <!-- 4. PROFILE & LINKS -->
       <div id="tabProfile" class="cms-tab-pane">
         <div class="cms-card">
           <h4 class="cms-card-title"><i class="fas fa-user-edit"></i> সোমজিৎ বাবুর প্রোফাইল ও সোশ্যাল লিংক</h4>
@@ -580,15 +631,15 @@
         </div>
       </div>
 
-      <!-- 4. WHY US (বিশেষত্ব) -->
+      <!-- 5. WHY US -->
       <div id="tabWhyUs" class="cms-tab-pane">
         <div class="cms-card">
-          <h4 class="cms-card-title"><i class="fas fa-shield-alt"></i> আমাদের বিশেষত্ব (৬টি ফিচার এডিটর)</h4>
+          <h4 class="cms-card-title"><i class="fas fa-shield-alt"></i> আমাদের বিশেষত্ব (৬টি কার্ড এডিটর)</h4>
           <div id="cmsWhyUsContainer"></div>
         </div>
       </div>
 
-      <!-- 5. FAQ (কিউ এন এ) -->
+      <!-- 6. FAQ -->
       <div id="tabFaq" class="cms-tab-pane">
         <div class="cms-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -599,7 +650,7 @@
         </div>
       </div>
 
-      <!-- 6. POLICIES & ABOUT -->
+      <!-- 7. POLICIES & ABOUT -->
       <div id="tabPolicies" class="cms-tab-pane">
         <div class="cms-card">
           <h4 class="cms-card-title"><i class="fas fa-file-contract"></i> এবাউট ও পলিসি টেক্সট এডিটর</h4>
@@ -609,7 +660,7 @@
         </div>
       </div>
 
-      <!-- 7. CONTACT & FOOTER -->
+      <!-- 8. CONTACT & FOOTER -->
       <div id="tabContact" class="cms-tab-pane">
         <div class="cms-card">
           <h4 class="cms-card-title"><i class="fas fa-phone-alt"></i> যোগাযোগ, ফোন ও ঠিকানা</h4>
@@ -620,7 +671,24 @@
         </div>
       </div>
 
-      <!-- 8. REVIEWS -->
+      <!-- 9. PASSWORD MANAGER (পাসওয়ার্ড পরিবর্তন) -->
+      <div id="tabPassword" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-key"></i> অ্যাডমিন লগইন পাসওয়ার্ড পরিবর্তন</h4>
+          <p style="font-size:13px; color:#64748b; margin-bottom:12px;">এখানে নতুন পাসওয়ার্ড দিয়ে সেভ করে 'Publish' করলে আপনার নতুন পাসওয়ার্ড চালু হবে।</p>
+          <div class="cms-form-group">
+            <label class="cms-label">নতুন পাসওয়ার্ড (New Password)</label>
+            <input type="password" id="cmsNewPin1" class="cms-input" placeholder="নতুন পাসওয়ার্ড লিখুন">
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">পুনরায় নতুন পাসওয়ার্ড লিখুন (Confirm)</label>
+            <input type="password" id="cmsNewPin2" class="cms-input" placeholder="একই পাসওয়ার্ড আবার লিখুন">
+          </div>
+          <button type="button" class="btn-cms-big primary" style="margin-top:8px;" onclick="handleChangeAdminPassword()"><i class="fas fa-lock"></i> পাসওয়ার্ড ড্রাফটে আপডেট করুন</button>
+        </div>
+      </div>
+
+      <!-- 10. REVIEWS -->
       <div id="tabReviews" class="cms-tab-pane">
         <div class="cms-card">
           <h4 class="cms-card-title"><i class="fas fa-star"></i> কাস্টমার রিভিউ তালিকা</h4>
@@ -628,12 +696,12 @@
         </div>
       </div>
 
-      <!-- 9. LEADS -->
+      <!-- 11. LEADS -->
       <div id="tabLeads" class="cms-tab-pane">
         <div class="cms-card"><h4 class="cms-card-title"><i class="fas fa-users"></i> সমস্ত বুকিং কোয়েরি তালিকা</h4><div id="cmsLeadsListContainer"></div></div>
       </div>
 
-      <!-- 10. GOOGLE SHEETS -->
+      <!-- 12. GOOGLE SHEETS -->
       <div id="tabSheets" class="cms-tab-pane">
         <div class="cms-card">
           <h4 class="cms-card-title"><i class="fas fa-table"></i> Google Sheets Auto-Sync Webhook</h4>
@@ -642,14 +710,14 @@
         </div>
       </div>
 
-      <!-- 11. BACKUP -->
+      <!-- 13. BACKUP -->
       <div id="tabBackup" class="cms-tab-pane">
         <div class="cms-card"><h4 class="cms-card-title"><i class="fas fa-database"></i> ডেটা ব্যাকআপ ও রিকভারি</h4><button type="button" class="btn-cms-big primary" onclick="exportCmsBackupJson()"><i class="fas fa-download"></i> সম্পূর্ণ সাইট ডেটা ডাউনলোড (JSON)</button></div>
       </div>
     </div>
   </div>
 
-  <!-- ১৬. পূর্ণাঙ্গ ট্যুর এডিটর ও ক্রিয়েটর মডেল (CMS Tour Edit/Add Modal) -->
+  <!-- ১৬. পূর্ণাঙ্গ ট্যুর এডিটর ও ক্রিয়েটর মডেল -->
   <div id="cmsTourEditModal" class="modal-overlay" style="display:none;">
     <div class="booking-modal-card" style="max-width:620px;">
       <div class="booking-modal-header">
@@ -731,7 +799,7 @@
       <div class="details-content-body" style="padding-top:24px;">
         <div style="width:60px; height:60px; border-radius:50%; background:#dcfce7; color:#16a34a; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.6rem;"><i class="fas fa-cloud-upload-alt"></i></div>
         <h3 style="font-size:1.3rem; font-weight:800; color:#0f172a; margin-bottom:8px;">লাইভ পাবলিশ কনফার্মেশন</h3>
-        <p style="color:#475569; font-size:1rem; line-height:1.6; margin-bottom:20px;">আপনি কি আপনার সমস্ত পরিবর্তন মূল ওয়েবসাইটে প্রকাশ করতে চান?</p>
+        <p style="color:#475569; font-size:1rem; line-height:1.6; margin-bottom:20px;">আপনি কি আপনার সমস্ত পরিবর্তন ও নতুন পাসওয়ার্ড মূল ওয়েবসাইটে প্রকাশ করতে চান?</p>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <button type="button" class="btn-details-book" style="background:#64748b;" onclick="closePublishConfirmModal()">বাতিল</button>
           <button type="button" class="btn-details-book" style="background:#16a34a;" onclick="executeCloudPublish()">Publish Now</button>
@@ -752,7 +820,7 @@
   </div>
 
   <!-- JavaScript Engines -->
-  <script src="assets/js/data.js?v=6.0.0"></script>
-  <script src="assets/js/app.js?v=6.0.0"></script>
+  <script src="assets/js/data.js?v=7.0.0"></script>
+  <script src="assets/js/app.js?v=7.0.0"></script>
 </body>
 </html>
