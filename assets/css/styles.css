@@ -953,3 +953,144 @@ body.drawer-open {
   object-fit: cover !important;
   display: block;
 }
+
+
+/* =========================================================================
+   VERSION 8.0.0 — TOUR STATUS BADGES, HIGHLIGHTS & FADED-OUT CLOSED TOURS
+   ========================================================================= */
+
+/* Tour Card Status Highlighting */
+.tour-card-sq {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tour-card-sq.status-open {
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.18);
+}
+
+.tour-card-sq.status-limited {
+  border: 2px solid #f97316;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
+}
+
+.tour-card-sq.status-closed {
+  opacity: 0.58;
+  filter: grayscale(85%);
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+}
+
+.tour-card-sq.status-closed:hover {
+  opacity: 0.85;
+  filter: grayscale(40%);
+}
+
+/* Status Pill in Card */
+.tour-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+.tour-status-pill.open {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.tour-status-pill.limited {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+.tour-status-pill.upcoming {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.tour-status-pill.closed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.btn-tour-closed {
+  background: #94a3b8 !important;
+  color: #ffffff !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Modal 1:1 Aspect Ratio & Red Floating Close Button */
+.tour-details-dialog {
+  background: #ffffff !important;
+  width: 95vw !important;
+  max-width: 560px !important;
+  max-height: 92vh !important;
+  border-radius: 16px !important;
+  position: relative !important;
+  overflow-y: auto !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45) !important;
+  margin: auto !important;
+}
+
+.modal-close-btn {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 38px !important;
+  height: 38px !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border: 2.5px solid #ffffff !important;
+  border-radius: 50% !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 1000 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+  line-height: 1 !important;
+}
+
+.details-cover-wrap {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  background: #0f172a !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 16px 16px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.details-cover-img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+  background: #0f172a !important;
+  display: block !important;
+}

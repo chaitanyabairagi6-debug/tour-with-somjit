@@ -11,19 +11,20 @@
     ],
     "headers": [
       {
-        "source": "**",
+        "source": "**/*.@(html|js|css)",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=3600"
-          },
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
           {
             "key": "X-Content-Type-Options",
             "value": "nosniff"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "SAMEORIGIN"
           }
         ]
       }

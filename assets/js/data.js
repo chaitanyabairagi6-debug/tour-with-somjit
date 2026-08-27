@@ -509,7 +509,7 @@ window.TWS_SITE_DATA = {
     "primary_phone": "+91 9433074880",
     "secondary_phone": "+91 8910073441",
     "whatsapp_numbers": "9433074880 / 8910073441 / 9432426448",
-    "address": "কলকাতা ও পশ্চিমবঙ্গ, ভারত",
+    "address": "Fatakgora, Chandannagar, Hooghly, West Bengal - 712136",
     "google_sheets_webhook": ""
   },
   "section_headings": {
@@ -542,6 +542,11 @@ window.TWS_SITE_DATA = {
       "badge": "সচরাচর জিজ্ঞাসা",
       "title": "সাধারণ প্রশ্নোত্তর (Q&A)",
       "subtitle": "আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর"
+    },
+    "terms": {
+      "badge": "Company Guidelines",
+      "title": "Terms & Conditions",
+      "subtitle": "General Policies, Child Guidelines & Cancellation Rules"
     }
   },
   "admin_security": {
