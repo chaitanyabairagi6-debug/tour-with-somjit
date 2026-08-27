@@ -350,9 +350,9 @@ window.TWS_SITE_DATA = {
     }
   ],
   "contact": {
-    "host_phone": "+91 9433074880",
+    "host_phone": "+91 8116472937",
     "admin_phone": "+91 9432426448",
-    "whatsapp": "919433074880",
+    "whatsapp": "918116472937",
     "email": "tourwithsomjit@gmail.com",
     "address": "চন্দননগর, হুগলি, পশ্চিমবঙ্গ - 712136",
     "youtube_url": "https://www.youtube.com/@somjitbhattacharyya",

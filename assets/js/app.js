@@ -215,29 +215,30 @@ function renderHomeTours(data) {
     const imgUrl = tour.banner_image || "assets/images/card_ladakh.jpg";
     const category = tour.category || "গ্রুপ ট্যুর";
     const status = tour.status || "BOOKING OPEN";
-    const isFew = status.includes("FEW") || status.includes("সীমিত");
 
     html += `
-      <div class="tour-card-item">
-        <div class="tour-card-cover-wrap" onclick="openTourDetailsModal('${tour.id}')" style="cursor:pointer;">
-          <img src="${imgUrl}" alt="${escapeAttr(tour.title)}" loading="lazy">
+      <div class="tour-card">
+        <div class="tour-card-cover-wrap" onclick="openTourDetailsModal('${tour.id}')">
+          <img class="tour-card-img" src="${imgUrl}" alt="${escapeAttr(tour.title)}" loading="lazy">
           <div class="tour-card-category-badge">${escapeHtml(category)}</div>
-          <div class="tour-card-status-badge ${isFew ? 'few' : ''}">${escapeHtml(status)}</div>
-          <div class="tour-card-price-badge">₹${Number(tour.price || 0).toLocaleString("en-IN")}</div>
+          <div class="tour-card-status-badge">${escapeHtml(status)}</div>
         </div>
-        <div class="tour-card-body">
-          <h3 class="tour-card-title">${escapeHtml(tour.title)}</h3>
-          <div class="tour-card-meta-row">
-            <span><i class="fas fa-calendar-alt" style="color:#d97706;"></i> ${escapeHtml(tour.dates || '২০২৬')}</span>
-            <span><i class="fas fa-clock" style="color:#d97706;"></i> ${escapeHtml(tour.duration || 'গ্রুপ ট্যুর')}</span>
+        <div class="tour-card-content">
+          <h2 class="tour-name">${escapeHtml(tour.title)}</h2>
+          <div class="tour-meta-row">
+            <i class="fa-regular fa-calendar-days"></i> ${escapeHtml(tour.dates || '২০২৬')}
+            <span style="color: #94a3b8;">|</span>
+            <i class="fa-solid fa-users"></i> ${escapeHtml(category)}
           </div>
-          <p class="tour-card-highlight">${escapeHtml(tour.short_highlight || 'সোমজিৎ ভট্টাচার্য-এর সাথে নিশ্চিত গ্রুপ ট্যুর।')}</p>
-          <div class="tour-card-action-row">
+          <div class="tour-price-row">
+            <span>💰</span> ₹ ${Number(tour.price || 0).toLocaleString("en-IN")} / জনপ্রতি
+          </div>
+          <div class="tour-buttons">
+            <a href="https://wa.me/918116472937?text=${encodeURIComponent('নমস্কার সোমজিৎ ভট্টাচার্য, ' + tour.title + ' বুকিং সম্পর্কে জানতে চাই।')}" target="_blank" class="btn-card-wa">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp বুকিং
+            </a>
             <button type="button" class="btn-card-details" onclick="openTourDetailsModal('${tour.id}')">
-              <i class="fas fa-info-circle"></i> ট্যুর বিবরণী
-            </button>
-            <button type="button" class="btn-card-book" onclick="openBookingModal('${escapeAttr(tour.title)}')">
-              <i class="fab fa-whatsapp"></i> বুকিং করুন
+              <i class="fa-solid fa-circle-info"></i> ট্যুর প্ল্যান
             </button>
           </div>
         </div>
@@ -439,7 +440,7 @@ Bed Type: ${bedType}
 Food Preference: ${foodPref}
 ${specialReq ? `Additional Requirement: ${specialReq}` : ''}`;
 
-  const waNumber = (livePublished && livePublished.contact && livePublished.contact.whatsapp) ? livePublished.contact.whatsapp : "919433074880";
+  const waNumber = (livePublished && livePublished.contact && livePublished.contact.whatsapp) ? livePublished.contact.whatsapp : "918116472937";
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`;
 
   window.open(waUrl, "_blank");
