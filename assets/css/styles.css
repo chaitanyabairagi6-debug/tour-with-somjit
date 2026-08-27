@@ -885,3 +885,71 @@ body.drawer-open {
   background: var(--gold-primary);
   color: var(--navy-dark);
 }
+
+/* =========================================================================
+   TOUR DETAILS MODAL — 1:1 SQUARE BANNER & FLOATING OUTSIDE CLOSE BUTTON
+   ========================================================================= */
+
+.tour-details-dialog {
+  background: #ffffff;
+  width: 95vw;
+  max-width: 580px;
+  max-height: 92vh;
+  border-radius: 16px;
+  position: relative;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  border: 1.5px solid #e2e8f0;
+  margin: auto;
+}
+
+/* Floating External / Prominent Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border: 2.5px solid #ffffff !important;
+  border-radius: 50% !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, background 0.2s ease;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  background: #dc2626 !important;
+  transform: scale(1.1);
+}
+
+/* 1:1 Square Banner Wrapper */
+.details-cover-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  max-height: 520px;
+  position: relative;
+  background: #0f172a;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.details-cover-img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  display: block;
+}
