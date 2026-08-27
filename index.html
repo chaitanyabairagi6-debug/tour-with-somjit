@@ -61,7 +61,7 @@
   </script>
 
   <!-- Master Stylesheet -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=3.3.0">
+  <link rel="stylesheet" href="assets/css/styles.css?v=3.4.0">
   <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>
 <body class="public-mode">
@@ -950,9 +950,30 @@
     </div>
   </div>
 
+  
+  <!-- 19. GALLERY LIGHTBOX VIEWER MODAL -->
+  <div id="galleryLightboxModal" class="modal-overlay gallery-lightbox" style="display:none;" onclick="handleLightboxBackdropClick(event)">
+    <div class="lightbox-dialog" onclick="event.stopPropagation();">
+      <button type="button" class="lightbox-close-btn" onclick="closeLightboxModal()">&times;</button>
+      
+      <button type="button" class="lightbox-arrow-btn prev" onclick="changeLightboxImage(-1)" aria-label="Previous">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="lightbox-image-wrap">
+        <img id="lightboxImg" src="" alt="Tour Moment">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+      
+      <button type="button" class="lightbox-arrow-btn next" onclick="changeLightboxImage(1)" aria-label="Next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- JavaScript Engines -->
-  <script src="assets/js/data.js?v=3.3.0"></script>
-  <script src="assets/js/app.js?v=3.3.0"></script>
+  <script src="assets/js/data.js?v=3.4.0"></script>
+  <script src="assets/js/app.js?v=3.4.0"></script>
   <script src="assets/js/chatbot.js"></script>
 </body>
 </html>

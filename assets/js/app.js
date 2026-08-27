@@ -465,8 +465,8 @@ function renderMomentsGallery(data) {
   if (!track) return;
 
   const moments = data.moments_gallery || [];
-  track.innerHTML = moments.map(m => `
-    <div class="moment-card">
+  track.innerHTML = moments.map((m, idx) => `
+    <div class="moment-card" onclick="openLightboxModal(${idx})" title="ক্লিক করে বড় ছবি দেখুন">
       <img src="${m.image_url}" alt="${escapeAttr(m.caption || 'Tour Moment')}" loading="lazy">
     </div>
   `).join("");
@@ -802,12 +802,54 @@ function renderCmsGalleryList() {
 
   const moments = (workingDraft && workingDraft.moments_gallery) ? workingDraft.moments_gallery : (livePublished.moments_gallery || []);
   container.innerHTML = moments.map((m, idx) => `
-    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-      <img src="${m.image_url}" style="width:70px; height:50px; object-fit:cover; border-radius:4px;">
-      <input type="text" value="${escapeAttr(m.caption || '')}" placeholder="ছবির ক্যাপশন" class="cms-input" style="flex:1; font-size:0.85rem;" onchange="updateCmsMomentCaption(${idx}, this.value)">
-      <button type="button" class="btn-cms-action discard-btn" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteCmsMoment(${idx})"><i class="fas fa-trash"></i></button>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <img src="${m.image_url}" style="width:80px; height:55px; object-fit:cover; border-radius:6px; cursor:pointer;" onclick="openLightboxModal(${idx})" title="ক্লিক করে বড় দেখুন">
+        <div style="flex:1;">
+          <input type="text" value="${escapeAttr(m.caption || '')}" placeholder="ছবির ক্যাপশন" class="cms-input" style="font-size:0.88rem; margin-bottom:4px;" oninput="updateCmsMomentCaption(${idx}, this.value)">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+        <label class="btn-cms-action open-drawer" style="padding:5px 10px; font-size:0.8rem; cursor:pointer;">
+          <i class="fas fa-sync-alt"></i> ছবি পরিবর্তন
+          <input type="file" accept="image/*" style="display:none;" onchange="handleReplaceCmsMoment(${idx}, this)">
+        </label>
+        <div style="display:flex; gap:4px;">
+          ${idx > 0 ? `<button type="button" class="btn-cms-action" style="background:#f1f5f9; color:#0f172a; padding:4px 8px;" onclick="moveCmsMoment(${idx}, -1)" title="উপরে নিন"><i class="fas fa-arrow-up"></i></button>` : ''}
+          ${idx < moments.length - 1 ? `<button type="button" class="btn-cms-action" style="background:#f1f5f9; color:#0f172a; padding:4px 8px;" onclick="moveCmsMoment(${idx}, 1)" title="নিচে নিন"><i class="fas fa-arrow-down"></i></button>` : ''}
+          <button type="button" class="btn-cms-action discard-btn" style="padding:5px 10px; font-size:0.8rem;" onclick="deleteCmsMoment(${idx})">
+            <i class="fas fa-trash"></i> ডিলিট
+          </button>
+        </div>
+      </div>
     </div>
   `).join("");
+}
+
+function handleReplaceCmsMoment(idx, input) {
+  if (input.files && input.files[0]) {
+    showToast("⏳ নতুন ছবি অপ্টিমাইজ হচ্ছে...");
+    compressImageFile(input.files[0], 800, 550, 0.82, function(compressedUrl) {
+      if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+      workingDraft.moments_gallery[idx].image_url = compressedUrl;
+      renderCmsGalleryList();
+      renderMomentsGallery(workingDraft);
+      showToast("✓ ছবি সফলভাবে পরিবর্তন হয়েছে! লাইভ করতে 'Publish Changes' চাপুন।");
+    });
+  }
+}
+
+function moveCmsMoment(idx, direction) {
+  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
+  const newIdx = idx + direction;
+  if (newIdx >= 0 && newIdx < workingDraft.moments_gallery.length) {
+    const temp = workingDraft.moments_gallery[idx];
+    workingDraft.moments_gallery[idx] = workingDraft.moments_gallery[newIdx];
+    workingDraft.moments_gallery[newIdx] = temp;
+    renderCmsGalleryList();
+    renderMomentsGallery(workingDraft);
+    showToast("✓ ছবির ক্রম পরিবর্তন হয়েছে!");
+  }
 }
 
 function updateCmsMomentCaption(idx, val) {
@@ -1063,3 +1105,61 @@ function escapeHtml(str) {
 function escapeAttr(str) {
   return String(str || '').replace(/"/g, '&quot;');
 }
+
+
+// =========================================================================
+// LIGHTBOX VIEWER CONTROLLER (Touch / Click to Open Image)
+// =========================================================================
+let currentLightboxIdx = 0;
+
+function openLightboxModal(idx) {
+  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
+  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  if (!moments.length) return;
+
+  currentLightboxIdx = (idx >= 0 && idx < moments.length) ? idx : 0;
+  updateLightboxContent();
+  showModal("galleryLightboxModal");
+}
+
+function closeLightboxModal() {
+  hideModal("galleryLightboxModal");
+}
+
+function changeLightboxImage(dir) {
+  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
+  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  if (!moments.length) return;
+
+  currentLightboxIdx = (currentLightboxIdx + dir + moments.length) % moments.length;
+  updateLightboxContent();
+}
+
+function updateLightboxContent() {
+  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
+  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  if (!moments[currentLightboxIdx]) return;
+
+  const item = moments[currentLightboxIdx];
+  const imgElem = document.getElementById("lightboxImg");
+  const captionElem = document.getElementById("lightboxCaption");
+
+  if (imgElem) imgElem.src = item.image_url;
+  if (captionElem) captionElem.textContent = item.caption || `ভ্রমণ মুহূর্ত (${currentLightboxIdx + 1}/${moments.length})`;
+}
+
+function handleLightboxBackdropClick(event) {
+  if (event.target.id === "galleryLightboxModal") {
+    closeLightboxModal();
+  }
+}
+
+// Keyboard arrow navigation for lightbox
+document.addEventListener("keydown", (e) => {
+  const modal = document.getElementById("galleryLightboxModal");
+  if (modal && modal.classList.contains("active")) {
+    if (e.key === "ArrowLeft") changeLightboxImage(-1);
+    if (e.key === "ArrowRight") changeLightboxImage(1);
+    if (e.key === "Escape") closeLightboxModal();
+  }
+});
