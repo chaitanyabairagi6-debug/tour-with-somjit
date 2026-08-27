@@ -1,3 +1,18 @@
+
+function showModal(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = "flex";
+    setTimeout(() => el.classList.add("active"), 10);
+  }
+}
+function hideModal(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.remove("active");
+    setTimeout(() => { if (!el.classList.contains("active")) el.style.display = "none"; }, 250);
+  }
+}
 /**
  * Tour with Somjit - Unified Visual CMS & Application Controller
  * Single Source of Truth Cloud Database Integration,
@@ -15,6 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileDrawer();
   initBookingModal();
   setupKeyboardAdminShortcut();
+  if (window.location.hash === "#admin") {
+    setTimeout(() => promptAdminLoginModal(), 500);
+  }
 });
 
 // 1. Single Source of Truth Cloud Data Loader
@@ -241,11 +259,11 @@ function openTourDetailsModal(tourId) {
     plansBox.style.display = "none";
   }
 
-  document.getElementById("tourDetailsModal").classList.add("active");
+  showModal("tourDetailsModal");
 }
 
 function closeTourDetailsModal() {
-  document.getElementById("tourDetailsModal").classList.remove("active");
+  hideModal("tourDetailsModal");
 }
 
 function bookFromDetailsModal() {
@@ -287,11 +305,11 @@ function openAllToursModal() {
     </div>
   `).join("");
 
-  document.getElementById("allToursModal").classList.add("active");
+  showModal("allToursModal");
 }
 
 function closeAllToursModal() {
-  document.getElementById("allToursModal").classList.remove("active");
+  hideModal("allToursModal");
 }
 
 // 6. Senior-Friendly Group Booking Form & WhatsApp Formatter
@@ -324,11 +342,11 @@ function openBookingModal(preselectedTourTitle) {
       }
     }
   }
-  document.getElementById("bookingModal").classList.add("active");
+  showModal("bookingModal");
 }
 
 function closeBookingModal() {
-  document.getElementById("bookingModal").classList.remove("active");
+  hideModal("bookingModal");
 }
 
 async function handleGroupBookingSubmit(event) {
@@ -477,12 +495,12 @@ function promptAdminLoginModal() {
     openAdminDrawer("dashboard");
     return;
   }
-  document.getElementById("adminLoginModal").classList.add("active");
+  showModal("adminLoginModal");
   setTimeout(() => { document.getElementById("admPinInput").focus(); }, 150);
 }
 
 function closeAdminLoginModal() {
-  document.getElementById("adminLoginModal").classList.remove("active");
+  hideModal("adminLoginModal");
   document.getElementById("admPinInput").value = "";
 }
 
@@ -525,11 +543,15 @@ function exitAdminVisualMode() {
 function openAdminDrawer(tabName = "dashboard") {
   populateCmsFields();
   if (tabName) switchCmsTab(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
-  document.getElementById("adminCmsDrawer").classList.add("active");
+  const drawer = document.getElementById("adminCmsDrawer");
+  drawer.style.display = "flex";
+  setTimeout(() => drawer.classList.add("active"), 10);
 }
 
 function closeAdminDrawer() {
-  document.getElementById("adminCmsDrawer").classList.remove("active");
+  const drawer = document.getElementById("adminCmsDrawer");
+  drawer.classList.remove("active");
+  setTimeout(() => { if (!drawer.classList.contains("active")) drawer.style.display = "none"; }, 300);
 }
 
 function switchCmsTab(tabId) {
@@ -655,7 +677,7 @@ function openAddTourModal() {
   document.getElementById("edTourFood").value = "টাটকা পুষ্টিকর বাঙালি ও ভারতীয় খাবার";
 
   document.getElementById("editTourModalHeading").textContent = "নতুন ট্যুর যোগ করুন";
-  document.getElementById("editTourModal").classList.add("active");
+  showModal("editTourModal");
 }
 
 function openEditTourModal(tourId) {
@@ -678,11 +700,11 @@ function openEditTourModal(tourId) {
   document.getElementById("edTourFood").value = tour.food_info || "";
 
   document.getElementById("editTourModalHeading").textContent = `এডিট: ${tour.title}`;
-  document.getElementById("editTourModal").classList.add("active");
+  showModal("editTourModal");
 }
 
 function closeEditTourModal() {
-  document.getElementById("editTourModal").classList.remove("active");
+  hideModal("editTourModal");
 }
 
 function handleTourImageFile(input) {
@@ -886,11 +908,11 @@ function discardWorkingDraft() {
 
 // Cloud Publish Engine
 function openPublishConfirmModal() {
-  document.getElementById("publishConfirmModal").classList.add("active");
+  showModal("publishConfirmModal");
 }
 
 function closePublishConfirmModal() {
-  document.getElementById("publishConfirmModal").classList.remove("active");
+  hideModal("publishConfirmModal");
 }
 
 async function executeCloudPublish() {
@@ -912,7 +934,7 @@ async function executeCloudPublish() {
       window.TWS_SITE_DATA = livePublished;
       localStorage.setItem("tws_published_site_data", JSON.stringify(livePublished));
       renderAllComponents(livePublished);
-      document.getElementById("publishSuccessModal").classList.add("active");
+      showModal("publishSuccessModal");
     } else {
       throw new Error("HTTP error " + res.status);
     }
@@ -922,7 +944,7 @@ async function executeCloudPublish() {
 }
 
 function viewLiveWebsite() {
-  document.getElementById("publishSuccessModal").classList.remove("active");
+  hideModal("publishSuccessModal");
   exitAdminVisualMode();
 }
 
@@ -976,8 +998,8 @@ function closeNav() {
   if (drawer) drawer.classList.remove("active");
 }
 
-function openPrivacyModal() { document.getElementById("privacyModal").classList.add("active"); }
-function closePrivacyModal() { document.getElementById("privacyModal").classList.remove("active"); }
+function openPrivacyModal() { showModal("privacyModal"); }
+function closePrivacyModal() { hideModal("privacyModal"); }
 
 function showToast(msg) {
   let toast = document.getElementById("twsUnifiedToast");
