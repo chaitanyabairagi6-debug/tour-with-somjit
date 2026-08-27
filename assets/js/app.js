@@ -120,7 +120,10 @@ function applyDynamicBrandingAndText(data) {
   const contact = data.contact || {};
 
   // Logos
-  const logoUrl = branding.logo_url || "assets/images/brand_logo_redesign.png";
+  let logoUrl = branding.logo_url || "assets/images/somjit_profile_avatar.png";
+  if (logoUrl.includes("brand_logo_redesign") || logoUrl.includes("official_brand_logo")) {
+    logoUrl = "assets/images/somjit_profile_avatar.png";
+  }
   const headerLogo = document.getElementById("dynHeaderLogo");
   const drawerLogo = document.getElementById("dynDrawerLogo");
   const footerLogo = document.getElementById("dynFooterLogo");
