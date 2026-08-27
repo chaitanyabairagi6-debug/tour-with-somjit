@@ -2,10 +2,10 @@
 window.TWS_SITE_DATA = {
   "updatedAt": "2026-08-27T04:00:00.000Z",
   "branding": {
-    "logo_url": "assets/images/brand_logo_redesign.png",
+    "logo_url": "assets/images/official_brand_logo.png",
     "hero_bg": "assets/images/hero_scenic_bg.jpg",
     "hero_host_cutout": "assets/images/somjit_hero_cutout.png",
-    "host_circle_avatar": "assets/images/host_circle_avatar.png",
+    "host_circle_avatar": "assets/images/official_brand_logo.png",
     "tagline": "Explore More. Experience More."
   },
   "general": {
