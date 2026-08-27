@@ -1012,8 +1012,19 @@ function deleteWhyUsItem(idx) {
 // 5. YouTube Vlogs
 function extractYouTubeVideoId(url) {
   if (!url) return null;
-  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
-  return (match && match[1]) ? match[1] : null;
+  url = url.trim();
+  const patterns = [
+    /[?&]v=([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/(?:embed|v|shorts|live)\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
+    /^([a-zA-Z0-9_-]{11})$/
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m && m[1]) return m[1];
+  }
+  return null;
 }
 
 function renderVlogsEditor() {
