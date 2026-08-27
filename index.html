@@ -34,10 +34,10 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Fonts: Hind Siliguri (Bengali) + Poppins (Latin) -->
+  <!-- Premium Modern Bengali Fonts: Anek Bangla & Noto Sans Bengali + Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Google Structured Data (JSON-LD) for Search Ranking -->
   <script type="application/ld+json">
@@ -71,19 +71,49 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>
-<body>
+<body class="normal-view-mode">
+
+  <!-- 0. Visual Live Editor Sticky Floating Bar (Active only in Edit Mode) -->
+  <div id="visualEditorBar" class="visual-editor-bar" style="display:none;">
+    <div class="editor-bar-container">
+      <div class="editor-status-badge">
+        <span class="pulse-dot"></span>
+        <strong>লাইভ এডিট মোড সক্রিয়</strong>
+      </div>
+      <div class="editor-action-buttons">
+        <button type="button" class="btn-ed-action add-tour" onclick="openAddTourModal()">
+          <i class="fas fa-plus"></i> নতুন ট্যুর
+        </button>
+        <button type="button" class="btn-ed-action add-moment" onclick="openAddMomentModal()">
+          <i class="fas fa-camera"></i> মুহূর্ত যোগ
+        </button>
+        <button type="button" class="btn-ed-action save-cloud" onclick="saveVisualEditsToCloud()">
+          <i class="fas fa-cloud-upload-alt"></i> ফাইনাল সেভ করুন
+        </button>
+        <button type="button" class="btn-ed-action exit-ed" onclick="exitVisualEditMode()">
+          <i class="fas fa-times"></i> বন্ধ করুন
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- 1. Header Bar -->
   <header class="site-header">
     <div class="header-container">
-      <a href="#home" class="brand-logo-link">
-        <img id="dynHeaderLogo" src="assets/images/brand_logo_redesign.png" alt="Tour with Somjit" class="brand-logo-img">
-      </a>
+      <div class="brand-logo-wrap">
+        <a href="#home" class="brand-logo-link">
+          <img id="dynHeaderLogo" src="assets/images/brand_logo_redesign.png" alt="Tour with Somjit" class="brand-logo-img">
+        </a>
+        <button class="btn-img-uploader edit-only-btn" onclick="triggerDirectUpload('branding', 'logo_url', 'dynHeaderLogo')">
+          <i class="fas fa-camera"></i> লোগো বদলান
+        </button>
+      </div>
 
       <div class="header-right-actions">
-        <a href="admin.html" target="_blank" class="header-admin-pill" title="অফিশিয়াল অ্যাডমিন কন্ট্রোল প্যানেল">
-          <i class="fas fa-lock"></i> অ্যাডমিন
-        </a>
+        <!-- Direct In-Page Live Edit Toggle Button -->
+        <button id="toggleEditModeBtn" onclick="toggleVisualEditMode()" class="header-admin-pill" title="সরাসরি ওয়েবসাইটে এডিট করুন">
+          <i class="fas fa-edit"></i> <span id="editBtnText">এডিট মোড</span>
+        </button>
         <button id="mobileMenuBtn" class="header-menu-btn" aria-label="মেনু খুলুন">
           <i class="fas fa-bars"></i>
         </button>
@@ -108,7 +138,7 @@
       <li><a href="#vlogs" onclick="closeNav()"><i class="fab fa-youtube"></i> ট্রাভেল ভিডিও ভ্লগ</a></li>
       <li><a href="#faq" onclick="closeNav()"><i class="fas fa-question-circle"></i> সাধারণ প্রশ্নোত্তর</a></li>
       <li><a href="#contact" onclick="closeNav()"><i class="fas fa-phone-volume"></i> সরাসরি যোগাযোগ</a></li>
-      <li><a href="admin.html" target="_blank" style="color:#d97706; font-weight:700;"><i class="fas fa-cog"></i> অ্যাডমিন প্যানেল</a></li>
+      <li><a href="javascript:void(0)" onclick="closeNav(); toggleVisualEditMode();" style="color:#d97706; font-weight:700;"><i class="fas fa-edit"></i> লাইভ এডিট মোড চালু</a></li>
     </ul>
     <div class="drawer-footer-actions">
       <a href="tel:+919433074880" class="drawer-btn call"><i class="fas fa-phone-alt"></i> 9433074880 কল করুন</a>
@@ -119,31 +149,53 @@
   <!-- 2. Hero Section (Matching Screenshot 1) -->
   <section id="home" class="hero-section">
     <div class="hero-bg-container" id="dynHeroBgContainer">
+      <button class="btn-img-uploader edit-only-btn bg-uploader-btn" onclick="triggerDirectUpload('branding', 'hero_bg', 'dynHeroBgContainer', true)">
+        <i class="fas fa-image"></i> ব্যাকগ্রাউন্ড ছবি বদলান
+      </button>
+
       <div class="hero-inner-grid">
         <!-- Left Text Content -->
         <div class="hero-text-area">
-          <div class="hero-subtitle-tag" id="dynHeroSubtitle">
-            Somjit Bhattacharyya-র সাথে
+          <div class="hero-subtitle-tag inline-editable-wrap">
+            <span id="dynHeroSubtitle" class="live-editable-text" data-section="general" data-key="hero_subtitle">Somjit Bhattacharyya-র সাথে</span>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_subtitle', 'হিরো সাব-টাইটেল')"><i class="fas fa-pencil-alt"></i></button>
           </div>
-          <h1 class="hero-heading-main" id="dynHeroHeading">
-            আপনার পরবর্তী<br>ভ্রমণ
-          </h1>
+
+          <div class="hero-heading-wrap inline-editable-wrap">
+            <h1 class="hero-heading-main live-editable-text" id="dynHeroHeading" data-section="general" data-key="hero_heading">
+              আপনার পরবর্তী<br>ভ্রমণ
+            </h1>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_heading', 'হিরো মূল শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+
           <div class="hero-cta-pill-group">
-            <a href="#tours" class="btn-hero-pill navy">
-              <i class="fas fa-suitcase-rolling"></i>
-              <span id="dynHeroBtnTours">আসন্ন ট্যুর দেখুন</span>
-              <i class="fas fa-arrow-right pill-arrow"></i>
-            </a>
-            <a href="tel:+919433074880" class="btn-hero-pill gold">
-              <i class="fas fa-phone-alt"></i>
-              <span id="dynHeroBtnCall">ফোন করে জানুন</span>
-            </a>
+            <div class="cta-pill-wrap inline-editable-wrap">
+              <a href="#tours" class="btn-hero-pill navy">
+                <i class="fas fa-suitcase-rolling"></i>
+                <span id="dynHeroBtnTours" class="live-editable-text" data-section="general" data-key="hero_btn_tours">আসন্ন ট্যুর দেখুন</span>
+                <i class="fas fa-arrow-right pill-arrow"></i>
+              </a>
+              <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_btn_tours', '১ম বোতামের টেক্সট')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
+
+            <div class="cta-pill-wrap inline-editable-wrap">
+              <a href="tel:+919433074880" class="btn-hero-pill gold">
+                <i class="fas fa-phone-alt"></i>
+                <span id="dynHeroBtnCall" class="live-editable-text" data-section="general" data-key="hero_btn_call">ফোন করে জানুন</span>
+              </a>
+              <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_btn_call', '২য় বোতামের টেক্সট')"><i class="fas fa-pencil-alt"></i></button>
+            </div>
           </div>
         </div>
 
         <!-- Right Host Cutout Image -->
         <div class="hero-host-area">
-          <img id="dynHeroHostCutout" src="assets/images/somjit_hero_cutout.png" alt="Somjit Bhattacharyya" class="hero-host-cutout">
+          <div class="host-cutout-wrap">
+            <img id="dynHeroHostCutout" src="assets/images/somjit_hero_cutout.png" alt="Somjit Bhattacharyya" class="hero-host-cutout">
+            <button class="btn-img-uploader edit-only-btn cutout-uploader-btn" onclick="triggerDirectUpload('branding', 'hero_host_cutout', 'dynHeroHostCutout')">
+              <i class="fas fa-camera"></i> পোর্ট্রেট ছবি বদলান
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -154,8 +206,9 @@
     <div class="container">
       <!-- Section Header -->
       <div class="section-heading-bar">
-        <div class="title-with-bar">
-          <h2 class="section-main-title" id="dynToursSectionTitle">এই মাসের আসন্ন ট্যুর</h2>
+        <div class="title-with-bar inline-editable-wrap">
+          <h2 class="section-main-title live-editable-text" id="dynToursSectionTitle" data-section="general" data-key="tours_section_title">এই মাসের আসন্ন ট্যুর</h2>
+          <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'tours_section_title', 'ট্যুর সেকশনের শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
           <div class="amber-bar"></div>
         </div>
         <a href="javascript:void(0)" onclick="openAllToursModal()" class="see-all-tours-btn">
@@ -183,15 +236,35 @@
     <div class="container">
       <div class="host-intro-card">
         <div class="host-avatar-col">
-          <img id="dynHostAvatar" src="assets/images/host_circle_avatar.png" alt="Somjit Bhattacharyya" class="host-intro-avatar">
+          <div class="host-avatar-wrap">
+            <img id="dynHostAvatar" src="assets/images/host_circle_avatar.png" alt="Somjit Bhattacharyya" class="host-intro-avatar">
+            <button class="btn-img-uploader edit-only-btn avatar-uploader-btn" onclick="triggerDirectUpload('branding', 'host_circle_avatar', 'dynHostAvatar')">
+              <i class="fas fa-camera"></i> ছবি বদলান
+            </button>
+          </div>
         </div>
         <div class="host-text-col">
-          <h3 class="host-intro-title" id="dynHostSectionTitle">আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী</h3>
-          <div class="host-intro-name" id="dynHostName">Somjit Bhattacharyya</div>
-          <div class="host-intro-role" id="dynHostRole">Founder & Host</div>
-          <p class="host-intro-bio" id="dynHostBio">
-            আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ। আপনাদের ভালোবাসাই আমাকে নতুন নতুন জায়গায় নিয়ে যায়, আর সেই অভিজ্ঞতাই ভাগ করে নিই আপনাদের সাথে।
-          </p>
+          <div class="inline-editable-wrap">
+            <h3 class="host-intro-title live-editable-text" id="dynHostSectionTitle" data-section="company_about" data-key="host_section_title">আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী</h3>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_section_title', 'হোস্ট সেকশনের শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+
+          <div class="inline-editable-wrap">
+            <div class="host-intro-name live-editable-text" id="dynHostName" data-section="company_about" data-key="host_name">Somjit Bhattacharyya</div>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_name', 'হোস্টের নাম')"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+
+          <div class="inline-editable-wrap">
+            <div class="host-intro-role live-editable-text" id="dynHostRole" data-section="company_about" data-key="host_role">Founder & Host</div>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_role', 'হোস্টের পদবি')"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+
+          <div class="inline-editable-wrap">
+            <p class="host-intro-bio live-editable-text" id="dynHostBio" data-section="company_about" data-key="host_bio">
+              আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ। আপনাদের ভালোবাসাই আমাকে নতুন নতুন জায়গায় নিয়ে যায়, আর সেই অভিজ্ঞতাই ভাগ করে নিই আপনাদের সাথে।
+            </p>
+            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_bio', 'হোস্টের জীবনমুখী গল্প/Bio')"><i class="fas fa-pencil-alt"></i></button>
+          </div>
         </div>
       </div>
     </div>
@@ -200,8 +273,9 @@
   <!-- 5. Section: কেন আমাদের সাথে যাবেন? (Why Choose Us - Matching Screenshot 1) -->
   <section id="why-us" class="section-why-us">
     <div class="container">
-      <div class="title-with-bar">
-        <h2 class="section-main-title" id="dynWhyUsTitle">কেন আমাদের সাথে যাবেন?</h2>
+      <div class="title-with-bar inline-editable-wrap">
+        <h2 class="section-main-title live-editable-text" id="dynWhyUsTitle" data-section="general" data-key="why_us_title">কেন আমাদের সাথে যাবেন?</h2>
+        <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'why_us_title', 'কেন আমাদের সাথে যাবেন শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
         <div class="amber-bar"></div>
       </div>
 
@@ -214,8 +288,9 @@
   <!-- 6. Section: আমাদের সাথে কিছু মুহূর্ত (Moments with Us - Matching Screenshot 1) -->
   <section id="moments" class="section-moments">
     <div class="container">
-      <div class="title-with-bar">
-        <h2 class="section-main-title" id="dynMomentsTitle">আমাদের সাথে কিছু মুহূর্ত</h2>
+      <div class="title-with-bar inline-editable-wrap">
+        <h2 class="section-main-title live-editable-text" id="dynMomentsTitle" data-section="general" data-key="moments_section_title">আমাদের সাথে কিছু মুহূর্ত</h2>
+        <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'moments_section_title', 'মুহূর্ত সেকশন শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
         <div class="amber-bar"></div>
       </div>
 
@@ -321,9 +396,14 @@
   <!-- 8. Section: YouTube ভিডিও ভ্লগ ও ট্রাভেল গাইড -->
   <section id="vlogs" class="section-vlogs">
     <div class="container">
-      <div class="title-with-bar">
-        <h2 class="section-main-title">ট্রাভেল ভিডিও ভ্লগ</h2>
-        <div class="amber-bar"></div>
+      <div class="section-heading-bar">
+        <div class="title-with-bar">
+          <h2 class="section-main-title">ট্রাভেল ভিডিও ভ্লগ</h2>
+          <div class="amber-bar"></div>
+        </div>
+        <button class="btn-top btn-save-all edit-only-btn" onclick="openAddVlogModal()" style="font-size:0.82rem; padding:6px 12px;">
+          <i class="fas fa-plus"></i> ভিডিও যোগ করুন
+        </button>
       </div>
 
       <div class="vlogs-cards-grid" id="homeVlogsList">
@@ -335,9 +415,14 @@
   <!-- 9. Section: সাধারণ প্রশ্নোত্তর (FAQ) -->
   <section id="faq" class="section-faq">
     <div class="container">
-      <div class="title-with-bar">
-        <h2 class="section-main-title">সাধারণ প্রশ্নোত্তর (FAQ)</h2>
-        <div class="amber-bar"></div>
+      <div class="section-heading-bar">
+        <div class="title-with-bar">
+          <h2 class="section-main-title">সাধারণ প্রশ্নোত্তর (FAQ)</h2>
+          <div class="amber-bar"></div>
+        </div>
+        <button class="btn-top btn-save-all edit-only-btn" onclick="openAddFaqModal()" style="font-size:0.82rem; padding:6px 12px;">
+          <i class="fas fa-plus"></i> প্রশ্ন যোগ করুন
+        </button>
       </div>
 
       <div class="faq-accordion-container" id="homeFaqContainer">
@@ -366,7 +451,7 @@
 
       <div class="footer-bottom-bar">
         <span>© ২০২৬ Tour with Somjit. <a href="javascript:void(0)" onclick="openPrivacyModal()" style="color:#fbbf24; text-decoration:underline; margin-left:8px;">প্রাইভেসি পলিসি</a> | সর্বস্বত্ব সংরক্ষিত।</span>
-        <a href="admin.html" target="_blank" style="color:#f59e0b; font-size:0.85rem;"><i class="fas fa-user-shield"></i> অ্যাডমিন লগইন</a>
+        <a href="javascript:void(0)" onclick="toggleVisualEditMode()" style="color:#f59e0b; font-size:0.85rem;"><i class="fas fa-edit"></i> লাইভ এডিট মোড</a>
       </div>
     </div>
   </section>
@@ -390,7 +475,6 @@
   <!-- 12. REDESIGNED BOOKING FORM / INQUIRY MODAL (Matching Screenshot 2) -->
   <div id="bookingModal" class="modal-overlay">
     <div class="booking-modal-card">
-      <!-- Header Banner -->
       <div class="booking-modal-header">
         <div class="booking-header-left">
           <i class="fas fa-users booking-header-icon"></i>
@@ -404,14 +488,11 @@
         <button type="button" class="booking-modal-close" onclick="closeBookingModal()">&times;</button>
       </div>
 
-      <!-- Subtitle -->
       <div class="booking-subtitle">
         আপনার তথ্য নিচে দিন, সরাসরি WhatsApp-এ মেসেজ চলে যাবে।
       </div>
 
-      <!-- Form Body -->
       <form id="groupBookingForm" onsubmit="handleGroupBookingSubmit(event)">
-        <!-- Row 1: Name & Age -->
         <div class="booking-grid-2">
           <div class="booking-field-group">
             <label class="booking-field-label"><i class="fas fa-user"></i> নাম (Name)</label>
@@ -423,7 +504,6 @@
           </div>
         </div>
 
-        <!-- Row 2: Gender & Phone -->
         <div class="booking-grid-2">
           <div class="booking-field-group">
             <label class="booking-field-label"><i class="fas fa-venus-mars"></i> লিঙ্গ (Gender)</label>
@@ -439,13 +519,11 @@
           </div>
         </div>
 
-        <!-- Row 3: Number of Persons -->
         <div class="booking-field-group">
           <label class="booking-field-label"><i class="fas fa-users"></i> কতজন গ্রুপে যাবে? (No. of Persons)</label>
           <input type="text" id="bkPersons" class="booking-field-input" placeholder="উদাহরণ: ৪ জন" required>
         </div>
 
-        <!-- Row 4: Select Tour -->
         <div class="booking-field-group">
           <label class="booking-field-label"><i class="fas fa-map-marker-alt"></i> কোন ট্যুরে যেতে চান? (Which Tour)</label>
           <div class="booking-select-wrapper">
@@ -456,7 +534,6 @@
           </div>
         </div>
 
-        <!-- Row 5: Bed Type -->
         <div class="booking-field-group">
           <label class="booking-field-label"><i class="fas fa-bed"></i> ডবল বেড / ত্রিপল বেড?</label>
           <div class="booking-radio-row">
@@ -465,7 +542,6 @@
           </div>
         </div>
 
-        <!-- Row 6: Food Choice -->
         <div class="booking-field-group">
           <label class="booking-field-label"><i class="fas fa-utensils"></i> আমিষ / নিরামিষ?</label>
           <div class="booking-radio-row">
@@ -474,7 +550,6 @@
           </div>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="booking-submit-btn">
           <div class="submit-btn-top">
             <i class="fab fa-whatsapp"></i> WhatsApp-এ বুকিং করুন
@@ -499,9 +574,7 @@
         <button type="button" class="booking-modal-close" onclick="closeItineraryModal()">&times;</button>
       </div>
 
-      <div class="itinerary-modal-body" id="itinModalBody">
-        <!-- Rendered dynamically from JS -->
-      </div>
+      <div class="itinerary-modal-body" id="itinModalBody"></div>
 
       <div class="itinerary-modal-footer">
         <button type="button" class="btn-itin-book" onclick="bookCurrentItineraryTour()">
@@ -546,11 +619,60 @@
   <div id="videoModal" class="modal-overlay">
     <div class="video-modal-dialog">
       <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
-      <div class="video-iframe-container" id="videoIframeContainer">
-        <!-- Iframe injected here -->
+      <div class="video-iframe-container" id="videoIframeContainer"></div>
+    </div>
+  </div>
+
+  <!-- 16. In-Page Edit Tour Modal -->
+  <div id="editTourModal" class="modal-overlay">
+    <div class="itinerary-modal-dialog" style="max-width:550px;">
+      <div class="itinerary-modal-header">
+        <div class="itin-header-content">
+          <div class="itin-tag">ট্যুর এডিটর</div>
+          <h3 id="editTourModalHeading">ট্যুর প্যাকেজ তথ্য পরিবর্তন</h3>
+        </div>
+        <button type="button" class="booking-modal-close" onclick="closeEditTourModal()">&times;</button>
+      </div>
+      <div class="itinerary-modal-body">
+        <input type="hidden" id="edTourId">
+        <div class="adm-form-group" style="margin-bottom:12px;">
+          <label class="booking-field-label">ট্যুরের নাম ও শিরোনাম</label>
+          <input type="text" id="edTourTitle" class="booking-field-input" placeholder="ট্যুরের নাম">
+        </div>
+        <div class="booking-grid-2">
+          <div class="adm-form-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">তারিখ (Dates)</label>
+            <input type="text" id="edTourDates" class="booking-field-input" placeholder="উদাহরণ: ১৩ - ১৯ নভেম্বর ২০২৬">
+          </div>
+          <div class="adm-form-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">সময়সীমা (Duration)</label>
+            <input type="text" id="edTourDuration" class="booking-field-input" placeholder="উদাহরণ: 6 Nights / 7 Days">
+          </div>
+        </div>
+        <div class="adm-form-group" style="margin-bottom:12px;">
+          <label class="booking-field-label">কভার ছবির লিংক বা আপলোড</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="edTourBanner" class="booking-field-input" placeholder="ছবির URL" style="flex:1;">
+            <label class="btn-top btn-save-all" style="cursor:pointer; padding:8px 12px; font-size:0.85rem;">
+              <i class="fas fa-upload"></i> আপলোড
+              <input type="file" accept="image/*" style="display:none;" onchange="handleTourImageFile(this)">
+            </label>
+          </div>
+        </div>
+        <div class="adm-form-group" style="margin-bottom:12px;">
+          <label class="booking-field-label">ট্যুরের বিবরণ ও শিডিউল (Details)</label>
+          <textarea id="edTourDetails" class="booking-field-input" style="min-height:90px; resize:vertical; font-family:inherit;"></textarea>
+        </div>
+      </div>
+      <div class="itinerary-modal-footer" style="display:flex; gap:10px; justify-content:flex-end;">
+        <button type="button" class="btn-itin-book" style="background:#64748b;" onclick="closeEditTourModal()">বাতিল</button>
+        <button type="button" class="btn-itin-book" onclick="saveTourModalData()"><i class="fas fa-save"></i> ট্যুর সেভ করুন</button>
       </div>
     </div>
   </div>
+
+  <!-- Hidden File Input for Instant Element Image Uploads -->
+  <input type="file" id="globalDirectImageInput" accept="image/*" style="display:none;" onchange="processDirectImageUpload(this)">
 
   <!-- JavaScript Engines -->
   <script src="assets/js/data.js"></script>

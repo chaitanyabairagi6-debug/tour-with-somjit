@@ -1,10 +1,12 @@
 /**
- * Tour with Somjit - Master Application Controller
- * Handles 100% Dynamic UI Rendering, Admin Sync, WhatsApp Booking,
- * YouTube Vlogs with Modal Player, Moments Gallery, and Firebase Sync.
+ * Tour with Somjit - Master Application Controller & In-Page Visual Editor
+ * 100% In-Place Live Editing, Real-Time Cloud Sync to Firebase,
+ * WhatsApp Booking, YouTube Player, and Anek Bangla Typography.
  */
 
 let currentTourId = "ladakh-2026";
+let isVisualEditMode = false;
+let directUploadTarget = { section: "", key: "", elemId: "", isBg: false };
 
 document.addEventListener("DOMContentLoaded", () => {
   initLiveSiteData();
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHomeFaqs();
 });
 
-// 1. Live Site Data Loader & Firebase Fallback
+// 1. Live Site Data Loader & Real-Time Sync
 function initLiveSiteData() {
   const localSaved = localStorage.getItem("tws_custom_site_data");
   if (localSaved) {
@@ -29,7 +31,7 @@ function initLiveSiteData() {
     } catch(e) {}
   }
 
-  // Fetch real-time from Firebase
+  // Fetch real-time from Firebase Cloud
   fetch("https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json", { cache: "no-store" })
     .then(res => res.json())
     .then(cloudData => {
@@ -59,7 +61,145 @@ function deepMerge(target, source) {
   }
 }
 
-// 2. Apply Dynamic Branding, Images & Text to DOM
+// 2. In-Page Visual Edit Mode Toggle
+function toggleVisualEditMode() {
+  if (isVisualEditMode) {
+    exitVisualEditMode();
+    return;
+  }
+
+  const authenticated = sessionStorage.getItem("tws_admin_authenticated");
+  if (!authenticated) {
+    const pin = prompt("🔐 অ্যাডমিন লাইভ এডিট মোড পিন দিন (Default: 1234 বা somjit2026):");
+    if (pin === "1234" || pin === "somjit2026" || pin === "admin") {
+      sessionStorage.setItem("tws_admin_authenticated", "true");
+      enterVisualEditMode();
+    } else if (pin !== null) {
+      alert("❌ ভুল পিন! পুনরায় চেষ্টা করুন।");
+    }
+  } else {
+    enterVisualEditMode();
+  }
+}
+
+function enterVisualEditMode() {
+  isVisualEditMode = true;
+  document.body.classList.remove("normal-view-mode");
+  document.body.classList.add("visual-edit-mode");
+
+  const bar = document.getElementById("visualEditorBar");
+  if (bar) bar.style.display = "block";
+
+  const btnText = document.getElementById("editBtnText");
+  if (btnText) btnText.textContent = "এডিট চলছে";
+
+  renderHomeTours();
+  renderWhyUsFeatures();
+  renderMomentsGallery();
+  renderHomeFaqs();
+
+  showToast("🛠️ লাইভ এডিট মোড সক্রিয়! যেকোনো লেখায় বা ছবিতে ক্লিক করে এডিট করুন।");
+}
+
+function exitVisualEditMode() {
+  isVisualEditMode = false;
+  document.body.classList.remove("visual-edit-mode");
+  document.body.classList.add("normal-view-mode");
+
+  const bar = document.getElementById("visualEditorBar");
+  if (bar) bar.style.display = "none";
+
+  const btnText = document.getElementById("editBtnText");
+  if (btnText) btnText.textContent = "এডিট মোড";
+
+  renderHomeTours();
+  renderWhyUsFeatures();
+  renderMomentsGallery();
+  renderHomeFaqs();
+}
+
+// 3. Prompt Text Edit
+function promptEditText(section, key, labelName) {
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData[section]) siteData[section] = {};
+
+  const currentVal = siteData[section][key] || "";
+  const newVal = prompt(`${labelName} নতুন করে লিখুন:`, currentVal);
+
+  if (newVal !== null && newVal.trim() !== "") {
+    siteData[section][key] = newVal.trim();
+    localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+    applyDynamicBrandingAndText();
+    showToast(`✓ '${labelName}' পরিবর্তন হয়েছে! সেভ করতে 'ফাইনাল সেভ' বোতাম চাপুন।`);
+  }
+}
+
+// 4. Direct Image Upload Handler
+function triggerDirectUpload(section, key, elemId, isBg = false) {
+  directUploadTarget = { section, key, elemId, isBg };
+  const fileInput = document.getElementById("globalDirectImageInput");
+  if (fileInput) {
+    fileInput.value = "";
+    fileInput.click();
+  }
+}
+
+function processDirectImageUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const siteData = window.TWS_SITE_DATA || {};
+    const { section, key, elemId, isBg } = directUploadTarget;
+
+    if (!siteData[section]) siteData[section] = {};
+    siteData[section][key] = dataUrl;
+    localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      if (isBg) {
+        elem.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${dataUrl}')`;
+      } else {
+        elem.src = dataUrl;
+      }
+    }
+
+    applyDynamicBrandingAndText();
+    showToast("✓ ছবি সফলভাবে পরিবর্তন হয়েছে! সেভ করতে 'ফাইনাল সেভ' বোতাম চাপুন।");
+  };
+
+  reader.readAsDataURL(file);
+}
+
+// 5. Save Visual Edits Directly to Google Firebase Realtime Cloud
+async function saveVisualEditsToCloud() {
+  const siteData = window.TWS_SITE_DATA || {};
+  showToast("⏳ গুগলের ক্লাউড সার্ভারে সেভ হচ্ছে...");
+
+  try {
+    const res = await fetch("https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(siteData)
+    });
+
+    if (res.ok) {
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      alert("🎉 অসাধারণ! আপনার সমস্ত পরিবর্তন সরাসরি Google ক্লাউডে সেভ হয়ে গেছে এবং ওয়েবসাইটে লাইভ হয়ে গেছে!");
+      exitVisualEditMode();
+    } else {
+      throw new Error("Server error");
+    }
+  } catch(err) {
+    alert("✓ লোকাল ডিভাইসে সংরক্ষিত হয়েছে! (ইন্টারনেট কানেকশন চেক করুন)");
+    exitVisualEditMode();
+  }
+}
+
+// 6. Apply Dynamic Branding, Images & Text to DOM
 function applyDynamicBrandingAndText() {
   const siteData = window.TWS_SITE_DATA || {};
   const branding = siteData.branding || {};
@@ -77,8 +217,9 @@ function applyDynamicBrandingAndText() {
 
   // Hero Background
   const heroBgContainer = document.getElementById("dynHeroBgContainer");
-  if (heroBgContainer && branding.hero_bg) {
-    heroBgContainer.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${branding.hero_bg}')`;
+  if (heroBgContainer) {
+    const bgUrl = branding.hero_bg || "assets/images/hero_scenic_bg.jpg";
+    heroBgContainer.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${bgUrl}')`;
   }
 
   // Hero Somjit Cutout
@@ -128,7 +269,7 @@ function applyDynamicBrandingAndText() {
   if (hostBio) hostBio.textContent = host.host_bio || host.desc || "আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ...";
 }
 
-// 3. Mobile Drawer Navigation
+// 7. Mobile Drawer Navigation
 function initMobileDrawer() {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const closeBtn = document.getElementById("closeMobileNavBtn");
@@ -147,7 +288,7 @@ function closeNav() {
   if (drawer) drawer.classList.remove("active");
 }
 
-// 4. Render Tours on Homepage (Matching Screenshot 1)
+// 8. Render Tours on Homepage with Live Edit Hooks
 function renderHomeTours() {
   const container = document.getElementById("homeToursList");
   if (!container) return;
@@ -178,12 +319,18 @@ function renderHomeTours() {
     else if (tour.id.includes("purulia")) bnShortName = "পুরুলিয়া";
 
     html += `
-      <div class="tour-card-compact" onclick="openItineraryModal('${tour.id}')">
-        <div class="tour-card-cover">
+      <div class="tour-card-compact" style="position:relative;">
+        ${isVisualEditMode ? `
+          <div class="tour-card-edit-overlay edit-only-btn">
+            <button type="button" class="tour-card-edit-btn" onclick="openEditTourModal('${tour.id}', event)" title="ট্যুর তথ্য এডিট"><i class="fas fa-pencil-alt"></i></button>
+            <button type="button" class="tour-card-edit-btn del" onclick="deleteTourItem('${tour.id}', event)" title="ট্যুর ডিলিট"><i class="fas fa-trash"></i></button>
+          </div>
+        ` : ''}
+        <div class="tour-card-cover" onclick="openItineraryModal('${tour.id}')">
           <img src="${imgUrl}" alt="${escapeAttr(tour.title)}" loading="lazy">
           <div class="tour-card-dest-name">${escapeHtml(bnShortName)}</div>
         </div>
-        <div class="tour-card-bottom-info">
+        <div class="tour-card-bottom-info" onclick="openItineraryModal('${tour.id}')">
           <div class="tour-card-dates-col">
             <div class="tour-card-dates">${escapeHtml(tour.dates || '২০২৬')}</div>
             <div class="tour-card-duration">${escapeHtml(tour.duration || 'গ্রুপ ট্যুর')}</div>
@@ -199,7 +346,100 @@ function renderHomeTours() {
   container.innerHTML = html;
 }
 
-// 5. Render Why Us Features (4 Items)
+// 9. In-Page Tour Edit & Modal
+function openEditTourModal(tourId, event) {
+  if (event) event.stopPropagation();
+  const siteData = window.TWS_SITE_DATA || {};
+  const tour = siteData.tours ? siteData.tours[tourId] : null;
+  if (!tour) return;
+
+  document.getElementById("edTourId").value = tourId;
+  document.getElementById("edTourTitle").value = tour.title || "";
+  document.getElementById("edTourDates").value = tour.dates || "";
+  document.getElementById("edTourDuration").value = tour.duration || "";
+  document.getElementById("edTourBanner").value = tour.banner_image || "";
+  document.getElementById("edTourDetails").value = tour.caption_details || "";
+
+  document.getElementById("editTourModalHeading").textContent = `এডিট: ${tour.title}`;
+  document.getElementById("editTourModal").classList.add("active");
+}
+
+function openAddTourModal() {
+  const newId = "tour-" + Date.now();
+  document.getElementById("edTourId").value = newId;
+  document.getElementById("edTourTitle").value = "নতুন আকর্ষণীয় ট্যুর";
+  document.getElementById("edTourDates").value = "২০২৬";
+  document.getElementById("edTourDuration").value = "5 Nights / 6 Days";
+  document.getElementById("edTourBanner").value = "assets/images/card_ladakh.jpg";
+  document.getElementById("edTourDetails").value = "এই ট্যুরের সম্পূর্ণ শিডিউল...";
+
+  document.getElementById("editTourModalHeading").textContent = "নতুন ট্যুর যোগ করুন";
+  document.getElementById("editTourModal").classList.add("active");
+}
+
+function closeEditTourModal() {
+  document.getElementById("editTourModal").classList.remove("active");
+}
+
+function handleTourImageFile(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById("edTourBanner").value = e.target.result;
+      showToast("✓ ছবি লোড হয়েছে!");
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function saveTourModalData() {
+  const tourId = document.getElementById("edTourId").value;
+  const title = document.getElementById("edTourTitle").value.trim();
+  const dates = document.getElementById("edTourDates").value.trim();
+  const duration = document.getElementById("edTourDuration").value.trim();
+  const banner = document.getElementById("edTourBanner").value.trim();
+  const details = document.getElementById("edTourDetails").value.trim();
+
+  if (!title) {
+    alert("দয়া করে ট্যুরের নাম দিন।");
+    return;
+  }
+
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData.tours) siteData.tours = {};
+
+  if (!siteData.tours[tourId]) {
+    siteData.tours[tourId] = { id: tourId, title, dates, duration, banner_image: banner, caption_details: details };
+  } else {
+    siteData.tours[tourId].title = title;
+    siteData.tours[tourId].dates = dates;
+    siteData.tours[tourId].duration = duration;
+    siteData.tours[tourId].banner_image = banner;
+    siteData.tours[tourId].caption_details = details;
+  }
+
+  localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+  closeEditTourModal();
+  renderHomeTours();
+  populateTourDropdown();
+  showToast("✓ ট্যুর আপডেট হয়েছে! ফাইনাল সেভ করতে 'ফাইনাল সেভ' বোতাম চাপুন।");
+}
+
+function deleteTourItem(tourId, event) {
+  if (event) event.stopPropagation();
+  if (confirm("আপনি কি নিশ্চিত এই ট্যুরটি ডিলিট করতে চান?")) {
+    const siteData = window.TWS_SITE_DATA || {};
+    if (siteData.tours && siteData.tours[tourId]) {
+      delete siteData.tours[tourId];
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderHomeTours();
+      populateTourDropdown();
+      showToast("✓ ট্যুর ডিলিট হয়েছে!");
+    }
+  }
+}
+
+// 10. Render Why Us Features (4 Items)
 function renderWhyUsFeatures() {
   const container = document.getElementById("dynWhyUsGrid");
   if (!container) return;
@@ -213,9 +453,12 @@ function renderWhyUsFeatures() {
   ];
 
   let html = "";
-  features.forEach(f => {
+  features.forEach((f, idx) => {
     html += `
-      <div class="why-us-item">
+      <div class="why-us-item" style="position:relative;">
+        ${isVisualEditMode ? `
+          <button type="button" class="btn-inline-edit edit-only-btn" onclick="editWhyUsItem(${idx})"><i class="fas fa-pencil-alt"></i></button>
+        ` : ''}
         <div class="why-icon-circle"><i class="${f.icon || 'fas fa-star'}"></i></div>
         <h4 class="why-item-title">${escapeHtml(f.title)}</h4>
         <p class="why-item-desc">${escapeHtml(f.desc)}</p>
@@ -226,7 +469,26 @@ function renderWhyUsFeatures() {
   container.innerHTML = html;
 }
 
-// 6. Render Moments Gallery
+function editWhyUsItem(idx) {
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData.why_us_features) return;
+  const item = siteData.why_us_features[idx];
+  if (!item) return;
+
+  const newTitle = prompt("বৈশিষ্ট্যের নাম:", item.title);
+  if (newTitle !== null && newTitle.trim() !== "") {
+    const newDesc = prompt("বিবরণ:", item.desc);
+    if (newDesc !== null) {
+      item.title = newTitle.trim();
+      item.desc = newDesc.trim();
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderWhyUsFeatures();
+      showToast("✓ বৈশিষ্ট্য আপডেট হয়েছে!");
+    }
+  }
+}
+
+// 11. Render Moments Gallery
 function renderMomentsGallery() {
   const track = document.getElementById("momentsTrack");
   if (!track) return;
@@ -239,15 +501,92 @@ function renderMomentsGallery() {
   ];
 
   let html = "";
-  moments.forEach(m => {
+  moments.forEach((m, idx) => {
     html += `
-      <div class="moment-card">
+      <div class="moment-card" style="position:relative;">
+        ${isVisualEditMode ? `
+          <div class="moment-card-edit-overlay edit-only-btn">
+            <button type="button" class="tour-card-edit-btn" onclick="changeMomentPhoto(${idx})" title="ছবি বদলান"><i class="fas fa-camera"></i></button>
+            <button type="button" class="tour-card-edit-btn del" onclick="deleteMomentPhoto(${idx})" title="মুহূর্ত ডিলিট"><i class="fas fa-trash"></i></button>
+          </div>
+        ` : ''}
         <img src="${m.image_url}" alt="${escapeAttr(m.caption || 'Tour Moment')}" loading="lazy">
       </div>
     `;
   });
 
+  if (isVisualEditMode) {
+    html += `
+      <div class="add-moment-inline-card edit-only-btn" onclick="openAddMomentModal()">
+        <i class="fas fa-plus-circle" style="font-size:1.5rem;"></i>
+        <span>নতুন মুহূর্ত যোগ</span>
+      </div>
+    `;
+  }
+
   track.innerHTML = html;
+}
+
+function openAddMomentModal() {
+  const fileInput = document.getElementById("globalDirectImageInput");
+  directUploadTarget = { section: "moments_gallery_new", key: "", elemId: "" };
+  if (fileInput) {
+    fileInput.value = "";
+    fileInput.onchange = function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const siteData = window.TWS_SITE_DATA || {};
+          if (!siteData.moments_gallery) siteData.moments_gallery = [];
+          siteData.moments_gallery.push({
+            id: "m-" + Date.now(),
+            image_url: e.target.result,
+            caption: "নতুন ভ্রমণ মুহূর্ত"
+          });
+          localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+          renderMomentsGallery();
+          showToast("✓ নতুন মুহূর্ত যোগ হয়েছে!");
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    };
+    fileInput.click();
+  }
+}
+
+function changeMomentPhoto(idx) {
+  const fileInput = document.getElementById("globalDirectImageInput");
+  if (fileInput) {
+    fileInput.value = "";
+    fileInput.onchange = function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const siteData = window.TWS_SITE_DATA || {};
+          if (siteData.moments_gallery && siteData.moments_gallery[idx]) {
+            siteData.moments_gallery[idx].image_url = e.target.result;
+            localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+            renderMomentsGallery();
+            showToast("✓ ছবি পরিবর্তন হয়েছে!");
+          }
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    };
+    fileInput.click();
+  }
+}
+
+function deleteMomentPhoto(idx) {
+  if (confirm("এই মুহূর্তের ছবিটি ডিলিট করতে চান?")) {
+    const siteData = window.TWS_SITE_DATA || {};
+    if (siteData.moments_gallery) {
+      siteData.moments_gallery.splice(idx, 1);
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderMomentsGallery();
+      showToast("✓ মুহূর্তের ছবি ডিলিট হয়েছে!");
+    }
+  }
 }
 
 function scrollMoments(direction) {
@@ -257,7 +596,7 @@ function scrollMoments(direction) {
   }
 }
 
-// 7. Render Vlogs on Homepage
+// 12. Render Vlogs on Homepage
 function renderHomeVlogs() {
   const container = document.getElementById("homeVlogsList");
   if (!container) return;
@@ -279,19 +618,22 @@ function renderHomeVlogs() {
   ];
 
   let html = "";
-  vlogs.forEach(vlog => {
+  vlogs.forEach((vlog, idx) => {
     const videoId = extractYouTubeVideoId(vlog.youtube_url);
     const thumb = vlog.thumbnail_url || (videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "assets/images/card_ladakh.jpg");
 
     html += `
-      <div class="vlog-card-item" onclick="playYouTubeVideo('${videoId || ''}', '${escapeAttr(vlog.title)}')">
-        <div class="vlog-thumb-wrap">
+      <div class="vlog-card-item" style="position:relative;">
+        ${isVisualEditMode ? `
+          <button type="button" class="tour-card-edit-btn del edit-only-btn" style="position:absolute; top:8px; right:8px; z-index:100;" onclick="deleteVlogItem(${idx})" title="ভিডিও মুছুন"><i class="fas fa-trash"></i></button>
+        ` : ''}
+        <div class="vlog-thumb-wrap" onclick="playYouTubeVideo('${videoId || ''}', '${escapeAttr(vlog.title)}')">
           <img src="${thumb}" alt="${escapeAttr(vlog.title)}" loading="lazy">
           <div class="vlog-play-badge">
             <i class="fab fa-youtube"></i>
           </div>
         </div>
-        <div class="vlog-info-wrap">
+        <div class="vlog-info-wrap" onclick="playYouTubeVideo('${videoId || ''}', '${escapeAttr(vlog.title)}')">
           <h4 class="vlog-title-text">${escapeHtml(vlog.title)}</h4>
           <p class="vlog-desc-text">${escapeHtml(vlog.desc || 'সোমজিৎ ভট্টাচার্য-এর সাথে আকর্ষণীয় ভ্রমণ অভিজ্ঞতা।')}</p>
         </div>
@@ -300,6 +642,47 @@ function renderHomeVlogs() {
   });
 
   container.innerHTML = html;
+}
+
+function openAddVlogModal() {
+  const url = prompt("YouTube ভিডিওর লিংক দিন (Watch / Shorts / Live লিংক):");
+  if (!url) return;
+
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) {
+    alert("❌ সঠিক YouTube লিংক পাওয়া যায়নি।");
+    return;
+  }
+
+  const title = prompt("ভিডিওর শিরোনাম দিন:", "নতুন ভ্রমণ ভিডিও ভ্লগ") || "ভ্রমণ ভিডিও";
+  const desc = prompt("ভিডিওর সংক্ষিপ্ত বিবরণ দিন:", "সোমজিৎ ভট্টাচার্য-এর সাথে ভ্রমণ ভিডিও") || "";
+
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData.vlogs) siteData.vlogs = [];
+
+  siteData.vlogs.unshift({
+    id: "vlog-" + Date.now(),
+    title,
+    desc,
+    youtube_url: `https://www.youtube.com/watch?v=${videoId}`,
+    thumbnail_url: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+  });
+
+  localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+  renderHomeVlogs();
+  showToast("✓ নতুন YouTube ভিডিও যোগ হয়েছে!");
+}
+
+function deleteVlogItem(idx) {
+  if (confirm("এই ভিডিওটি ডিলিট করতে চান?")) {
+    const siteData = window.TWS_SITE_DATA || {};
+    if (siteData.vlogs) {
+      siteData.vlogs.splice(idx, 1);
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderHomeVlogs();
+      showToast("✓ ভিডিও ডিলিট হয়েছে!");
+    }
+  }
 }
 
 function extractYouTubeVideoId(url) {
@@ -339,7 +722,7 @@ function closeVideoModal() {
   if (modal) modal.classList.remove("active");
 }
 
-// 8. Render FAQs
+// 13. Render FAQs
 function renderHomeFaqs() {
   const container = document.getElementById("homeFaqContainer");
   if (!container) return;
@@ -350,7 +733,13 @@ function renderHomeFaqs() {
   let html = "";
   faqs.forEach((faq, idx) => {
     html += `
-      <div class="faq-item-card" id="faqCard_${idx}">
+      <div class="faq-item-card" id="faqCard_${idx}" style="position:relative;">
+        ${isVisualEditMode ? `
+          <div style="position:absolute; top:10px; right:40px; z-index:100; display:flex; gap:6px;">
+            <button type="button" class="tour-card-edit-btn" onclick="editFaqItem(${idx}, event)"><i class="fas fa-pencil-alt"></i></button>
+            <button type="button" class="tour-card-edit-btn del" onclick="deleteFaqItem(${idx}, event)"><i class="fas fa-trash"></i></button>
+          </div>
+        ` : ''}
         <button class="faq-question-btn" onclick="toggleFaq(${idx})">
           <span>${escapeHtml(faq.q)}</span>
           <i class="fas fa-chevron-down faq-arrow-icon"></i>
@@ -363,6 +752,53 @@ function renderHomeFaqs() {
   });
 
   container.innerHTML = html;
+}
+
+function openAddFaqModal() {
+  const q = prompt("নতুন প্রশ্নটি লিখুন:");
+  if (!q) return;
+  const a = prompt("প্রশ্নটির উত্তর লিখুন:");
+  if (!a) return;
+
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData.faqs) siteData.faqs = [];
+  siteData.faqs.push({ q: q.trim(), a: a.trim() });
+
+  localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+  renderHomeFaqs();
+  showToast("✓ নতুন FAQ যোগ হয়েছে!");
+}
+
+function editFaqItem(idx, event) {
+  if (event) event.stopPropagation();
+  const siteData = window.TWS_SITE_DATA || {};
+  if (!siteData.faqs || !siteData.faqs[idx]) return;
+
+  const faq = siteData.faqs[idx];
+  const newQ = prompt("প্রশ্নটি এডিট করুন:", faq.q);
+  if (newQ !== null && newQ.trim() !== "") {
+    const newA = prompt("উত্তরটি এডিট করুন:", faq.a);
+    if (newA !== null) {
+      faq.q = newQ.trim();
+      faq.a = newA.trim();
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderHomeFaqs();
+      showToast("✓ FAQ আপডেট হয়েছে!");
+    }
+  }
+}
+
+function deleteFaqItem(idx, event) {
+  if (event) event.stopPropagation();
+  if (confirm("এই প্রশ্নটি ডিলিট করতে চান?")) {
+    const siteData = window.TWS_SITE_DATA || {};
+    if (siteData.faqs) {
+      siteData.faqs.splice(idx, 1);
+      localStorage.setItem("tws_custom_site_data", JSON.stringify(siteData));
+      renderHomeFaqs();
+      showToast("✓ FAQ ডিলিট হয়েছে!");
+    }
+  }
 }
 
 function toggleFaq(idx) {
@@ -380,7 +816,7 @@ function toggleFaq(idx) {
   }
 }
 
-// 9. Booking Modal & WhatsApp Dispatch
+// 14. Booking Modal & WhatsApp Dispatch
 function initBookingModal() {
   populateTourDropdown();
 }
@@ -500,7 +936,7 @@ async function handleGroupBookingSubmit(event) {
   alert("✓ আপনার বুকিং অনুরোধ সফলভাবে পাঠানো হয়েছে! সোমজিৎ ভট্টাচার্য ও অ্যাডমিন টিম দ্রুত WhatsApp-এ যোগাযোগ করবেন।");
 }
 
-// 10. Itinerary Modal
+// 15. Itinerary Modal
 function openItineraryModal(tourId) {
   const siteData = window.TWS_SITE_DATA || {};
   const tour = (siteData.tours && siteData.tours[tourId]) ? siteData.tours[tourId] : Object.values(siteData.tours || {})[0];
@@ -542,7 +978,7 @@ function bookCurrentItineraryTour() {
   openBookingModal(tour ? tour.title : "");
 }
 
-// 11. Privacy Policy Modal
+// 16. Privacy Policy Modal
 function openPrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (modal) modal.classList.add("active");
@@ -551,6 +987,21 @@ function openPrivacyModal() {
 function closePrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (modal) modal.classList.remove("active");
+}
+
+// 17. Toast Notification Helper
+function showToast(msg) {
+  let toast = document.getElementById("twsLiveToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "twsLiveToast";
+    toast.style.cssText = "position:fixed; bottom:75px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fbbf24; border:1px solid #fbbf24; padding:10px 18px; border-radius:30px; font-size:0.88rem; font-weight:700; z-index:999999; box-shadow:0 6px 20px rgba(0,0,0,0.35); text-align:center; transition:opacity 0.3s ease; pointer-events:none;";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = "1";
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = "0"; }, 3200);
 }
 
 function escapeHtml(str) {
