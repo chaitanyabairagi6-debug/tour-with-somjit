@@ -1,4 +1,4 @@
-/** Master Default Tourism Database - Synced from Live Firebase */
+/** Master Default Tourism Database - Synced with Admin Customizer */
 window.TWS_SITE_DATA = {
   "booking_fields": [
     {
@@ -70,7 +70,10 @@ window.TWS_SITE_DATA = {
   "branding": {
     "host_avatar": "assets/images/somjit_avatar.png",
     "host_main_photo": "assets/images/somjit_host.jpg",
-    "logo_url": "assets/imag"
+    "logo_url": "assets/imag",
+    "hero_bg": "assets/images/hero_scenic_bg.jpg",
+    "hero_host_cutout": "assets/images/somjit_hero_cutout.png",
+    "host_circle_avatar": "assets/images/host_circle_avatar.png"
   },
   "company_about": {
     "address": "Fatakgora, Chandannagar, Hooghly, West Bengal - 712136",
@@ -101,7 +104,11 @@ window.TWS_SITE_DATA = {
       }
     ],
     "team_heading": "আমাদের নিবেদিতপ্রাণ ম্যানেজমেন্ট টিম",
-    "title": "Tour with Somjit - অফিশিয়াল কোম্পানি বিবরণ"
+    "title": "Tour with Somjit - অফিশিয়াল কোম্পানি বিবরণ",
+    "host_section_title": "আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী",
+    "host_name": "Somjit Bhattacharyya",
+    "host_role": "Founder & Host",
+    "host_bio": "আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ। আপনাদের ভালোবাসাই আমাকে নতুন নতুন জায়গায় নিয়ে যায়, আর সেই অভিজ্ঞতাই ভাগ করে নিই আপনাদের সাথে।"
   },
   "contact": {
     "address": "Fatakgora, Chandannagar, Hooghly, West Bengal - 712136",
@@ -185,7 +192,14 @@ window.TWS_SITE_DATA = {
     "tagline": "সোমজিৎ ভট্টাচার্য-এর সাথে নিরাপদ ও ঘরোয়া গ্রুপ ট্যুর",
     "tour_section_subtitle": "আমাদের ২০২৬ সালের অফিশিয়াল ক্যালেন্ডার",
     "tour_section_title": "সোমজিৎ ভট্টাচার্য-এর সিগনেচার গ্রুপ ট্যুরসমূহ",
-    "urgent_notice": ""
+    "urgent_notice": "",
+    "hero_subtitle": "Somjit Bhattacharyya-র সাথে",
+    "hero_heading": "আপনার পরবর্তী ভ্রমণ",
+    "hero_btn_tours": "আসন্ন ট্যুর দেখুন",
+    "hero_btn_call": "ফোন করে জানুন",
+    "tours_section_title": "এই মাসের আসন্ন ট্যুর",
+    "why_us_title": "কেন আমাদের সাথে যাবেন?",
+    "moments_section_title": "আমাদের সাথে কিছু মুহূর্ত"
   },
   "host": {
     "facebook_url": "https://facebook.com/somjit.bhattacharyya",
@@ -484,6 +498,45 @@ window.TWS_SITE_DATA = {
       "desc": "হোটেল, গাড়ি, সব মিল, পারমিট থেকে এন্ট্রি ফি—সবকিছু আগে থেকেই স্পষ্ট। কোনো লুকানো চার্জ বা পেছনের খারাপ সিটের ভোগান্তি নেই।",
       "icon": "fa-handshake",
       "title": "১০০% স্বচ্ছতা ও লুকানো চার্জ নেই"
+    }
+  ],
+  "why_us_features": [
+    {
+      "icon": "fas fa-user-friends",
+      "title": "ছোট গ্রুপ ট্যুর",
+      "desc": "আরামদায়ক ও পরিচিত পরিবেশ"
+    },
+    {
+      "icon": "fas fa-hotel",
+      "title": "ভালো থাকার ব্যবস্থা",
+      "desc": "বাছাই করা Hotel & Resort"
+    },
+    {
+      "icon": "fas fa-bus-alt",
+      "title": "পরিকল্পিত ভ্রমণ",
+      "desc": "Transport থেকে Sightseeing – সবকিছু পরিকল্পিত"
+    },
+    {
+      "icon": "fas fa-user-check",
+      "title": "Somjit-এর সাথে",
+      "desc": "একই ভ্রমণ, একই আনন্দ"
+    }
+  ],
+  "moments_gallery": [
+    {
+      "id": "m1",
+      "image_url": "assets/images/moment_1.jpg",
+      "caption": "হিমালয় ভ্যালিতে আমাদের ভ্রমণসঙ্গীরা"
+    },
+    {
+      "id": "m2",
+      "image_url": "assets/images/moment_2.jpg",
+      "caption": "ট্যুর উইথ সোমজিৎ অফিশিয়াল ব্যানার সহ গ্রুপ"
+    },
+    {
+      "id": "m3",
+      "image_url": "assets/images/moment_3.jpg",
+      "caption": "পাহাড়ি নদীর তীরে মনোরম মুহূর্ত"
     }
   ]
 };

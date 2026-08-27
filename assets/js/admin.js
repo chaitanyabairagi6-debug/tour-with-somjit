@@ -2190,3 +2190,113 @@ async function saveAllBookingFieldsToFirebase() {
     console.warn("Firebase save error:", e);
   }
 }
+
+
+function handleImageUpload(section, field, input, previewId) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      if (!adminData[section]) adminData[section] = {};
+      adminData[section][field] = dataUrl;
+      
+      const prev = document.getElementById(previewId);
+      if (prev) prev.src = dataUrl;
+      
+      saveAllData(false);
+      showToast("✓ ছবি সফলভাবে আপলোড ও সেভ হয়েছে!");
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+
+function renderMomentsEditor() {
+  const container = document.getElementById("adminMomentsList");
+  if (!container) return;
+
+  const moments = adminData.moments_gallery || [];
+  if (moments.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:2rem; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:12px;">
+        <i class="fas fa-camera" style="font-size:2rem; color:#d97706; margin-bottom:0.75rem;"></i>
+        <h4>কোনো মুহূর্তের ছবি যোগ করা নেই</h4>
+        <button type="button" onclick="addNewMomentPhoto()" class="btn-top btn-save-all" style="margin:10px auto;">
+          <i class="fas fa-plus"></i> প্রথম ছবি যোগ করুন
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px;">`;
+  moments.forEach((m, idx) => {
+    html += `
+      <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+        <div style="width:100%; height:130px; border-radius:8px; overflow:hidden; background:#0f2438; margin-bottom:8px;">
+          <img src="${m.image_url}" id="momentPrev_${idx}" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div style="margin-bottom:8px;">
+          <label class="btn-top btn-view-site" style="cursor:pointer; display:block; text-align:center; font-size:0.78rem; padding:5px 8px;">
+            <i class="fas fa-upload"></i> ছবি পরিবর্তন করুন
+            <input type="file" accept="image/*" style="display:none;" onchange="uploadMomentImage(${idx}, this)">
+          </label>
+        </div>
+        <input type="text" value="${m.caption || ''}" placeholder="ছবির ক্যাপশন" onchange="updateMomentCaption(${idx}, this.value)" class="adm-input" style="font-size:0.82rem; padding:6px 8px; margin-bottom:8px;">
+        <button type="button" onclick="deleteMomentPhoto(${idx})" style="width:100%; background:#fee2e2; color:#ef4444; border:none; padding:6px; border-radius:6px; font-size:0.82rem; font-weight:700; cursor:pointer;">
+          <i class="fas fa-trash"></i> ডিলিট করুন
+        </button>
+      </div>
+    `;
+  });
+  html += `</div>`;
+
+  container.innerHTML = html;
+}
+
+function uploadMomentImage(idx, fileInput) {
+  if (fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      if (!adminData.moments_gallery) adminData.moments_gallery = [];
+      if (adminData.moments_gallery[idx]) {
+        adminData.moments_gallery[idx].image_url = dataUrl;
+        const prev = document.getElementById(`momentPrev_${idx}`);
+        if (prev) prev.src = dataUrl;
+        saveAllData(false);
+        showToast("✓ মুহূর্তের ছবি আপলোড সম্পন্ন!");
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function updateMomentCaption(idx, val) {
+  if (adminData.moments_gallery && adminData.moments_gallery[idx]) {
+    adminData.moments_gallery[idx].caption = val.trim();
+    saveAllData(false);
+  }
+}
+
+function deleteMomentPhoto(idx) {
+  if (confirm("এই মুহূর্তের ছবিটি ডিলিট করতে চান?")) {
+    adminData.moments_gallery.splice(idx, 1);
+    renderMomentsEditor();
+    saveAllData(false);
+  }
+}
+
+function addNewMomentPhoto() {
+  if (!adminData.moments_gallery) adminData.moments_gallery = [];
+  adminData.moments_gallery.push({
+    id: "m-" + Date.now(),
+    image_url: "assets/images/moment_1.jpg",
+    caption: "নতুন ভ্রমণ মুহূর্ত"
+  });
+  renderMomentsEditor();
+  saveAllData(false);
+  showToast("✓ নতুন মুহূর্ত যোগ হয়েছে! ছবি আপলোড করুন।");
+}

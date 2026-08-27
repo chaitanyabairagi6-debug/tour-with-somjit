@@ -1,6 +1,6 @@
 /**
  * Tour with Somjit - Master Application Controller
- * Handles Tours Rendering, Redesigned Booking Form, WhatsApp Dispatch,
+ * Handles 100% Dynamic UI Rendering, Admin Sync, WhatsApp Booking,
  * YouTube Vlogs with Modal Player, Moments Gallery, and Firebase Sync.
  */
 
@@ -10,7 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initLiveSiteData();
   initMobileDrawer();
   initBookingModal();
+  applyDynamicBrandingAndText();
   renderHomeTours();
+  renderWhyUsFeatures();
+  renderMomentsGallery();
   renderHomeVlogs();
   renderHomeFaqs();
 });
@@ -22,6 +25,7 @@ function initLiveSiteData() {
     try {
       const parsed = JSON.parse(localSaved);
       deepMerge(window.TWS_SITE_DATA, parsed);
+      applyDynamicBrandingAndText();
     } catch(e) {}
   }
 
@@ -32,7 +36,10 @@ function initLiveSiteData() {
       if (cloudData && typeof cloudData === "object") {
         deepMerge(window.TWS_SITE_DATA, cloudData);
         localStorage.setItem("tws_custom_site_data", JSON.stringify(window.TWS_SITE_DATA));
+        applyDynamicBrandingAndText();
         renderHomeTours();
+        renderWhyUsFeatures();
+        renderMomentsGallery();
         renderHomeVlogs();
         renderHomeFaqs();
         populateTourDropdown();
@@ -52,7 +59,76 @@ function deepMerge(target, source) {
   }
 }
 
-// 2. Mobile Drawer Navigation
+// 2. Apply Dynamic Branding, Images & Text to DOM
+function applyDynamicBrandingAndText() {
+  const siteData = window.TWS_SITE_DATA || {};
+  const branding = siteData.branding || {};
+  const general = siteData.general || {};
+  const host = siteData.company_about || {};
+
+  // Logos
+  const logoUrl = branding.logo_url || "assets/images/brand_logo_redesign.png";
+  const headerLogo = document.getElementById("dynHeaderLogo");
+  const drawerLogo = document.getElementById("dynDrawerLogo");
+  const footerLogo = document.getElementById("dynFooterLogo");
+  if (headerLogo) headerLogo.src = logoUrl;
+  if (drawerLogo) drawerLogo.src = logoUrl;
+  if (footerLogo) footerLogo.src = logoUrl;
+
+  // Hero Background
+  const heroBgContainer = document.getElementById("dynHeroBgContainer");
+  if (heroBgContainer && branding.hero_bg) {
+    heroBgContainer.style.backgroundImage = `linear-gradient(180deg, rgba(10,25,47,0.45) 0%, rgba(10,25,47,0.7) 100%), url('${branding.hero_bg}')`;
+  }
+
+  // Hero Somjit Cutout
+  const heroHostCutout = document.getElementById("dynHeroHostCutout");
+  if (heroHostCutout) {
+    heroHostCutout.src = branding.hero_host_cutout || "assets/images/somjit_hero_cutout.png";
+  }
+
+  // Hero Subtitle & Heading
+  const heroSubtitle = document.getElementById("dynHeroSubtitle");
+  if (heroSubtitle) {
+    heroSubtitle.textContent = general.hero_subtitle || "Somjit Bhattacharyya-র সাথে";
+  }
+  const heroHeading = document.getElementById("dynHeroHeading");
+  if (heroHeading) {
+    heroHeading.innerHTML = general.hero_heading ? general.hero_heading.replace(/\n/g, "<br>") : "আপনার পরবর্তী<br>ভ্রমণ";
+  }
+
+  // Hero CTA Buttons
+  const btnTours = document.getElementById("dynHeroBtnTours");
+  if (btnTours) btnTours.textContent = general.hero_btn_tours || "আসন্ন ট্যুর দেখুন";
+  const btnCall = document.getElementById("dynHeroBtnCall");
+  if (btnCall) btnCall.textContent = general.hero_btn_call || "ফোন করে জানুন";
+
+  // Section Titles
+  const toursTitle = document.getElementById("dynToursSectionTitle");
+  if (toursTitle) toursTitle.textContent = general.tours_section_title || "এই মাসের আসন্ন ট্যুর";
+
+  const whyUsTitle = document.getElementById("dynWhyUsTitle");
+  if (whyUsTitle) whyUsTitle.textContent = general.why_us_title || "কেন আমাদের সাথে যাবেন?";
+
+  const momentsTitle = document.getElementById("dynMomentsTitle");
+  if (momentsTitle) momentsTitle.textContent = general.moments_section_title || "আমাদের সাথে কিছু মুহূর্ত";
+
+  // Host Profile Section
+  const hostAvatar = document.getElementById("dynHostAvatar");
+  if (hostAvatar) {
+    hostAvatar.src = branding.host_circle_avatar || branding.host_avatar || "assets/images/host_circle_avatar.png";
+  }
+  const hostTitle = document.getElementById("dynHostSectionTitle");
+  if (hostTitle) hostTitle.textContent = host.host_section_title || "আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী";
+  const hostName = document.getElementById("dynHostName");
+  if (hostName) hostName.textContent = host.host_name || "Somjit Bhattacharyya";
+  const hostRole = document.getElementById("dynHostRole");
+  if (hostRole) hostRole.textContent = host.host_role || "Founder & Host";
+  const hostBio = document.getElementById("dynHostBio");
+  if (hostBio) hostBio.textContent = host.host_bio || host.desc || "আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ...";
+}
+
+// 3. Mobile Drawer Navigation
 function initMobileDrawer() {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const closeBtn = document.getElementById("closeMobileNavBtn");
@@ -71,7 +147,7 @@ function closeNav() {
   if (drawer) drawer.classList.remove("active");
 }
 
-// 3. Render Tours on Homepage (Matching Screenshot 1)
+// 4. Render Tours on Homepage (Matching Screenshot 1)
 function renderHomeTours() {
   const container = document.getElementById("homeToursList");
   if (!container) return;
@@ -90,10 +166,9 @@ function renderHomeTours() {
 
   let html = "";
   Object.values(tours).forEach(tour => {
-    const imgUrl = tourImgMap[tour.id] || tour.banner_image || "assets/images/card_ladakh.jpg";
+    const imgUrl = tour.banner_image || tourImgMap[tour.id] || "assets/images/card_ladakh.jpg";
     const destName = tour.category ? tour.category.charAt(0).toUpperCase() + tour.category.slice(1) : (tour.title.split(" ")[0] || "ট্যুর");
     
-    // Bengali short name for badge
     let bnShortName = destName;
     if (tour.id.includes("dooars")) bnShortName = "ডুয়ার্স";
     else if (tour.id.includes("ladakh")) bnShortName = "লাদাখ";
@@ -105,13 +180,13 @@ function renderHomeTours() {
     html += `
       <div class="tour-card-compact" onclick="openItineraryModal('${tour.id}')">
         <div class="tour-card-cover">
-          <img src="${imgUrl}" alt="${tour.title}" loading="lazy">
-          <div class="tour-card-dest-name">${bnShortName}</div>
+          <img src="${imgUrl}" alt="${escapeAttr(tour.title)}" loading="lazy">
+          <div class="tour-card-dest-name">${escapeHtml(bnShortName)}</div>
         </div>
         <div class="tour-card-bottom-info">
           <div class="tour-card-dates-col">
-            <div class="tour-card-dates">${tour.dates || '২০২৬'}</div>
-            <div class="tour-card-duration">${tour.duration || 'গ্রুপ ট্যুর'}</div>
+            <div class="tour-card-dates">${escapeHtml(tour.dates || '২০২৬')}</div>
+            <div class="tour-card-duration">${escapeHtml(tour.duration || 'গ্রুপ ট্যুর')}</div>
           </div>
           <div class="tour-card-arrow-btn">
             <i class="fas fa-arrow-right"></i>
@@ -124,7 +199,65 @@ function renderHomeTours() {
   container.innerHTML = html;
 }
 
-// 4. Render Vlogs on Homepage
+// 5. Render Why Us Features (4 Items)
+function renderWhyUsFeatures() {
+  const container = document.getElementById("dynWhyUsGrid");
+  if (!container) return;
+
+  const siteData = window.TWS_SITE_DATA || {};
+  const features = siteData.why_us_features || [
+    {"icon": "fas fa-user-friends", "title": "ছোট গ্রুপ ট্যুর", "desc": "আরামদায়ক ও পরিচিত পরিবেশ"},
+    {"icon": "fas fa-hotel", "title": "ভালো থাকার ব্যবস্থা", "desc": "বাছাই করা Hotel & Resort"},
+    {"icon": "fas fa-bus-alt", "title": "পরিকল্পিত ভ্রমণ", "desc": "Transport থেকে Sightseeing – সবকিছু পরিকল্পিত"},
+    {"icon": "fas fa-user-check", "title": "Somjit-এর সাথে", "desc": "একই ভ্রমণ, একই আনন্দ"}
+  ];
+
+  let html = "";
+  features.forEach(f => {
+    html += `
+      <div class="why-us-item">
+        <div class="why-icon-circle"><i class="${f.icon || 'fas fa-star'}"></i></div>
+        <h4 class="why-item-title">${escapeHtml(f.title)}</h4>
+        <p class="why-item-desc">${escapeHtml(f.desc)}</p>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// 6. Render Moments Gallery
+function renderMomentsGallery() {
+  const track = document.getElementById("momentsTrack");
+  if (!track) return;
+
+  const siteData = window.TWS_SITE_DATA || {};
+  const moments = siteData.moments_gallery || [
+    {"id": "m1", "image_url": "assets/images/moment_1.jpg", "caption": "ট্যুর মুহূর্ত ১"},
+    {"id": "m2", "image_url": "assets/images/moment_2.jpg", "caption": "ট্যুর মুহূর্ত ২"},
+    {"id": "m3", "image_url": "assets/images/moment_3.jpg", "caption": "ট্যুর মুহূর্ত ৩"}
+  ];
+
+  let html = "";
+  moments.forEach(m => {
+    html += `
+      <div class="moment-card">
+        <img src="${m.image_url}" alt="${escapeAttr(m.caption || 'Tour Moment')}" loading="lazy">
+      </div>
+    `;
+  });
+
+  track.innerHTML = html;
+}
+
+function scrollMoments(direction) {
+  const track = document.getElementById("momentsTrack");
+  if (track) {
+    track.scrollBy({ left: direction * 180, behavior: "smooth" });
+  }
+}
+
+// 7. Render Vlogs on Homepage
 function renderHomeVlogs() {
   const container = document.getElementById("homeVlogsList");
   if (!container) return;
@@ -206,7 +339,7 @@ function closeVideoModal() {
   if (modal) modal.classList.remove("active");
 }
 
-// 5. Render FAQs
+// 8. Render FAQs
 function renderHomeFaqs() {
   const container = document.getElementById("homeFaqContainer");
   if (!container) return;
@@ -247,15 +380,7 @@ function toggleFaq(idx) {
   }
 }
 
-// 6. Moments Gallery Horizontal Scroll
-function scrollMoments(direction) {
-  const track = document.getElementById("momentsTrack");
-  if (track) {
-    track.scrollBy({ left: direction * 180, behavior: "smooth" });
-  }
-}
-
-// 7. Redesigned Booking Modal & WhatsApp Dispatch (Matching Screenshot 2)
+// 9. Booking Modal & WhatsApp Dispatch
 function initBookingModal() {
   populateTourDropdown();
 }
@@ -375,7 +500,7 @@ async function handleGroupBookingSubmit(event) {
   alert("✓ আপনার বুকিং অনুরোধ সফলভাবে পাঠানো হয়েছে! সোমজিৎ ভট্টাচার্য ও অ্যাডমিন টিম দ্রুত WhatsApp-এ যোগাযোগ করবেন।");
 }
 
-// 8. Itinerary Modal
+// 10. Itinerary Modal
 function openItineraryModal(tourId) {
   const siteData = window.TWS_SITE_DATA || {};
   const tour = (siteData.tours && siteData.tours[tourId]) ? siteData.tours[tourId] : Object.values(siteData.tours || {})[0];
@@ -417,15 +542,7 @@ function bookCurrentItineraryTour() {
   openBookingModal(tour ? tour.title : "");
 }
 
-function escapeHtml(str) {
-  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function escapeAttr(str) {
-  return String(str || '').replace(/"/g, '&quot;');
-}
-
-
+// 11. Privacy Policy Modal
 function openPrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (modal) modal.classList.add("active");
@@ -434,4 +551,12 @@ function openPrivacyModal() {
 function closePrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (modal) modal.classList.remove("active");
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function escapeAttr(str) {
+  return String(str || '').replace(/"/g, '&quot;');
 }
