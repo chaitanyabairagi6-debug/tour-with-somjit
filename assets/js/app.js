@@ -173,7 +173,7 @@ function renderAnnualToursGrid(data) {
             <span>💰</span> ₹ ${Number(tour.price || 0).toLocaleString("en-IN")} / জনপ্রতি
           </div>
           <div class="tour-sq-buttons">
-            <a href="https://wa.me/918116472937?text=${waText}" target="_blank" class="btn-tour-wa">
+            <a href="https://wa.me/919433074880?text=${waText}" target="_blank" class="btn-tour-wa">
               <i class="fa-brands fa-whatsapp"></i> WhatsApp বুকিং
             </a>
             <button type="button" class="btn-tour-plan" onclick="openTourDetailsModal('${tour.id}')">
@@ -456,7 +456,7 @@ async function handleGroupBookingSubmit(e) {
     `_সোমজিৎ বাবু, আমি সিট বুকিং সংক্রান্ত প্রক্রিয়া জানতে চাই।_`;
 
   closeBookingModal();
-  window.open(`https://wa.me/918116472937?text=${encodeURIComponent(waMsg)}`, "_blank");
+  window.open(`https://wa.me/919433074880?text=${encodeURIComponent(waMsg)}`, "_blank");
 }
 
 // 5. Public Customer Review Submission Modal
@@ -1164,13 +1164,24 @@ function setupMobileDrawer() {
   const closeBtn = document.getElementById("closeMobileNavBtn");
   const drawer = document.getElementById("mobileNavDrawer");
 
-  if (menuBtn && drawer) menuBtn.addEventListener("click", () => drawer.classList.add("active"));
-  if (closeBtn && drawer) closeBtn.addEventListener("click", () => drawer.classList.remove("active"));
+  if (menuBtn && drawer) {
+    menuBtn.addEventListener("click", () => {
+      drawer.classList.add("active");
+      document.body.classList.add("drawer-open");
+    });
+  }
+  if (closeBtn && drawer) {
+    closeBtn.addEventListener("click", () => {
+      drawer.classList.remove("active");
+      document.body.classList.remove("drawer-open");
+    });
+  }
 }
 
 function closeNav() {
   const drawer = document.getElementById("mobileNavDrawer");
   if (drawer) drawer.classList.remove("active");
+  document.body.classList.remove("drawer-open");
 }
 
 function showToast(msg) {

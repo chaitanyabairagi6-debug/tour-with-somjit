@@ -9,7 +9,7 @@ window.TWS_SITE_DATA = {
   "social_links": {
     "youtube": "https://www.youtube.com/@TourwithSomjit",
     "facebook": "https://www.facebook.com/tourwithsomjit",
-    "whatsapp": "918116472937"
+    "whatsapp": "919433074880"
   },
   "host_profile": {
     "name": "Somjit Bhattacharyya",
@@ -51,7 +51,7 @@ window.TWS_SITE_DATA = {
           "unit": "জনপ্রতি"
         }
       ],
-      "booking_note": "মাত্র ৫০০/- টাকা (নন-রিফান্ডেবল) দিয়ে সিট বুক করুন। শর্মিষ্ঠা সরকার: 9432426448 / সোমজিৎ ভট্টাচার্য: 8116472937",
+      "booking_note": "মাত্র ৫০০/- টাকা (নন-রিফান্ডেবল) দিয়ে সিট বুক করুন। শর্মিষ্ঠা সরকার: 9432426448 / সোমজিৎ ভট্টাচার্য: 9433074880",
       "itinerary": [
         {
           "day": 1,
@@ -220,7 +220,7 @@ window.TWS_SITE_DATA = {
           "unit": "সম্পূর্ণ ফ্রি"
         }
       ],
-      "booking_note": "ট্যুরিস্ট রেইনকোট + ডেন্টাল ও শাওয়ার কিট + সুন্দরবনের স্পেশাল গিফট সবার জন্য। যোগাযোগ: 9433074880 / 8910073441 / 9432426448 / 8116472937",
+      "booking_note": "ট্যুরিস্ট রেইনকোট + ডেন্টাল ও শাওয়ার কিট + সুন্দরবনের স্পেশাল গিফট সবার জন্য। যোগাযোগ: 9433074880 / 8910073441 / 9432426448 / 9433074880",
       "itinerary": [
         {
           "day": 1,
@@ -262,7 +262,7 @@ window.TWS_SITE_DATA = {
           "unit": "জনপ্রতি"
         }
       ],
-      "booking_note": "আসন সংখ্যা সীমিত। যোগাযোগ: 8116472937 / 9433074880",
+      "booking_note": "আসন সংখ্যা সীমিত। যোগাযোগ: 9433074880 / 9433074880",
       "itinerary": [
         {
           "day": 1,
@@ -371,7 +371,7 @@ window.TWS_SITE_DATA = {
           "unit": "জনপ্রতি"
         }
       ],
-      "booking_note": "যোগাযোগ: 8116472937 / 9433074880",
+      "booking_note": "যোগাযোগ: 9433074880 / 9433074880",
       "itinerary": [
         {
           "day": 1,
@@ -506,9 +506,9 @@ window.TWS_SITE_DATA = {
   },
   "contact": {
     "host_name": "Somjit Bhattacharyya",
-    "primary_phone": "+91 8116472937",
-    "secondary_phone": "+91 9433074880",
-    "whatsapp_numbers": "8116472937 / 9433074880 / 8910073441 / 9432426448",
+    "primary_phone": "+91 9433074880",
+    "secondary_phone": "+91 8910073441",
+    "whatsapp_numbers": "9433074880 / 8910073441 / 9432426448",
     "address": "কলকাতা ও পশ্চিমবঙ্গ, ভারত",
     "google_sheets_webhook": ""
   },

@@ -788,3 +788,33 @@ body.admin-mode .admin-cms-drawer.active { display: flex !important; right: 0 !i
   background: var(--gold-primary) !important;
   color: var(--navy-dark) !important;
 }
+
+/* Smooth Off-Canvas Page Shift to the Left when Menu Opens */
+body {
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+}
+
+body.drawer-open {
+  transform: translateX(-280px);
+  overflow-y: hidden;
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  right: -285px;
+  width: 280px;
+  height: 100vh;
+  background: var(--navy-dark);
+  color: var(--white);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -6px 0 25px rgba(0, 0, 0, 0.35);
+  transition: right 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-drawer.active {
+  right: 0;
+}
