@@ -1263,3 +1263,101 @@ img {
     text-align: center;
   }
 }
+
+
+/* ========================================================
+   Booking Policies (Child & Cancellation) & Privacy Modal
+   ======================================================== */
+.section-policies {
+  padding: 2rem 0;
+  background: #f8fafc;
+}
+
+.policies-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.policy-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.policy-card-header {
+  padding: 14px 18px;
+  background: #0f2438;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.policy-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #d97706;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.policy-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.policy-body {
+  padding: 16px 18px;
+  flex: 1;
+}
+
+.policy-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.policy-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.policy-check {
+  color: #16a34a;
+  font-size: 1rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.policy-check.cancel-warn {
+  color: #dc2626;
+}
+
+.policy-list strong {
+  color: #0f172a;
+  display: block;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+  .policies-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

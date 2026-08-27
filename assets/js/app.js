@@ -424,3 +424,14 @@ function escapeHtml(str) {
 function escapeAttr(str) {
   return String(str || '').replace(/"/g, '&quot;');
 }
+
+
+function openPrivacyModal() {
+  const modal = document.getElementById("privacyModal");
+  if (modal) modal.classList.add("active");
+}
+
+function closePrivacyModal() {
+  const modal = document.getElementById("privacyModal");
+  if (modal) modal.classList.remove("active");
+}

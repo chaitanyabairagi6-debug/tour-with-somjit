@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chaitanyabairagi6-debug.github.io/tour-with-somjit/sitemap.xml
+Sitemap: https://tour-with-somjit.web.app/sitemap.xml
