@@ -675,3 +675,99 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
 body.public-mode .admin-live-top-bar,
 body.public-mode .admin-cms-drawer { display: none !important; }
 body.admin-mode .admin-cms-drawer.active { display: flex !important; right: 0 !important; }
+
+/* CMS Quick Dropdown Selector & Visible Scrollable Tabs */
+.cms-quick-select-wrap {
+  background: #1e293b;
+  padding: 10px 14px;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cms-quick-label {
+  color: #fbbf24;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cms-quick-select {
+  flex: 1;
+  background: #0f172a;
+  color: #ffffff;
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.cms-tabs-container {
+  display: flex;
+  align-items: center;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+  position: relative;
+}
+
+.cms-scroll-btn {
+  background: #1e293b;
+  color: #fbbf24;
+  width: 32px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.cms-scroll-btn:hover { background: #334155; }
+
+.cms-nav-tabs {
+  display: flex;
+  overflow-x: auto;
+  padding: 4px 6px;
+  flex: 1;
+  scroll-behavior: smooth;
+  /* Visible Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-primary) #1e293b;
+}
+
+.cms-nav-tabs::-webkit-scrollbar {
+  height: 6px;
+  display: block !important;
+}
+
+.cms-nav-tabs::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.cms-nav-tabs::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 4px;
+}
+
+/* Fix CMS Tour Edit Modal z-index & Mobile Layering */
+#cmsTourEditModal {
+  z-index: 3000000 !important;
+  background: rgba(15, 32, 49, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+#cmsTourEditModal .booking-modal-card {
+  max-width: 600px;
+  width: 95vw;
+  max-height: 92vh;
+  margin: auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  border: 2px solid var(--gold-primary);
+}

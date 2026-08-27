@@ -626,10 +626,21 @@ function closeAdminDrawer() {
   }
 }
 
+
+function scrollCmsTabs(amount) {
+  const track = document.getElementById("cmsTabsTrack");
+  if (track) {
+    track.scrollBy({ left: amount, behavior: "smooth" });
+  }
+}
+
 function switchCmsTab(tabId) {
   document.querySelectorAll(".cms-tab-btn").forEach(btn => {
     btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
   });
+  const select = document.getElementById("cmsSectionSelect");
+  if (select) select.value = tabId;
+
   document.querySelectorAll(".cms-tab-pane").forEach(pane => {
     pane.classList.toggle("active", pane.id === tabId);
   });

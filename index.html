@@ -527,21 +527,45 @@
       <button type="button" class="cms-close-btn" onclick="closeAdminDrawer()">&times;</button>
     </div>
 
-    <!-- CMS Navigation Tabs -->
-    <div class="cms-nav-tabs">
-      <button class="cms-tab-btn active" data-tab="tabDashboard" onclick="switchCmsTab('tabDashboard')"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</button>
-      <button class="cms-tab-btn" data-tab="tabHeadings" onclick="switchCmsTab('tabHeadings')"><i class="fas fa-heading"></i> হেডিং ও ট্যাগলাইন</button>
-      <button class="cms-tab-btn" data-tab="tabTours" onclick="switchCmsTab('tabTours')"><i class="fas fa-mountain"></i> ৬টি ট্যুর</button>
-      <button class="cms-tab-btn" data-tab="tabProfile" onclick="switchCmsTab('tabProfile')"><i class="fas fa-user"></i> প্রোফাইল ও লিংক</button>
-      <button class="cms-tab-btn" data-tab="tabWhyUs" onclick="switchCmsTab('tabWhyUs')"><i class="fas fa-shield-alt"></i> বিশেষত্ব (৬টি কার্ড)</button>
-      <button class="cms-tab-btn" data-tab="tabFaq" onclick="switchCmsTab('tabFaq')"><i class="fas fa-question-circle"></i> প্রশ্নোত্তর (FAQ)</button>
-      <button class="cms-tab-btn" data-tab="tabPolicies" onclick="switchCmsTab('tabPolicies')"><i class="fas fa-file-contract"></i> এবাউট ও পলিসি</button>
-      <button class="cms-tab-btn" data-tab="tabContact" onclick="switchCmsTab('tabContact')"><i class="fas fa-phone-alt"></i> ফোন ও ঠিকানা</button>
-      <button class="cms-tab-btn" data-tab="tabPassword" onclick="switchCmsTab('tabPassword')"><i class="fas fa-key"></i> পাসওয়ার্ড বদল</button>
-      <button class="cms-tab-btn" data-tab="tabReviews" onclick="switchCmsTab('tabReviews')"><i class="fas fa-star"></i> কাস্টমার রিভিউ</button>
-      <button class="cms-tab-btn" data-tab="tabLeads" onclick="switchCmsTab('tabLeads')"><i class="fas fa-users"></i> বুকিং লিডস</button>
-      <button class="cms-tab-btn" data-tab="tabSheets" onclick="switchCmsTab('tabSheets')"><i class="fas fa-table"></i> গুগল শিট</button>
-      <button class="cms-tab-btn" data-tab="tabBackup" onclick="switchCmsTab('tabBackup')"><i class="fas fa-database"></i> ব্যাকআপ</button>
+    <!-- CMS Quick Section Dropdown Selector (১ ক্লিকে যেকোনো সেকশন সিলেক্ট) -->
+    <div class="cms-quick-select-wrap">
+      <label class="cms-quick-label"><i class="fas fa-list-ul"></i> সেকশন বেছে নিন:</label>
+      <select id="cmsSectionSelect" class="cms-quick-select" onchange="switchCmsTab(this.value)">
+        <option value="tabDashboard">📊 ১. ড্যাশবোর্ড ও ওভারভিউ</option>
+        <option value="tabHeadings">🏷️ ২. হেডিং ও ট্যাগলাইন এডিটর</option>
+        <option value="tabTours">🏔️ ৩. ৬টি ট্যুর সম্পূর্ণ এডিটর</option>
+        <option value="tabProfile">👤 ৪. প্রোফাইল ও সোশ্যাল লিংক</option>
+        <option value="tabWhyUs">🛡️ ৫. আমাদের বিশেষত্ব (৬টি কার্ড)</option>
+        <option value="tabFaq">❓ ৬. সাধারণ প্রশ্নোত্তর (FAQ)</option>
+        <option value="tabPolicies">📜 ৭. কোম্পানি এবাউট ও পলিসি</option>
+        <option value="tabContact">📞 ৮. ফোন নম্বর, হোয়াটসঅ্যাপ ও ঠিকানা</option>
+        <option value="tabPassword">🔒 ৯. অ্যাডমিন পাসওয়ার্ড পরিবর্তন</option>
+        <option value="tabReviews">⭐ ১০. কাস্টমার রিভিউ তালিকা</option>
+        <option value="tabLeads">👥 ১১. বুকিং লিডস ডাটাবেস</option>
+        <option value="tabSheets">📊 ১২. গুগল শিট Webhook</option>
+        <option value="tabBackup">💾 ১৩. সম্পূর্ণ ডেটা ব্যাকআপ</option>
+      </select>
+    </div>
+
+    <!-- CMS Horizontal Scroll Tabs with Left/Right Buttons & Visible Scrollbar -->
+    <div class="cms-tabs-container">
+      <button type="button" class="cms-scroll-btn left" onclick="scrollCmsTabs(-150)"><i class="fas fa-chevron-left"></i></button>
+      <div class="cms-nav-tabs" id="cmsTabsTrack">
+        <button class="cms-tab-btn active" data-tab="tabDashboard" onclick="switchCmsTab('tabDashboard')"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</button>
+        <button class="cms-tab-btn" data-tab="tabHeadings" onclick="switchCmsTab('tabHeadings')"><i class="fas fa-heading"></i> হেডিং ও ট্যাগলাইন</button>
+        <button class="cms-tab-btn" data-tab="tabTours" onclick="switchCmsTab('tabTours')"><i class="fas fa-mountain"></i> ৬টি ট্যুর</button>
+        <button class="cms-tab-btn" data-tab="tabProfile" onclick="switchCmsTab('tabProfile')"><i class="fas fa-user"></i> প্রোফাইল ও লিংক</button>
+        <button class="cms-tab-btn" data-tab="tabWhyUs" onclick="switchCmsTab('tabWhyUs')"><i class="fas fa-shield-alt"></i> বিশেষত্ব</button>
+        <button class="cms-tab-btn" data-tab="tabFaq" onclick="switchCmsTab('tabFaq')"><i class="fas fa-question-circle"></i> FAQ</button>
+        <button class="cms-tab-btn" data-tab="tabPolicies" onclick="switchCmsTab('tabPolicies')"><i class="fas fa-file-contract"></i> এবাউট ও পলিসি</button>
+        <button class="cms-tab-btn" data-tab="tabContact" onclick="switchCmsTab('tabContact')"><i class="fas fa-phone-alt"></i> ফোন ও ঠিকানা</button>
+        <button class="cms-tab-btn" data-tab="tabPassword" onclick="switchCmsTab('tabPassword')"><i class="fas fa-key"></i> পাসওয়ার্ড বদল</button>
+        <button class="cms-tab-btn" data-tab="tabReviews" onclick="switchCmsTab('tabReviews')"><i class="fas fa-star"></i> রিভিউ</button>
+        <button class="cms-tab-btn" data-tab="tabLeads" onclick="switchCmsTab('tabLeads')"><i class="fas fa-users"></i> লিডস</button>
+        <button class="cms-tab-btn" data-tab="tabSheets" onclick="switchCmsTab('tabSheets')"><i class="fas fa-table"></i> গুগল শিট</button>
+        <button class="cms-tab-btn" data-tab="tabBackup" onclick="switchCmsTab('tabBackup')"><i class="fas fa-database"></i> ব্যাকআপ</button>
+      </div>
+      <button type="button" class="cms-scroll-btn right" onclick="scrollCmsTabs(150)"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <div class="cms-drawer-body">
