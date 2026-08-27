@@ -1,5 +1,6 @@
 /** Tour with Somjit - Master Database Schema */
 window.TWS_SITE_DATA = {
+  "updatedAt": "2026-08-27T04:00:00.000Z",
   "branding": {
     "logo_url": "assets/images/brand_logo_redesign.png",
     "hero_bg": "assets/images/hero_scenic_bg.jpg",
@@ -8,7 +9,7 @@ window.TWS_SITE_DATA = {
     "tagline": "Explore More. Experience More."
   },
   "general": {
-    "hero_subtitle": "Somjit Bhattacharyya-র সাথে",
+    "hero_subtitle": "Somjit Bhattacharyya-র সঙ্গে",
     "hero_heading": "আপনার পরবর্তী ভ্রমণ",
     "hero_btn_tours": "আসন্ন ট্যুর দেখুন",
     "hero_btn_call": "ফোন করে জানুন",
@@ -55,6 +56,8 @@ window.TWS_SITE_DATA = {
       "duration": "6 Nights / 7 Days",
       "starting_point": "শিলিগুড়ি / NJP রেলওয়ে স্টেশন",
       "price": 16500,
+      "status": "BOOKING OPEN",
+      "featured": true,
       "banner_image": "assets/images/card_dooars.jpg",
       "short_highlight": "গরুমারা ও জলদাপাড়া জঙ্গল সাফারি, লাটাগুড়ি, ঝালং, বিন্দু ও পাহাড়ি নদীর অপূর্ব সৌন্দর্য।",
       "hotel_info": "প্রিমিয়াম ফরেস্ট রিসোর্ট (AC/Non-AC রুম, গিজার, রুম হিটার ও সার্বক্ষণিক সাহায্য)।",
@@ -112,6 +115,8 @@ window.TWS_SITE_DATA = {
       "duration": "13 Nights / 14 Days",
       "starting_point": "লেহ (Leh) এয়ারপোর্ট",
       "price": 48500,
+      "status": "FEW SEATS LEFT",
+      "featured": true,
       "banner_image": "assets/images/card_ladakh.jpg",
       "short_highlight": "লেহ প্যালেস, খারদুংলা পাস (১৮,৩৮০ ফুট), নুব্রা ভ্যালি, হুন্ডার ডাবল-হাম্প উট ও নীল প্যাংগং লেক।",
       "hotel_info": "লেহ ও নুব্রায় সেন্ট্রাল হিটিং ও সার্বক্ষণিক মেডিকেল অক্সিজেন সিলিন্ডার সহ সেরা থ্রি-স্টার হোটেল।",
@@ -169,6 +174,8 @@ window.TWS_SITE_DATA = {
       "duration": "3 Nights / 4 Days",
       "starting_point": "কলকাতা (সায়েন্স সিটি / গড়িয়া)",
       "price": 9500,
+      "status": "BOOKING OPEN",
+      "featured": true,
       "banner_image": "assets/images/card_sundarban.jpg",
       "short_highlight": "বিলাসবহুল বোটে সুন্দরবন ম্যানগ্রোভ জঙ্গল, সজনেখালি ও সুধন্যখালি ওয়াচটাওয়ার, ৩০+ সুস্বাদু ইলিশের পদ।",
       "hotel_info": "বিলাসবহুল ডবল-ডেক বোট এবং নদীর তীরের প্রিমিয়াম ইকো-রিসোর্টে থাকার ব্যবস্থা।",
@@ -216,6 +223,8 @@ window.TWS_SITE_DATA = {
       "duration": "10 Nights / 11 Days",
       "starting_point": "চণ্ডীগড় / কালকা রেলওয়ে স্টেশন",
       "price": 38000,
+      "status": "UPCOMING",
+      "featured": true,
       "banner_image": "assets/images/moment_1.jpg",
       "short_highlight": "কাজা, কি মনাস্ট্রি, বিশ্বের সর্বোচ্চ পোস্ট অফিস হিক্কিম, চন্দ্রমণি চন্দ্রতাল লেক ও কুনজুম পাস।",
       "hotel_info": "স্পিতি ও শিমলার সুসজ্জিত প্রিমিয়াম হোটেল ও চন্দ্রতাল লেকে লাক্সারি সুইস টেন্ট।",
@@ -345,6 +354,9 @@ window.TWS_SITE_DATA = {
     "admin_phone": "+91 9432426448",
     "whatsapp": "919433074880",
     "email": "tourwithsomjit@gmail.com",
-    "address": "চন্দননগর, হুগলি, পশ্চিমবঙ্গ - 712136"
+    "address": "চন্দননগর, হুগলি, পশ্চিমবঙ্গ - 712136",
+    "youtube_url": "https://www.youtube.com/@somjitbhattacharyya",
+    "facebook_url": "https://www.facebook.com/tourwithsomjit",
+    "instagram_url": "https://www.instagram.com/tourwithsomjit"
   }
 };

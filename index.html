@@ -66,25 +66,25 @@
 </head>
 <body class="public-mode">
 
-  <!-- 0. SECURE VISUAL LIVE EDITOR FLOATING BAR (Shown ONLY to authenticated Admin) -->
-  <div id="visualEditorBar" class="visual-editor-bar" style="display:none;">
-    <div class="editor-bar-container">
-      <div class="editor-status-badge">
+  <!-- 0. ADMIN FLOATING ACTION & LIVE EDITOR TOP BAR (Shown ONLY when Admin logs in) -->
+  <div id="adminLiveTopBar" class="admin-live-top-bar" style="display:none;">
+    <div class="admin-bar-inner">
+      <div class="admin-bar-status">
         <span class="pulse-dot"></span>
-        <span>🛠️ লাইভ এডিট মোড (Draft Mode)</span>
+        <strong>🛠️ ভিজ্যুয়াল CMS মোড সক্রিয় (Draft Working Mode)</strong>
       </div>
-      <div class="editor-action-buttons">
-        <button type="button" class="btn-ed-action add-tour" onclick="openAddTourModal()">
-          <i class="fas fa-plus-circle"></i> নতুন ট্যুর যোগ
+      <div class="admin-bar-controls">
+        <button type="button" class="btn-cms-action open-drawer" onclick="openAdminDrawer('dashboard')">
+          <i class="fas fa-th-large"></i> CMS ড্যাশবোর্ড
         </button>
-        <button type="button" class="btn-ed-action add-moment" onclick="openAddMomentModal()">
-          <i class="fas fa-camera"></i> মুহূর্ত যোগ
+        <button type="button" class="btn-cms-action discard-btn" onclick="discardWorkingDraft()">
+          <i class="fas fa-undo"></i> পরিবর্তন বাতিল
         </button>
-        <button type="button" class="btn-ed-action save-cloud" onclick="publishLiveToCloud()">
+        <button type="button" class="btn-cms-action publish-btn" onclick="openPublishConfirmModal()">
           <i class="fas fa-cloud-upload-alt"></i> Publish Changes (লাইভ করুন)
         </button>
-        <button type="button" class="btn-ed-action exit-ed" onclick="exitVisualEditMode()">
-          <i class="fas fa-times"></i> এডিট বন্ধ
+        <button type="button" class="btn-cms-action exit-btn" onclick="exitAdminVisualMode()">
+          <i class="fas fa-times"></i> বন্ধ করুন
         </button>
       </div>
     </div>
@@ -97,9 +97,6 @@
         <a href="#home" class="brand-logo-link">
           <img id="dynHeaderLogo" src="assets/images/brand_logo_redesign.png" alt="Tour with Somjit" class="brand-logo-img">
         </a>
-        <button class="btn-img-uploader edit-only-btn" onclick="triggerDirectUpload('branding', 'logo_url', 'dynHeaderLogo')">
-          <i class="fas fa-camera"></i> লোগো বদলান
-        </button>
       </div>
 
       <div class="header-right-actions">
@@ -125,10 +122,10 @@
       <li><a href="#tours" onclick="closeNav()"><i class="fas fa-mountain"></i> আসন্ন ট্যুর</a></li>
       <li><a href="javascript:void(0)" onclick="closeNav(); openAllToursModal();"><i class="fas fa-globe-asia"></i> সব ট্যুর দেখুন</a></li>
       <li><a href="#about-somjit" onclick="closeNav()"><i class="fas fa-user-tie"></i> Somjit সম্পর্কে</a></li>
-      <li><a href="#why-us" onclick="closeNav()"><i class="fas fa-shield-alt"></i> কেন আমাদের সাথে যাবেন</a></li>
-      <li><a href="#gallery" onclick="closeNav()"><i class="fas fa-camera-retro"></i> গ্যালারি ও মুহূর্ত</a></li>
-      <li><a href="#faq-policies" onclick="closeNav()"><i class="fas fa-file-contract"></i> নিয়মাবলী ও FAQ</a></li>
-      <li><a href="#contact" onclick="closeNav()"><i class="fas fa-phone-volume"></i> যোগাযোগ ও হেল্পলাইন</a></li>
+      <li><a href="#why-us" onclick="closeNav()"><i class="fas fa-shield-alt"></i> কেন আমাদের সঙ্গে যাবেন</a></li>
+      <li><a href="#gallery" onclick="closeNav()"><i class="fas fa-camera-retro"></i> গ্যালারি</a></li>
+      <li><a href="#faq-policies" onclick="closeNav()"><i class="fas fa-file-contract"></i> FAQ ও পলিসি</a></li>
+      <li><a href="#contact" onclick="closeNav()"><i class="fas fa-phone-volume"></i> যোগাযোগ</a></li>
       <li class="drawer-book-highlight">
         <a href="javascript:void(0)" onclick="closeNav(); openBookingModal();" class="drawer-book-btn">
           <i class="fas fa-calendar-check"></i> BOOK A TOUR (বুকিং করুন)
@@ -144,44 +141,30 @@
   <!-- 2. HERO SECTION -->
   <section id="home" class="hero-section">
     <div class="hero-bg-container" id="dynHeroBgContainer">
-      <button class="btn-img-uploader edit-only-btn bg-uploader-btn" onclick="triggerDirectUpload('branding', 'hero_bg', 'dynHeroBgContainer', true)">
-        <i class="fas fa-image"></i> ব্যাকগ্রাউন্ড ছবি বদলান
-      </button>
-
       <div class="hero-inner-grid">
         <!-- Left Text Area -->
         <div class="hero-text-area">
           <div class="hero-tagline-badge" id="dynHeroTagline">Explore More. Experience More.</div>
           
-          <div class="hero-subtitle-tag inline-editable-wrap">
-            <span id="dynHeroSubtitle" class="live-editable-text" data-section="general" data-key="hero_subtitle">Somjit Bhattacharyya-র সঙ্গে</span>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_subtitle', 'হিরো সাব-টাইটেল')"><i class="fas fa-pencil-alt"></i></button>
+          <div class="hero-subtitle-tag" id="dynHeroSubtitle">
+            Somjit Bhattacharyya-র সঙ্গে
           </div>
 
-          <div class="hero-heading-wrap inline-editable-wrap">
-            <h1 class="hero-heading-main live-editable-text" id="dynHeroHeading" data-section="general" data-key="hero_heading">
-              আপনার পরবর্তী<br>ভ্রমণ
-            </h1>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_heading', 'হিরো মূল শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
-          </div>
+          <h1 class="hero-heading-main" id="dynHeroHeading">
+            আপনার পরবর্তী<br>ভ্রমণ
+          </h1>
 
           <div class="hero-cta-pill-group">
-            <div class="cta-pill-wrap inline-editable-wrap">
-              <a href="#tours" class="btn-hero-pill navy">
-                <i class="fas fa-suitcase-rolling"></i>
-                <span id="dynHeroBtnTours" class="live-editable-text" data-section="general" data-key="hero_btn_tours">আসন্ন ট্যুর দেখুন</span>
-                <i class="fas fa-arrow-right pill-arrow"></i>
-              </a>
-              <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_btn_tours', '১ম বোতামের টেক্সট')"><i class="fas fa-pencil-alt"></i></button>
-            </div>
+            <a href="#tours" class="btn-hero-pill navy">
+              <i class="fas fa-suitcase-rolling"></i>
+              <span id="dynHeroBtnTours">আসন্ন ট্যুর দেখুন</span>
+              <i class="fas fa-arrow-right pill-arrow"></i>
+            </a>
 
-            <div class="cta-pill-wrap inline-editable-wrap">
-              <a href="tel:+919433074880" class="btn-hero-pill gold">
-                <i class="fas fa-phone-alt"></i>
-                <span id="dynHeroBtnCall" class="live-editable-text" data-section="general" data-key="hero_btn_call">ফোন করে জানুন</span>
-              </a>
-              <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'hero_btn_call', '২য় বোতামের টেক্সট')"><i class="fas fa-pencil-alt"></i></button>
-            </div>
+            <a href="tel:+919433074880" class="btn-hero-pill gold">
+              <i class="fas fa-phone-alt"></i>
+              <span id="dynHeroBtnCall">ফোন করে জানুন</span>
+            </a>
           </div>
         </div>
 
@@ -189,22 +172,18 @@
         <div class="hero-host-area">
           <div class="host-cutout-wrap">
             <img id="dynHeroHostCutout" src="assets/images/somjit_hero_cutout.png" alt="Somjit Bhattacharyya" class="hero-host-cutout">
-            <button class="btn-img-uploader edit-only-btn cutout-uploader-btn" onclick="triggerDirectUpload('branding', 'hero_host_cutout', 'dynHeroHostCutout')">
-              <i class="fas fa-camera"></i> পোর্ট্রেট ছবি বদলান
-            </button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 3. UPCOMING TOURS (Max 3–4 Highlighted Tours) -->
+  <!-- 3. UPCOMING TOURS (Max 3–4 Highlights) -->
   <section id="tours" class="section-tours-area">
     <div class="container">
       <div class="section-heading-bar">
-        <div class="title-with-bar inline-editable-wrap">
-          <h2 class="section-main-title live-editable-text" id="dynToursSectionTitle" data-section="general" data-key="tours_section_title">এই মাসের আসন্ন ট্যুর</h2>
-          <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'tours_section_title', 'ট্যুর সেকশনের শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
+        <div class="title-with-bar">
+          <h2 class="section-main-title" id="dynToursSectionTitle">এই মাসের আসন্ন ট্যুর</h2>
           <div class="amber-bar"></div>
         </div>
         <a href="javascript:void(0)" onclick="openAllToursModal()" class="see-all-tours-btn">
@@ -225,40 +204,22 @@
     </div>
   </section>
 
-  <!-- 4. ABOUT / MEET SOMJIT -->
+  <!-- 4. MEET SOMJIT (ABOUT) -->
   <section id="about-somjit" class="section-host-profile">
     <div class="container">
       <div class="host-intro-card">
         <div class="host-avatar-col">
           <div class="host-avatar-wrap">
             <img id="dynHostAvatar" src="assets/images/host_circle_avatar.png" alt="Somjit Bhattacharyya" class="host-intro-avatar">
-            <button class="btn-img-uploader edit-only-btn avatar-uploader-btn" onclick="triggerDirectUpload('branding', 'host_circle_avatar', 'dynHostAvatar')">
-              <i class="fas fa-camera"></i> ছবি বদলান
-            </button>
           </div>
         </div>
         <div class="host-text-col">
-          <div class="inline-editable-wrap">
-            <h3 class="host-intro-title live-editable-text" id="dynHostSectionTitle" data-section="company_about" data-key="host_section_title">আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী</h3>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_section_title', 'হোস্ট সেকশনের শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
-          </div>
-
-          <div class="inline-editable-wrap">
-            <div class="host-intro-name live-editable-text" id="dynHostName" data-section="company_about" data-key="host_name">Somjit Bhattacharyya</div>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_name', 'হোস্টের নাম')"><i class="fas fa-pencil-alt"></i></button>
-          </div>
-
-          <div class="inline-editable-wrap">
-            <div class="host-intro-role live-editable-text" id="dynHostRole" data-section="company_about" data-key="host_role">Founder & Host</div>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_role', 'হোস্টের পদবি')"><i class="fas fa-pencil-alt"></i></button>
-          </div>
-
-          <div class="inline-editable-wrap">
-            <p class="host-intro-bio live-editable-text" id="dynHostBio" data-section="company_about" data-key="host_bio">
-              আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ। দীর্ঘদিনের ভ্রমণ অভিজ্ঞতা এবং ইউটিউব পরিবারের ভালোবাসাকে সঙ্গে নিয়ে আমরা আয়োজন করি সম্পূর্ণ পারিবারিক, সুরক্ষিত ও ঘরোয়া গ্রুপের সিগনেচার ট্যুর। বিশেষ করে বয়োজ্যেষ্ঠ ও পরিবারের প্রতিটি সদস্যের সুবিধা ও স্বাচ্ছন্দ্য নিশ্চিত করাই আমাদের প্রথম অগ্রাধিকার।
-            </p>
-            <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('company_about', 'host_bio', 'হোস্টের গল্প/Bio')"><i class="fas fa-pencil-alt"></i></button>
-          </div>
+          <h3 class="host-intro-title" id="dynHostSectionTitle">আপনার পরিচিত মুখ, আপনার ভ্রমণের সঙ্গী</h3>
+          <div class="host-intro-name" id="dynHostName">Somjit Bhattacharyya</div>
+          <div class="host-intro-role" id="dynHostRole">Founder & Host</div>
+          <p class="host-intro-bio" id="dynHostBio">
+            আমি Somjit Bhattacharyya, একজন ভ্রমণপ্রেমী ও গল্প বলার মানুষ। দীর্ঘদিনের ভ্রমণ অভিজ্ঞতা এবং ইউটিউব পরিবারের ভালোবাসাকে সঙ্গে নিয়ে আমরা আয়োজন করি সম্পূর্ণ পারিবারিক, সুরক্ষিত ও ঘরোয়া গ্রুপের সিগনেচার ট্যুর। বিশেষ করে বয়োজ্যেষ্ঠ ও পরিবারের প্রতিটি সদস্যের সুবিধা ও স্বাচ্ছন্দ্য নিশ্চিত করাই আমাদের প্রথম অগ্রাধিকার।
+          </p>
         </div>
       </div>
     </div>
@@ -267,9 +228,8 @@
   <!-- 5. WHY TRAVEL WITH US (4 Senior-Friendly Pillars) -->
   <section id="why-us" class="section-why-us">
     <div class="container">
-      <div class="title-with-bar inline-editable-wrap">
-        <h2 class="section-main-title live-editable-text" id="dynWhyUsTitle" data-section="general" data-key="why_us_title">কেন আমাদের সাথে যাবেন?</h2>
-        <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'why_us_title', 'কেন আমাদের সাথে যাবেন শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
+      <div class="title-with-bar">
+        <h2 class="section-main-title" id="dynWhyUsTitle">কেন আমাদের সাথে যাবেন?</h2>
         <div class="amber-bar"></div>
       </div>
 
@@ -282,9 +242,8 @@
   <!-- 6. TRAVEL MOMENTS / GALLERY -->
   <section id="gallery" class="section-moments">
     <div class="container">
-      <div class="title-with-bar inline-editable-wrap">
-        <h2 class="section-main-title live-editable-text" id="dynMomentsTitle" data-section="general" data-key="moments_section_title">আমাদের সাথে কিছু মুহূর্ত</h2>
-        <button class="btn-inline-edit edit-only-btn" onclick="promptEditText('general', 'moments_section_title', 'গ্যালারি শিরোনাম')"><i class="fas fa-pencil-alt"></i></button>
+      <div class="title-with-bar">
+        <h2 class="section-main-title" id="dynMomentsTitle">আমাদের সাথে কিছু মুহূর্ত</h2>
         <div class="amber-bar"></div>
       </div>
 
@@ -302,7 +261,7 @@
     </div>
   </section>
 
-  <!-- 7. FAQ & BOOKING POLICIES (Accordion Style - Senior Friendly & Uncluttered) -->
+  <!-- 7. FAQ & BOOKING POLICIES (Accordion Style) -->
   <section id="faq-policies" class="section-accordion-area">
     <div class="container">
       <!-- 7.1 Booking Policies Accordion -->
@@ -321,7 +280,7 @@
             </button>
             <div class="accordion-content-drawer">
               <div class="accordion-body-text">
-                <ul class="clean-policy-list">
+                <ul class="clean-policy-list" id="dynChildPolicyList">
                   <li><strong>০ – ৪ বছর (ইনফ্যান্ট):</strong> সম্পূর্ণ বিনামূল্যে (Free)। বাবা-মায়ের সাথে সিট ও হোটেল বেড শেয়ারিংয়ে কোনো চার্জ নেই।</li>
                   <li><strong>৫ – ৯ বছর (শিশু / চাইল্ড):</strong> প্যাকেজের ৬০% চার্জ প্রযোজ্য। পৃথক আরামদায়ক সিট, টাটকা খাবার ও রুম শেয়ারিং অন্তর্ভুক্ত।</li>
                   <li><strong>১০ বছর বা তদূর্ধ্ব:</strong> পূর্ণ বয়স্ক (Adult) হিসেবে গণ্য হবে এবং স্বাভাবিক প্যাকেজ রেট ও পৃথক বেড প্রযোজ্য হবে।</li>
@@ -338,10 +297,10 @@
             </button>
             <div class="accordion-content-drawer">
               <div class="accordion-body-text">
-                <ul class="clean-policy-list">
+                <ul class="clean-policy-list" id="dynCancelPolicyList">
                   <li><strong>ট্যুর শুরুর ৩০ দিন বা তার আগে:</strong> মোট অগ্রিমের <strong>৯০% রিফান্ড</strong> প্রদান করা হবে (১০% অ্যাডমিন প্রসেসিং চার্জ বাদে)।</li>
                   <li><strong>ট্যুর শুরুর ১৫ থেকে ২৯ দিন আগে:</strong> মোট মূল্যের <strong>৫০% রিফান্ড</strong> করা হবে।</li>
-                  <li><strong>ট্যুর শুরুর ০ থেকে ১৪ দিন আগে:</strong> হোটেল ও গাড়ির অগ্রিম বুকিংয়ের কারণে ক্যাশ রিফান্ড সম্ভব নয়, তবে বিকল্প কাউকে সিট ট্রান্সফার করতে পারবেন।</li>
+                  <li><strong>ট্যুর শুরুর ০ থেকে ১৪ দিন আগে:</strong> হোটেল ও গাড়ির অগ্রিম বুকিং নিশ্চিত থাকায় ক্যাশ রিফান্ড সম্ভব নয়, তবে বিকল্প কাউকে সিট ট্রান্সফার করতে পারবেন।</li>
                   <li><strong>প্রাকৃতিক দুর্যোগ বা জরুরি অবস্থা:</strong> আবহাওয়া বা সরকারি নির্দেশনায় সফর স্থগিত হলে জমা টাকা ভবিষ্যতের যেকোনো ট্যুরে ১০০% সুরক্ষিত ও অ্যাডজাস্টেবল।</li>
                 </ul>
               </div>
@@ -381,23 +340,23 @@
           <h4 style="color:#fff; font-size:1.2rem; font-weight:700; margin-bottom:14px;">যোগাযোগ ও হেল্পলাইন</h4>
           <p style="color:#e2e8f0; font-size:1rem; margin-bottom:10px;">
             <i class="fas fa-phone-alt" style="color:#f59e0b; margin-right:8px;"></i>
-            <a href="tel:+919433074880" style="font-weight:700; color:#fbbf24;">+91 9433074880</a> (সোমজিৎ ভট্টাচার্য)
+            <a href="tel:+919433074880" id="dynHostPhone" style="font-weight:700; color:#fbbf24;">+91 9433074880</a> (সোমজিৎ ভট্টাচার্য)
           </p>
           <p style="color:#e2e8f0; font-size:1rem; margin-bottom:10px;">
             <i class="fas fa-headset" style="color:#f59e0b; margin-right:8px;"></i>
-            <a href="tel:+919432426448">+91 9432426448</a> (অ্যাডমিন টিম)
+            <a href="tel:+919432426448" id="dynAdminPhone">+91 9432426448</a> (অ্যাডমিন টিম)
           </p>
           <p style="color:#94a3b8; font-size:0.95rem;">
-            <i class="fas fa-map-marker-alt" style="color:#f59e0b; margin-right:8px;"></i> চন্দননগর, হুগলি, পশ্চিমবঙ্গ - 712136
+            <i class="fas fa-map-marker-alt" style="color:#f59e0b; margin-right:8px;"></i> <span id="dynAddress">চন্দননগর, হুগলি, পশ্চিমবঙ্গ - 712136</span>
           </p>
         </div>
       </div>
 
       <div class="footer-bottom-bar">
         <span>© ২০২৬ Tour with Somjit. <a href="javascript:void(0)" onclick="openPrivacyModal()" style="color:#fbbf24; text-decoration:underline; margin-left:6px;">প্রাইভেসি পলিসি</a> | সর্বস্বত্ব সংরক্ষিত।</span>
-        <!-- Discrete Admin Access link (Opens Secure In-Page Modal) -->
+        <!-- Discrete Admin Access link -->
         <a href="javascript:void(0)" onclick="promptAdminLoginModal()" style="color:#64748b; font-size:0.8rem; text-decoration:none;">
-          <i class="fas fa-lock"></i> অ্যাডমিন লগইন
+          <i class="fas fa-lock"></i> অ্যাডমিন প্রবেশ
         </a>
       </div>
     </div>
@@ -427,6 +386,7 @@
       <div class="details-cover-wrap">
         <img id="dtCoverImg" src="assets/images/card_ladakh.jpg" alt="Tour Cover" class="details-cover-img">
         <div class="details-cover-badge" id="dtCategoryBadge">লাদাখ</div>
+        <div class="details-status-badge" id="dtStatusBadge">BOOKING OPEN</div>
       </div>
 
       <div class="details-content-body">
@@ -474,7 +434,7 @@
 
         <!-- Cancellation Policy Notice -->
         <div class="details-policy-notice">
-          <strong><i class="fas fa-shield-alt"></i> বুকিং ও ক্যান্সলেশন সুরক্ষা:</strong>
+          <strong><i class="fas fa-shield-alt"></i> বুকিং ও সুরক্ষা নিশ্চয়তা:</strong>
           <p>ট্যুর শুরুর ৩০ দিন আগে পর্যন্ত ৯০% নিশ্চিত রিফান্ড। যেকোনো প্রাকৃতিক সমস্যায় ১০০% ভবিষ্যৎ ট্যুর অ্যাডজাস্টমেন্ট নিশ্চয়তা।</p>
         </div>
       </div>
@@ -498,7 +458,7 @@
     </div>
   </div>
 
-  <!-- 12. SENIOR-FRIENDLY GROUP BOOKING MODAL (Matching Exact Specifications) -->
+  <!-- 12. SENIOR-FRIENDLY GROUP BOOKING MODAL (9 Fields Spec) -->
   <div id="bookingModal" class="modal-overlay">
     <div class="booking-modal-card">
       <div class="booking-modal-header">
@@ -582,10 +542,10 @@
           </div>
         </div>
 
-        <!-- ৯. Additional Message (Optional) -->
+        <!-- ৯. Additional Requirement (Optional) -->
         <div class="booking-field-group">
           <label class="booking-field-label"><i class="fas fa-comment-dots"></i> ৯. বিশেষ বার্তা বা প্রয়োজন (Optional)</label>
-          <input type="text" id="bkSpecialReq" class="booking-field-input" placeholder="যেমন: বয়স্কদের নিচতলার রুম প্রয়োজন...">
+          <input type="text" id="bkSpecialReq" class="booking-field-input" placeholder="যেমন: নিচতলার রুম বা খাবারের বিশেষ যত্ন...">
         </div>
 
         <!-- Big Green WhatsApp Submit Button -->
@@ -631,21 +591,274 @@
         <div style="width:55px; height:55px; border-radius:50%; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.5rem;">
           <i class="fas fa-lock"></i>
         </div>
-        <h3 style="font-size:1.25rem; font-weight:800; color:#0f172a; margin-bottom:8px;">অ্যাডমিন ভেরিফিকেশন</h3>
-        <p style="color:#64748b; font-size:0.92rem; margin-bottom:16px;">লাইভ এডিট মোড সক্রিয় করতে সিকিউর পিন দিন</p>
+        <h3 style="font-size:1.25rem; font-weight:800; color:#0f172a; margin-bottom:8px;">অ্যাডমিন প্রবেশ</h3>
+        <p style="color:#64748b; font-size:0.92rem; margin-bottom:16px;">ইন-পেজ ভিজ্যুয়াল CMS সক্রিয় করতে পাসওয়ার্ড দিন</p>
         
-        <input type="password" id="admPinInput" class="booking-field-input" placeholder="পিন লিখুন (যেমন: 1234 বা somjit2026)" style="text-align:center; font-size:1.1rem; letter-spacing:3px; margin-bottom:14px;">
+        <input type="password" id="admPinInput" class="booking-field-input" placeholder="পাসওয়ার্ড লিখুন" style="text-align:center; font-size:1.1rem; letter-spacing:2px; margin-bottom:14px;">
         
         <button type="button" class="btn-details-book" onclick="handleAdminLoginSubmit()">
-          <i class="fas fa-sign-in-alt"></i> এডিট মোড খুলুন
+          <i class="fas fa-sign-in-alt"></i> CMS ড্রয়ার খুলুন
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 15. IN-PAGE EDIT TOUR MODAL -->
+  <!-- 15. UNIFIED IN-PAGE VISUAL CMS DRAWER (Desktop Side Drawer / Mobile Bottom Sheet) -->
+  <div id="adminCmsDrawer" class="admin-cms-drawer">
+    <div class="cms-drawer-header">
+      <div class="cms-drawer-brand">
+        <i class="fas fa-sliders-h" style="color:#f59e0b;"></i>
+        <span>Tour with Somjit CMS</span>
+      </div>
+      <button type="button" class="cms-close-btn" onclick="closeAdminDrawer()">&times;</button>
+    </div>
+
+    <!-- CMS Navigation Tabs -->
+    <div class="cms-nav-tabs">
+      <button class="cms-tab-btn active" data-tab="tabDashboard" onclick="switchCmsTab('tabDashboard')"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</button>
+      <button class="cms-tab-btn" data-tab="tabEditor" onclick="switchCmsTab('tabEditor')"><i class="fas fa-edit"></i> ভিজ্যুয়াল এডিটর</button>
+      <button class="cms-tab-btn" data-tab="tabTours" onclick="switchCmsTab('tabTours')"><i class="fas fa-mountain"></i> ট্যুর ম্যানেজার</button>
+      <button class="cms-tab-btn" data-tab="tabLeads" onclick="switchCmsTab('tabLeads')"><i class="fas fa-users"></i> বুকিং লিডস</button>
+      <button class="cms-tab-btn" data-tab="tabGallery" onclick="switchCmsTab('tabGallery')"><i class="fas fa-camera"></i> গ্যালারি</button>
+      <button class="cms-tab-btn" data-tab="tabFaqPolicies" onclick="switchCmsTab('tabFaqPolicies')"><i class="fas fa-file-alt"></i> FAQ ও পলিসি</button>
+      <button class="cms-tab-btn" data-tab="tabContact" onclick="switchCmsTab('tabContact')"><i class="fas fa-phone"></i> যোগাযোগ</button>
+      <button class="cms-tab-btn" data-tab="tabBackup" onclick="switchCmsTab('tabBackup')"><i class="fas fa-database"></i> ব্যাকআপ</button>
+    </div>
+
+    <!-- CMS Tab Panes -->
+    <div class="cms-drawer-body">
+      <!-- 1. DASHBOARD TAB -->
+      <div id="tabDashboard" class="cms-tab-pane active">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-chart-line"></i> ওয়েবসাইট স্ট্যাটাস ও ওভারভিউ</h4>
+          <div class="cms-stats-grid">
+            <div class="cms-stat-box">
+              <div class="stat-number" id="dashToursCount">4</div>
+              <div class="stat-label">মোট ট্যুর প্যাকেজ</div>
+            </div>
+            <div class="cms-stat-box">
+              <div class="stat-number" id="dashLeadsCount">0</div>
+              <div class="stat-label">বুকিং আবেদন</div>
+            </div>
+          </div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
+            <button type="button" class="btn-cms-big primary" onclick="switchCmsTab('tabEditor')">
+              <i class="fas fa-paint-brush"></i> ওয়েবসাইট এডিট শুরু করুন
+            </button>
+            <button type="button" class="btn-cms-big success" onclick="openPublishConfirmModal()">
+              <i class="fas fa-cloud-upload-alt"></i> পরিবর্তন লাইভ প্রকাশ করুন (Publish)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. WEBSITE VISUAL EDITOR TAB -->
+      <div id="tabEditor" class="cms-tab-pane">
+        <!-- Hero & Branding -->
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-image"></i> ১. ব্র্যান্ডিং ও হিরো সেকশন</h4>
+          <div class="cms-form-group">
+            <label class="cms-label">হেডার লোগো পরিবর্তন</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="cmsLogoUrl" class="cms-input" placeholder="লোগো URL">
+              <label class="btn-cms-upload">
+                <i class="fas fa-upload"></i> আপলোড
+                <input type="file" accept="image/*" style="display:none;" onchange="handleCmsImageUpload('branding', 'logo_url', this, 'dynHeaderLogo')">
+              </label>
+            </div>
+          </div>
+
+          <div class="cms-form-group">
+            <label class="cms-label">হিরো ব্যাকগ্রাউন্ড পাহাড়ের ছবি</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="cmsHeroBgUrl" class="cms-input" placeholder="ব্যাকগ্রাউন্ড URL">
+              <label class="btn-cms-upload">
+                <i class="fas fa-upload"></i> আপলোড
+                <input type="file" accept="image/*" style="display:none;" onchange="handleCmsImageUpload('branding', 'hero_bg', this, 'dynHeroBgContainer', true)">
+              </label>
+            </div>
+          </div>
+
+          <div class="cms-form-group">
+            <label class="cms-label">সোমজিৎ বাবুর কাটআউট ছবি</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="cmsHeroCutoutUrl" class="cms-input" placeholder="কাটআউট URL">
+              <label class="btn-cms-upload">
+                <i class="fas fa-upload"></i> আপলোড
+                <input type="file" accept="image/*" style="display:none;" onchange="handleCmsImageUpload('branding', 'hero_host_cutout', this, 'dynHeroHostCutout')">
+              </label>
+            </div>
+          </div>
+
+          <div class="cms-form-group">
+            <label class="cms-label">ট্যাগলাইন</label>
+            <input type="text" id="cmsTagline" class="cms-input" oninput="updateDraftField('branding', 'tagline', this.value, 'dynHeroTagline')">
+          </div>
+
+          <div class="cms-form-group">
+            <label class="cms-label">হিরো সাব-টাইটেল</label>
+            <input type="text" id="cmsHeroSubtitle" class="cms-input" oninput="updateDraftField('general', 'hero_subtitle', this.value, 'dynHeroSubtitle')">
+          </div>
+
+          <div class="cms-form-group">
+            <label class="cms-label">হিরো মূল শিরোনাম</label>
+            <input type="text" id="cmsHeroHeading" class="cms-input" oninput="updateDraftField('general', 'hero_heading', this.value, 'dynHeroHeading', true)">
+          </div>
+        </div>
+
+        <!-- Meet Somjit Section -->
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-user-tie"></i> ২. সোমজিৎ ভট্টাচার্য পরিচিতি</h4>
+          <div class="cms-form-group">
+            <label class="cms-label">গোল প্রোফাইল ফটো</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="cmsHostAvatarUrl" class="cms-input" placeholder="গোল ছবির URL">
+              <label class="btn-cms-upload">
+                <i class="fas fa-upload"></i> আপলোড
+                <input type="file" accept="image/*" style="display:none;" onchange="handleCmsImageUpload('branding', 'host_circle_avatar', this, 'dynHostAvatar')">
+              </label>
+            </div>
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">হোস্টের নাম</label>
+            <input type="text" id="cmsHostName" class="cms-input" oninput="updateDraftField('company_about', 'host_name', this.value, 'dynHostName')">
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">হোস্টের পদবি</label>
+            <input type="text" id="cmsHostRole" class="cms-input" oninput="updateDraftField('company_about', 'host_role', this.value, 'dynHostRole')">
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">হোস্টের গল্প ও উক্তি (Bio)</label>
+            <textarea id="cmsHostBio" class="cms-textarea" oninput="updateDraftField('company_about', 'host_bio', this.value, 'dynHostBio')"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TOURS MANAGER TAB -->
+      <div id="tabTours" class="cms-tab-pane">
+        <div class="cms-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h4 class="cms-card-title" style="margin:0;"><i class="fas fa-mountain"></i> ট্যুর প্যাকেজ তালিকা</h4>
+            <button type="button" class="btn-cms-action add-tour" onclick="openAddTourModal()">
+              <i class="fas fa-plus"></i> নতুন ট্যুর যোগ
+            </button>
+          </div>
+          <div id="cmsToursListContainer"></div>
+        </div>
+      </div>
+
+      <!-- 4. BOOKING LEADS TAB -->
+      <div id="tabLeads" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-users"></i> বুকিং অনুসন্ধান তালিকা</h4>
+          <div id="cmsLeadsListContainer"></div>
+        </div>
+      </div>
+
+      <!-- 5. GALLERY MANAGER TAB -->
+      <div id="tabGallery" class="cms-tab-pane">
+        <div class="cms-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h4 class="cms-card-title" style="margin:0;"><i class="fas fa-camera"></i> গ্যালারি ছবি</h4>
+            <button type="button" class="btn-cms-action add-moment" onclick="openAddMomentModal()">
+              <i class="fas fa-plus"></i> ছবি যোগ করুন
+            </button>
+          </div>
+          <div id="cmsGalleryListContainer"></div>
+        </div>
+      </div>
+
+      <!-- 6. FAQ & POLICIES TAB -->
+      <div id="tabFaqPolicies" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-question-circle"></i> সাধারণ প্রশ্নোত্তর (FAQ)</h4>
+          <button type="button" class="btn-cms-action add-tour" style="margin-bottom:12px;" onclick="cmsAddFaqPrompt()">
+            <i class="fas fa-plus"></i> নতুন প্রশ্ন যোগ করুন
+          </button>
+          <div id="cmsFaqListContainer"></div>
+        </div>
+      </div>
+
+      <!-- 7. CONTACT TAB -->
+      <div id="tabContact" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-phone-volume"></i> হেল্পলাইন ও ঠিকানা</h4>
+          <div class="cms-form-group">
+            <label class="cms-label">সোমজিৎ বাবুর ফোন নম্বর</label>
+            <input type="text" id="cmsHostPhone" class="cms-input" oninput="updateDraftField('contact', 'host_phone', this.value, 'dynHostPhone')">
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">অ্যাডমিন হেল্পলাইন</label>
+            <input type="text" id="cmsAdminPhone" class="cms-input" oninput="updateDraftField('contact', 'admin_phone', this.value, 'dynAdminPhone')">
+          </div>
+          <div class="cms-form-group">
+            <label class="cms-label">ঠিকানা</label>
+            <input type="text" id="cmsAddress" class="cms-input" oninput="updateDraftField('contact', 'address', this.value, 'dynAddress')">
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. BACKUP & RESTORE TAB -->
+      <div id="tabBackup" class="cms-tab-pane">
+        <div class="cms-card">
+          <h4 class="cms-card-title"><i class="fas fa-database"></i> ডেটা ব্যাকআপ ও রিকভারি</h4>
+          <p style="font-size:0.92rem; color:#64748b; margin-bottom:14px;">
+            আপনার সমস্ত ট্যুর, পলিসি ও কনটেন্টের ১-ক্লিক ব্যাকআপ ডাউনলোড বা রিস্টোর করুন।
+          </p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button type="button" class="btn-cms-big primary" onclick="exportCmsBackupJson()">
+              <i class="fas fa-download"></i> সম্পূর্ণ ডেটা ব্যাকআপ ডাউনলোড (JSON)
+            </button>
+            <label class="btn-cms-big" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; cursor:pointer; text-align:center;">
+              <i class="fas fa-upload"></i> ব্যাকআপ ফাইল থেকে রিস্টোর করুন
+              <input type="file" accept=".json" style="display:none;" onchange="importCmsBackupJson(this)">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 16. PUBLISH CONFIRMATION MODAL -->
+  <div id="publishConfirmModal" class="modal-overlay">
+    <div class="tour-details-dialog" style="max-width:440px; text-align:center;">
+      <div class="details-content-body" style="padding-top:24px;">
+        <div style="width:60px; height:60px; border-radius:50%; background:#dcfce7; color:#16a34a; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.6rem;">
+          <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <h3 style="font-size:1.3rem; font-weight:800; color:#0f172a; margin-bottom:8px;">লাইভ পাবলিশ কনফার্মেশন</h3>
+        <p style="color:#475569; font-size:1rem; line-height:1.6; margin-bottom:20px;">
+          আপনি কি আপনার করা সমস্ত পরিবর্তন Live Website-এ প্রকাশ করতে চান? এটি সাথে সাথে সব দর্শকের কাছে দৃশ্যমান হবে।
+        </p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <button type="button" class="btn-hero-pill navy" style="background:#64748b; min-height:48px;" onclick="closePublishConfirmModal()">বাতিল (Cancel)</button>
+          <button type="button" class="btn-hero-pill gold" style="background:#16a34a; color:#fff; min-height:48px;" onclick="executeCloudPublish()">Publish Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 17. PUBLISH SUCCESS MODAL -->
+  <div id="publishSuccessModal" class="modal-overlay">
+    <div class="tour-details-dialog" style="max-width:420px; text-align:center;">
+      <div class="details-content-body" style="padding-top:24px;">
+        <div style="width:60px; height:60px; border-radius:50%; background:#dcfce7; color:#16a34a; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.6rem;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 style="font-size:1.3rem; font-weight:800; color:#0f172a; margin-bottom:8px;">Website Successfully Updated!</h3>
+        <p style="color:#475569; font-size:0.98rem; margin-bottom:20px;">
+          আপনার সমস্ত পরিবর্তন Google ক্লাউড সার্ভারে সফলভাবে লাইভ প্রকাশিত হয়েছে।
+        </p>
+        <button type="button" class="btn-details-book" onclick="viewLiveWebsite()">
+          <i class="fas fa-external-link-alt"></i> VIEW LIVE WEBSITE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 18. IN-PAGE EDIT TOUR MODAL -->
   <div id="editTourModal" class="modal-overlay">
-    <div class="tour-details-dialog" style="max-width:600px;">
+    <div class="tour-details-dialog" style="max-width:620px;">
       <button type="button" class="modal-close-btn" onclick="closeEditTourModal()">&times;</button>
       <div class="details-content-body" style="padding-top:20px;">
         <h3 class="details-sub-heading" id="editTourModalHeading"><i class="fas fa-pencil-alt" style="color:#d97706;"></i> ট্যুর তথ্য এডিট</h3>
@@ -658,12 +871,41 @@
 
         <div class="booking-grid-2">
           <div class="booking-field-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">গন্তব্য / ক্যাটাগরি</label>
+            <input type="text" id="edTourCategory" class="booking-field-input" placeholder="যেমন: লাদাখ / সুন্দরবন">
+          </div>
+          <div class="booking-field-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">বুকিং স্ট্যাটাস</label>
+            <select id="edTourStatus" class="booking-field-select">
+              <option value="BOOKING OPEN">BOOKING OPEN (বুকিং চলছে)</option>
+              <option value="FEW SEATS LEFT">FEW SEATS LEFT (সীমিত আসন)</option>
+              <option value="UPCOMING">UPCOMING (আসন্ন)</option>
+              <option value="BOOKING CLOSED">BOOKING CLOSED (বুকিং বন্ধ)</option>
+              <option value="COMPLETED">COMPLETED (সম্পন্ন)</option>
+              <option value="DRAFT">DRAFT (ড্রাফট)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="booking-grid-2">
+          <div class="booking-field-group" style="margin-bottom:12px;">
             <label class="booking-field-label">তারিখ (Dates)</label>
-            <input type="text" id="edTourDates" class="booking-field-input" placeholder="যেমন: ১৩ - ১৯ নভেম্বর ২০২৬">
+            <input type="text" id="edTourDates" class="booking-field-input" placeholder="যেমন: ২৫ মে - ০৯ জুন ২০২৬">
           </div>
           <div class="booking-field-group" style="margin-bottom:12px;">
             <label class="booking-field-label">সময়সীমা (Duration)</label>
-            <input type="text" id="edTourDuration" class="booking-field-input" placeholder="যেমন: 6 Nights / 7 Days">
+            <input type="text" id="edTourDuration" class="booking-field-input" placeholder="যেমন: 13 Nights / 14 Days">
+          </div>
+        </div>
+
+        <div class="booking-grid-2">
+          <div class="booking-field-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">শুরুর স্থান (Starting Point)</label>
+            <input type="text" id="edTourStarting" class="booking-field-input" placeholder="যেমন: লেহ এয়ারপোর্ট / কলকাতা">
+          </div>
+          <div class="booking-field-group" style="margin-bottom:12px;">
+            <label class="booking-field-label">প্যাকেজ মূল্য (প্রতি জন)</label>
+            <input type="number" id="edTourPrice" class="booking-field-input" placeholder="যেমন: 48500">
           </div>
         </div>
 
@@ -679,8 +921,8 @@
         </div>
 
         <div class="booking-field-group" style="margin-bottom:12px;">
-          <label class="booking-field-label">সংক্ষিপ্ত হাইলাইট (Short Highlight)</label>
-          <input type="text" id="edTourShortHighlight" class="booking-field-input" placeholder="যেমন: জঙ্গল সাফারি ও নদীর রূপ...">
+          <label class="booking-field-label">সংক্ষিপ্ত হাইলাইট</label>
+          <input type="text" id="edTourShortHighlight" class="booking-field-input" placeholder="যেমন: খারদুংলা পাস, নুব্রা ও প্যাংগং লেক...">
         </div>
 
         <div class="booking-field-group" style="margin-bottom:12px;">
@@ -707,9 +949,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Hidden File Input for Direct Image Uploads -->
-  <input type="file" id="globalDirectImageInput" accept="image/*" style="display:none;" onchange="processDirectImageUpload(this)">
 
   <!-- JavaScript Engines -->
   <script src="assets/js/data.js"></script>
