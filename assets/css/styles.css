@@ -771,3 +771,20 @@ body.admin-mode .admin-cms-drawer.active { display: flex !important; right: 0 !i
   box-shadow: 0 15px 40px rgba(0,0,0,0.5);
   border: 2px solid var(--gold-primary);
 }
+
+.drawer-admin-btn {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #fbbf24 !important;
+  border: 1.5px solid var(--gold-primary) !important;
+  font-weight: 700 !important;
+  text-align: center;
+  justify-content: center !important;
+  padding: 10px 14px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease;
+}
+
+.drawer-admin-btn:hover {
+  background: var(--gold-primary) !important;
+  color: var(--navy-dark) !important;
+}
