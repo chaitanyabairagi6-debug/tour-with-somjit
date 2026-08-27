@@ -1,69 +1,58 @@
 // =========================================================================
-// Tour with Somjit - Master Application Engine (v8.0.0)
-// Booking Statuses, Faded-Out Closed Tours, Terms & Conditions, 1:1 Modals
+// Tour with Somjit - Public Application Engine (v9.0.0)
 // =========================================================================
 
-let livePublished = null;
-let workingDraft = null;
-let isAdminAuthenticated = false;
+let liveSiteData = null;
+const FIREBASE_DB_URL = "https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initCloudPublishedData();
-  setupMobileDrawer();
-  setupKeyboardAdminShortcut();
+  loadLiveSiteData();
 });
 
-// 1. Single Source of Truth Cloud Loader
-async function initCloudPublishedData() {
+// 1. Cloud Loader
+async function loadLiveSiteData() {
   const cacheBuster = "?t=" + Date.now();
-  const cloudUrl = "https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json" + cacheBuster;
-
   try {
-    const res = await fetch(cloudUrl, { cache: "no-store" });
-    const cloudData = await res.json();
-    if (cloudData && typeof cloudData === "object" && cloudData.tours) {
-      livePublished = cloudData;
-      workingDraft = JSON.parse(JSON.stringify(cloudData));
-      window.TWS_SITE_DATA = cloudData;
-      localStorage.setItem("tws_published_site_data", JSON.stringify(cloudData));
-      renderAllComponents(livePublished);
-    } else {
-      throw new Error("Invalid schema");
+    const res = await fetch(FIREBASE_DB_URL + cacheBuster, { cache: "no-store" });
+    const cloud = await res.json();
+    if (cloud && typeof cloud === "object" && cloud.tours) {
+      liveSiteData = cloud;
+      localStorage.setItem("tws_live_site_data", JSON.stringify(cloud));
+      renderPublicWebsite(liveSiteData);
+      return;
     }
-  } catch(err) {
-    const localCached = localStorage.getItem("tws_published_site_data");
-    if (localCached) {
-      livePublished = JSON.parse(localCached);
-    } else {
-      livePublished = window.TWS_SITE_DATA || {};
-    }
-    workingDraft = JSON.parse(JSON.stringify(livePublished));
-    renderAllComponents(livePublished);
+  } catch(err) {}
+
+  const cached = localStorage.getItem("tws_live_site_data");
+  if (cached) {
+    liveSiteData = JSON.parse(cached);
+  } else {
+    liveSiteData = window.TWS_SITE_DATA || {};
   }
+  renderPublicWebsite(liveSiteData);
 }
 
-// 2. Component Renderers
-function renderAllComponents(data) {
+// 2. Main Public Renderer
+function renderPublicWebsite(data) {
   if (!data) return;
-  renderAllSectionHeadings(data);
+  renderHeadings(data);
   renderHostHero(data);
-  renderAnnualToursGrid(data);
-  renderWhyUsGrid(data);
-  renderMomentsGallery(data);
+  renderToursGrid(data);
+  renderSpecialities(data);
+  renderGallery(data);
   renderCustomerReviews(data);
-  renderHomeFaqs(data);
-  renderAboutAndPolicies(data);
+  renderFaqs(data);
+  renderPolicies(data);
   renderFooterAndContact(data);
-  populateTourDropdown(data);
+  populateBookingTourDropdown(data);
 }
 
-// Universal Section Headings
-function renderAllSectionHeadings(data) {
+// Headings & Header
+function renderHeadings(data) {
   const h = data.section_headings || {};
   const brand = data.branding || {};
   const contact = data.contact || {};
 
-  // Header & Tagline
   const siteTitle = document.getElementById("dynSiteTitle");
   const siteSubtitle = document.getElementById("dynSiteSubtitle");
   const phoneLink = document.getElementById("dynHeaderPhoneLink");
@@ -72,25 +61,22 @@ function renderAllSectionHeadings(data) {
   if (siteSubtitle) siteSubtitle.textContent = (h.header && h.header.site_subtitle) ? h.header.site_subtitle : (brand.tagline || "সোমজিৎ ভট্টাচার্য");
   if (phoneLink && contact.primary_phone) phoneLink.href = `tel:${contact.primary_phone.replace(/\D/g, '')}`;
 
-  // Tours Section Headings
-  const toursH = h.tours || {};
+  const tH = h.tours || {};
   const tBadge = document.getElementById("dynToursBadge");
   const tTitle = document.getElementById("dynToursTitle");
   const tSub = document.getElementById("dynToursSubtitle");
-  if (tBadge) tBadge.textContent = toursH.badge || "২০২৬ ভ্রমণ ক্যালেন্ডার";
-  if (tTitle) tTitle.textContent = toursH.title || "আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর";
-  if (tSub) tSub.textContent = toursH.subtitle || "সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের";
+  if (tBadge) tBadge.textContent = tH.badge || "২০২৬ ভ্রমণ ক্যালেন্ডার";
+  if (tTitle) tTitle.textContent = tH.title || "আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর";
+  if (tSub) tSub.textContent = tH.subtitle || "সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের";
 
-  // Terms & Conditions Headings (English)
-  const termsH = h.terms || {};
+  const trmH = h.terms || {};
   const trmBadge = document.getElementById("dynTermsBadge");
   const trmTitle = document.getElementById("dynTermsTitle");
   const trmSub = document.getElementById("dynTermsSubtitle");
-  if (trmBadge) trmBadge.textContent = termsH.badge || "Company Guidelines";
-  if (trmTitle) trmTitle.textContent = termsH.title || "Terms & Conditions";
-  if (trmSub) trmSub.textContent = termsH.subtitle || "General Policies, Child Guidelines & Cancellation Rules";
+  if (trmBadge) trmBadge.textContent = trmH.badge || "Company Guidelines";
+  if (trmTitle) trmTitle.textContent = trmH.title || "Terms & Conditions";
+  if (trmSub) trmSub.textContent = trmH.subtitle || "General Policies, Child Guidelines & Cancellation Rules";
 
-  // Why Us Headings
   const whyH = h.why_us || {};
   const wBadge = document.getElementById("dynWhyUsBadge");
   const wTitle = document.getElementById("dynWhyUsTitle");
@@ -99,7 +85,6 @@ function renderAllSectionHeadings(data) {
   if (wTitle) wTitle.textContent = whyH.title || "আমাদের ট্যুরের বিশেষত্ব";
   if (wSub) wSub.textContent = whyH.subtitle || "কেন পরিবার ও প্রবীণদের প্রথম পছন্দ Tour with Somjit?";
 
-  // Reviews Headings
   const revH = h.reviews || {};
   const rBadge = document.getElementById("dynReviewsBadge");
   const rTitle = document.getElementById("dynReviewsTitle");
@@ -109,15 +94,6 @@ function renderAllSectionHeadings(data) {
   if (rTitle) rTitle.textContent = revH.title || "কাস্টমার রেটিং ও মতামত";
   if (rSub) rSub.textContent = revH.subtitle || "আমাদের সাথে ঘুরে আসা পরিবার ও প্রবীণ সদস্যদের আন্তরিক রিভিউ";
   if (rBtn) rBtn.textContent = revH.btn_text || "✍️ আপনার রিভিউ ও রেটিং যোগ করুন";
-
-  // FAQ Headings
-  const faqH = h.faq || {};
-  const fBadge = document.getElementById("dynFaqBadge");
-  const fTitle = document.getElementById("dynFaqTitle");
-  const fSub = document.getElementById("dynFaqSubtitle");
-  if (fBadge) fBadge.textContent = faqH.badge || "সচরাচর জিজ্ঞাসা";
-  if (fTitle) fTitle.textContent = faqH.title || "সাধারণ প্রশ্নোত্তর (Q&A)";
-  if (fSub) fSub.textContent = faqH.subtitle || "আপনার মনে থাকা সমস্ত প্রশ্নের সহজ ও পরিষ্কার উত্তর";
 }
 
 // Host Hero
@@ -145,8 +121,8 @@ function renderHostHero(data) {
   if (drawerFb && social.facebook) drawerFb.href = social.facebook;
 }
 
-// 6 Annual Tours Grid — WITH BOOKING STATUSES & FADED OUT CLOSED TOURS
-function renderAnnualToursGrid(data) {
+// 6 Annual Tours Grid (Active WhatsApp for Closed Tours & Highlighting)
+function renderToursGrid(data) {
   const container = document.getElementById("annualToursGrid");
   if (!container) return;
 
@@ -155,7 +131,6 @@ function renderAnnualToursGrid(data) {
 
   tours.forEach(tour => {
     const imgUrl = tour.banner_image || "assets/images/tour_purulia_square.jpg";
-    const waText = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${tour.title}' সম্পর্কে বিস্তারিত জানতে ও সিট বুকিং করতে চাই।`);
     const status = tour.status || "BOOKING_OPEN";
 
     let statusPillHtml = "";
@@ -164,7 +139,8 @@ function renderAnnualToursGrid(data) {
 
     if (status === "BOOKING_OPEN") {
       cardClass += " status-open";
-      statusPillHtml = `<span class="tour-status-pill open"><i class="fas fa-circle" style="font-size:8px;"></i> Booking Open (বুকিং চলছে)</span>`;
+      statusPillHtml = `<span class="tour-status-pill open"><i class="fas fa-circle" style="font-size:8px;"></i> Booking Open</span>`;
+      const waText = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${tour.title}' সম্পর্কে বিস্তারিত জানতে ও সিট বুকিং করতে চাই।`);
       buttonHtml = `
         <a href="https://wa.me/919433074880?text=${waText}" target="_blank" class="btn-tour-wa">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp বুকিং
@@ -172,14 +148,16 @@ function renderAnnualToursGrid(data) {
       `;
     } else if (status === "LIMITED_SEATS") {
       cardClass += " status-limited";
-      statusPillHtml = `<span class="tour-status-pill limited"><i class="fas fa-exclamation-circle"></i> Limited Seats (কয়েকটি সিট বাকি)</span>`;
+      statusPillHtml = `<span class="tour-status-pill limited"><i class="fas fa-exclamation-circle"></i> Limited Seats</span>`;
+      const waText = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${tour.title}' ট্যুরে মাত্র কয়েকটি সিট বাকি দেখে দ্রুত বুকিং করতে চাই।`);
       buttonHtml = `
         <a href="https://wa.me/919433074880?text=${waText}" target="_blank" class="btn-tour-wa" style="background:#f59e0b;">
           <i class="fa-brands fa-whatsapp"></i> দ্রুত সিট বুকিং
         </a>
       `;
     } else if (status === "UPCOMING") {
-      statusPillHtml = `<span class="tour-status-pill upcoming"><i class="fas fa-clock"></i> Coming Soon (আসছে)</span>`;
+      statusPillHtml = `<span class="tour-status-pill upcoming"><i class="fas fa-clock"></i> Coming Soon</span>`;
+      const waText = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আপনার '${tour.title}' আসছে দেখে আমি এই ট্যুরটির বিষয়ে জানতে চাই।`);
       buttonHtml = `
         <a href="https://wa.me/919433074880?text=${waText}" target="_blank" class="btn-tour-wa" style="background:#0284c7;">
           <i class="fa-brands fa-whatsapp"></i> তথ্য জানতে WhatsApp
@@ -187,11 +165,12 @@ function renderAnnualToursGrid(data) {
       `;
     } else if (status === "BOOKING_CLOSED") {
       cardClass += " status-closed";
-      statusPillHtml = `<span class="tour-status-pill closed"><i class="fas fa-lock"></i> Booking Closed (বুকিং সমাপ্ত)</span>`;
+      statusPillHtml = `<span class="tour-status-pill closed"><i class="fas fa-lock"></i> Booking Closed</span>`;
+      const waitlistMsg = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${tour.title}' ট্যুরের জন্য বিশেষ আগ্রহী। বর্তমানে এই ট্যুরের বুকিং সমাপ্ত হলেও, পরবর্তী ব্যাচ বা পুনরায় বুকিং ওপেন হলে অনুগ্রহ করে আমাকে অবশ্যই জানাবেন।`);
       buttonHtml = `
-        <button type="button" class="btn-tour-closed" disabled>
-          <i class="fas fa-times-circle"></i> বুকিং বন্ধ
-        </button>
+        <a href="https://wa.me/919433074880?text=${waitlistMsg}" target="_blank" class="btn-tour-wa btn-tour-waitlist" title="পরবর্তী ব্যাচে যাওয়ার জন্য জানান">
+          <i class="fas fa-bell"></i> পরবর্তী বুকিংয়ে জানান
+        </a>
       `;
     }
 
@@ -226,7 +205,7 @@ function renderAnnualToursGrid(data) {
 }
 
 // Why Us Speciality
-function renderWhyUsGrid(data) {
+function renderSpecialities(data) {
   const container = document.getElementById("whyUsGrid");
   if (!container) return;
 
@@ -245,7 +224,7 @@ function renderWhyUsGrid(data) {
 }
 
 // Moments Gallery
-function renderMomentsGallery(data) {
+function renderGallery(data) {
   const track = document.getElementById("momentsTrack");
   if (!track) return;
 
@@ -278,7 +257,7 @@ function renderCustomerReviews(data) {
 }
 
 // FAQs
-function renderHomeFaqs(data) {
+function renderFaqs(data) {
   const container = document.getElementById("homeFaqContainer");
   if (!container) return;
 
@@ -312,12 +291,13 @@ function toggleAccordion(id) {
   }
 }
 
-// Terms & Conditions (About & Policies)
-function renderAboutAndPolicies(data) {
+// Policies & Terms & Conditions
+function renderPolicies(data) {
   const policies = data.policies || {};
   const childList = document.getElementById("dynChildPolicyList");
   const cancelList = document.getElementById("dynCancelPolicyList");
   const aboutText = document.getElementById("dynAboutText");
+  const privacyContent = document.getElementById("dynPrivacyPolicyContent");
 
   if (aboutText && data.about_company) aboutText.textContent = data.about_company;
 
@@ -326,6 +306,10 @@ function renderAboutAndPolicies(data) {
   }
   if (cancelList && policies.cancellation_policy) {
     cancelList.innerHTML = policies.cancellation_policy.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+  }
+
+  if (privacyContent && data.privacy_policy) {
+    privacyContent.innerHTML = data.privacy_policy.map(p => `<p style="margin-bottom:10px;">${escapeHtml(p)}</p>`).join("");
   }
 }
 
@@ -349,14 +333,13 @@ function renderFooterAndContact(data) {
   if (addr) addr.textContent = contact.address || "Fatakgora, Chandannagar, Hooghly, West Bengal - 712136";
 }
 
-// 3. Tour Details Modal with 1:1 Aspect Ratio & Status
+// 3. Tour Details Modal
 let selectedTourForDetails = null;
 
 function openTourDetailsModal(tourId) {
-  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
-  if (!data || !data.tours || !data.tours[tourId]) return;
+  if (!liveSiteData || !liveSiteData.tours || !liveSiteData.tours[tourId]) return;
 
-  const tour = data.tours[tourId];
+  const tour = liveSiteData.tours[tourId];
   selectedTourForDetails = tour;
 
   document.getElementById("dtTourTitle").textContent = tour.title;
@@ -372,43 +355,24 @@ function openTourDetailsModal(tourId) {
   document.getElementById("dtFoodInfo").textContent = tour.food_info || "ঘরোয়া টাটকা খাবার";
   document.getElementById("dtActivities").textContent = tour.activities || "দর্শনীয় স্থান ও বিনোদন";
 
-  // Status Badge Wrap
   const statusWrap = document.getElementById("dtStatusBadgeWrap");
   const status = tour.status || "BOOKING_OPEN";
   const bookBtn = document.getElementById("dtBookBtn");
 
   if (statusWrap) {
     if (status === "BOOKING_OPEN") {
-      statusWrap.innerHTML = `<span class="tour-status-pill open"><i class="fas fa-circle" style="font-size:8px;"></i> Booking Open (বুকিং চলছে)</span>`;
-      if (bookBtn) { bookBtn.disabled = false; bookBtn.style.background = "#16a34a"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> এই ট্যুরের জন্য সিট বুকিং করুন'; }
+      statusWrap.innerHTML = `<span class="tour-status-pill open"><i class="fas fa-circle" style="font-size:8px;"></i> Booking Open</span>`;
+      if (bookBtn) { bookBtn.style.background = "#16a34a"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> এই ট্যুরের জন্য সিট বুকিং করুন'; }
     } else if (status === "LIMITED_SEATS") {
-      statusWrap.innerHTML = `<span class="tour-status-pill limited"><i class="fas fa-exclamation-circle"></i> Limited Seats (কয়েকটি সিট বাকি)</span>`;
-      if (bookBtn) { bookBtn.disabled = false; bookBtn.style.background = "#f59e0b"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> দ্রুত সিট বুকিং করুন'; }
+      statusWrap.innerHTML = `<span class="tour-status-pill limited"><i class="fas fa-exclamation-circle"></i> Limited Seats</span>`;
+      if (bookBtn) { bookBtn.style.background = "#f59e0b"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> দ্রুত সিট বুকিং করুন'; }
     } else if (status === "UPCOMING") {
-      statusWrap.innerHTML = `<span class="tour-status-pill upcoming"><i class="fas fa-clock"></i> Coming Soon (আসছে)</span>`;
-      if (bookBtn) { bookBtn.disabled = false; bookBtn.style.background = "#0284c7"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> তথ্য জানতে WhatsApp করুন'; }
+      statusWrap.innerHTML = `<span class="tour-status-pill upcoming"><i class="fas fa-clock"></i> Coming Soon</span>`;
+      if (bookBtn) { bookBtn.style.background = "#0284c7"; bookBtn.innerHTML = '<i class="fab fa-whatsapp"></i> তথ্য জানতে WhatsApp করুন'; }
     } else if (status === "BOOKING_CLOSED") {
-      statusWrap.innerHTML = `<span class="tour-status-pill closed"><i class="fas fa-lock"></i> Booking Closed (বুকিং বন্ধ)</span>`;
-      if (bookBtn) { bookBtn.disabled = true; bookBtn.style.background = "#94a3b8"; bookBtn.innerHTML = '<i class="fas fa-times-circle"></i> এই ট্যুরের বুকিং সমাপ্ত'; }
+      statusWrap.innerHTML = `<span class="tour-status-pill closed"><i class="fas fa-lock"></i> Booking Closed</span>`;
+      if (bookBtn) { bookBtn.style.background = "#64748b"; bookBtn.innerHTML = '<i class="fas fa-bell"></i> পরবর্তী ব্যাচের জন্য WhatsApp করুন'; }
     }
-  }
-
-  // Plans
-  const plansBox = document.getElementById("dtPlansBox");
-  if (tour.pricing_plans && tour.pricing_plans.length > 0) {
-    plansBox.innerHTML = `
-      <h3 class="details-sub-heading" style="margin-top:14px;"><i class="fas fa-tags" style="color:#d97706;"></i> প্যাকেজ অপশন ও মূল্য তালিকা</h3>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:8px;">
-        ${tour.pricing_plans.map(p => `
-          <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; text-align:center;">
-            <div style="font-weight:700; font-size:14px; color:#1b3b5a;">${escapeHtml(p.name)}</div>
-            <div style="font-size:16px; font-weight:800; color:#d97706; margin-top:2px;">₹${Number(p.price).toLocaleString("en-IN")} <span style="font-size:12px; color:#64748b;">${escapeHtml(p.unit || '')}</span></div>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  } else {
-    plansBox.innerHTML = "";
   }
 
   // Itinerary
@@ -427,14 +391,19 @@ function openTourDetailsModal(tourId) {
 function closeTourDetailsModal() { hideModal("tourDetailsModal"); }
 
 function bookFromDetailsModal() {
-  if (selectedTourForDetails && selectedTourForDetails.status !== "BOOKING_CLOSED") {
+  if (selectedTourForDetails) {
     closeTourDetailsModal();
-    openBookingModal(selectedTourForDetails.title);
+    if (selectedTourForDetails.status === "BOOKING_CLOSED") {
+      const waitlistMsg = encodeURIComponent(`নমস্কার সোমজিৎ ভট্টাচার্য, আমি আপনার '${selectedTourForDetails.title}' ট্যুরের জন্য আগ্রহী। পুনরায় বুকিং ওপেন হলে অনুগ্রহ করে আমাকে জানাবেন।`);
+      window.open(`https://wa.me/919433074880?text=${waitlistMsg}`, "_blank");
+    } else {
+      openBookingModal(selectedTourForDetails.title);
+    }
   }
 }
 
-// 4. Booking Modal
-function populateTourDropdown(data) {
+// 4. Booking Modal & Google Sheets Webhook
+function populateBookingTourDropdown(data) {
   const select = document.getElementById("bkTourSelect");
   if (!select) return;
 
@@ -477,6 +446,7 @@ async function handleGroupBookingSubmit(e) {
     name, age, gender, phone, persons, tour, bedType, foodChoice, specialReq
   };
 
+  // 1. Save to Firebase Realtime Database
   try {
     fetch(`https://tour-with-somjit-default-rtdb.firebaseio.com/leads/${leadData.id}.json`, {
       method: "PUT",
@@ -485,7 +455,8 @@ async function handleGroupBookingSubmit(e) {
     });
   } catch(err) {}
 
-  const webhookUrl = (livePublished && livePublished.contact && livePublished.contact.google_sheets_webhook) ? livePublished.contact.google_sheets_webhook : "";
+  // 2. Auto-sync to Google Sheets Webhook
+  const webhookUrl = (liveSiteData && liveSiteData.contact && liveSiteData.contact.google_sheets_webhook) ? liveSiteData.contact.google_sheets_webhook : "";
   if (webhookUrl && webhookUrl.startsWith("http")) {
     try {
       fetch(webhookUrl, {
@@ -497,6 +468,7 @@ async function handleGroupBookingSubmit(e) {
     } catch(err) {}
   }
 
+  // 3. Format WhatsApp Message
   const waMsg = `*🌟 TOUR WITH SOMJIT — বুকিং আবেদন 🌟*\n` +
     `--------------------------------------\n` +
     `👤 *নাম:* ${name}\n` +
@@ -534,32 +506,31 @@ async function handlePublicReviewSubmit(e) {
     createdAt: new Date().toISOString()
   };
 
-  if (!livePublished.customer_reviews) livePublished.customer_reviews = [];
-  livePublished.customer_reviews.unshift(newReview);
+  if (!liveSiteData.customer_reviews) liveSiteData.customer_reviews = [];
+  liveSiteData.customer_reviews.unshift(newReview);
 
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.customer_reviews) workingDraft.customer_reviews = [];
-  workingDraft.customer_reviews.unshift(newReview);
-
-  renderCustomerReviews(livePublished);
+  renderCustomerReviews(liveSiteData);
   closeAddReviewModal();
-  showToast("🎉 আপনার রিভিউ সফলভাবে জমা হয়েছে!");
+  showPublicToast("🎉 আপনার রিভিউ সফলভাবে জমা হয়েছে!");
 
   try {
     fetch(`https://tour-with-somjit-default-rtdb.firebaseio.com/customer_reviews.json`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(livePublished.customer_reviews)
+      body: JSON.stringify(liveSiteData.customer_reviews)
     });
   } catch(err) {}
 }
 
-// 6. Lightbox
+// 6. Privacy Policy Modal
+function openPrivacyModal() { showModal("privacyPolicyModal"); }
+function closePrivacyModal() { hideModal("privacyPolicyModal"); }
+
+// 7. Lightbox Modal
 let currentLightboxIdx = 0;
 
 function openLightboxModal(idx) {
-  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
-  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  const moments = (liveSiteData && liveSiteData.moments_gallery) ? liveSiteData.moments_gallery : [];
   if (!moments.length) return;
 
   currentLightboxIdx = (idx >= 0 && idx < moments.length) ? idx : 0;
@@ -570,8 +541,7 @@ function openLightboxModal(idx) {
 function closeLightboxModal() { hideModal("galleryLightboxModal"); }
 
 function changeLightboxImage(dir) {
-  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
-  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  const moments = (liveSiteData && liveSiteData.moments_gallery) ? liveSiteData.moments_gallery : [];
   if (!moments.length) return;
 
   currentLightboxIdx = (currentLightboxIdx + dir + moments.length) % moments.length;
@@ -579,8 +549,7 @@ function changeLightboxImage(dir) {
 }
 
 function updateLightboxContent() {
-  const data = (isAdminAuthenticated && workingDraft) ? workingDraft : livePublished;
-  const moments = (data && data.moments_gallery) ? data.moments_gallery : [];
+  const moments = (liveSiteData && liveSiteData.moments_gallery) ? liveSiteData.moments_gallery : [];
   if (!moments[currentLightboxIdx]) return;
 
   const item = moments[currentLightboxIdx];
@@ -595,589 +564,21 @@ function handleLightboxBackdropClick(e) {
   if (e.target.id === "galleryLightboxModal") closeLightboxModal();
 }
 
-// 7. Admin Auth & Split View
-function getActiveAdminPassword() {
-  const data = workingDraft || livePublished || window.TWS_SITE_DATA;
-  if (data && data.admin_security && data.admin_security.password) {
-    return data.admin_security.password;
-  }
-  return "somjit2026";
+// 8. Mobile Drawer Navigation & Backdrop Overlay
+function openNav() {
+  const drawer = document.getElementById("mobileNavDrawer");
+  const backdrop = document.getElementById("drawerBackdrop");
+  if (drawer) drawer.classList.add("active");
+  if (backdrop) backdrop.classList.add("active");
+  document.body.classList.add("nav-drawer-open");
 }
 
-function promptAdminLoginModal() {
-  if (isAdminAuthenticated) {
-    enterAdminVisualMode();
-    openAdminDrawer("dashboard");
-  } else {
-    showModal("adminLoginModal");
-  }
-}
-
-function closeAdminLoginModal() { hideModal("adminLoginModal"); }
-
-function handleAdminLoginSubmit() {
-  const pin = document.getElementById("admPinInput").value.trim();
-  const correctPin = getActiveAdminPassword();
-
-  if (pin === correctPin || pin === "somjit2026" || pin === "2026") {
-    isAdminAuthenticated = true;
-    closeAdminLoginModal();
-    enterAdminVisualMode();
-    openAdminDrawer("dashboard");
-    showToast("✓ অ্যাডমিন CMS মোড সক্রিয় হয়েছে!");
-  } else {
-    alert("❌ ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।");
-  }
-}
-
-function setupKeyboardAdminShortcut() {
-  document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
-      e.preventDefault();
-      promptAdminLoginModal();
-    }
-  });
-
-  if (window.location.hash === "#admin") {
-    promptAdminLoginModal();
-  }
-}
-
-function enterAdminVisualMode() {
-  document.body.classList.remove("public-mode");
-  document.body.classList.add("admin-mode");
-  const topBar = document.getElementById("adminLiveTopBar");
-  if (topBar) topBar.style.display = "block";
-}
-
-function exitAdminVisualMode() {
-  document.body.classList.remove("admin-mode");
-  document.body.classList.add("public-mode");
-  const topBar = document.getElementById("adminLiveTopBar");
-  if (topBar) topBar.style.display = "none";
-  closeAdminDrawer();
-}
-
-function openAdminDrawer(tabName = "dashboard") {
-  document.body.classList.add("cms-active");
-  const drawer = document.getElementById("adminCmsDrawer");
-  if (drawer) {
-    drawer.style.display = "flex";
-    setTimeout(() => drawer.classList.add("active"), 10);
-  }
-  if (tabName) switchCmsTab(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
-  populateCmsDashboard();
-}
-
-function closeAdminDrawer() {
-  document.body.classList.remove("cms-active");
-  const drawer = document.getElementById("adminCmsDrawer");
-  if (drawer) {
-    drawer.classList.remove("active");
-    setTimeout(() => { drawer.style.display = "none"; }, 300);
-  }
-}
-
-function toggleCmsSplitMode() {
-  document.body.classList.toggle("cms-full-mobile");
-  const btn = document.querySelector(".cms-toggle-preview-btn");
-  if (btn) {
-    if (document.body.classList.contains("cms-full-mobile")) {
-      btn.innerHTML = '<i class="fas fa-columns"></i> স্প্লিট ভিউ';
-    } else {
-      btn.innerHTML = '<i class="fas fa-expand"></i> ফুলস্ক্রিন CMS';
-    }
-  }
-}
-
-function scrollCmsTabs(amount) {
-  const track = document.getElementById("cmsTabsTrack");
-  if (track) {
-    track.scrollBy({ left: amount, behavior: "smooth" });
-  }
-}
-
-function switchCmsTab(tabId) {
-  const select = document.getElementById("cmsSectionSelect");
-  if (select) select.value = tabId;
-
-  document.querySelectorAll(".cms-tab-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
-  });
-  document.querySelectorAll(".cms-tab-pane").forEach(pane => {
-    pane.classList.toggle("active", pane.id === tabId);
-  });
-}
-
-// 8. CMS Dashboard & Field Population
-function populateCmsDashboard() {
-  const data = workingDraft || livePublished;
-  if (!data) return;
-
-  const toursCount = Object.keys(data.tours || {}).length;
-  const dashCount = document.getElementById("dashToursCount");
-  if (dashCount) dashCount.textContent = toursCount;
-
-  // Headings
-  const h = data.section_headings || {};
-  const brand = data.branding || {};
-  if (document.getElementById("hdSiteTitle")) document.getElementById("hdSiteTitle").value = (h.header && h.header.site_title) ? h.header.site_title : (brand.site_title || "Tour with Somjit");
-  if (document.getElementById("hdSiteSubtitle")) document.getElementById("hdSiteSubtitle").value = (h.header && h.header.site_subtitle) ? h.header.site_subtitle : (brand.tagline || "সোমজিৎ ভট্টাচার্য");
-
-  const tH = h.tours || {};
-  if (document.getElementById("hdToursBadge")) document.getElementById("hdToursBadge").value = tH.badge || "২০২৬ ভ্রমণ ক্যালেন্ডার";
-  if (document.getElementById("hdToursTitle")) document.getElementById("hdToursTitle").value = tH.title || "আমাদের বছরের ৬টি বিশেষ গ্রুপ ট্যুর";
-  if (document.getElementById("hdToursSubtitle")) document.getElementById("hdToursSubtitle").value = tH.subtitle || "সোমজিৎ ভট্টাচার্যের আন্তরিক পরিচালনায় প্রতিটি ট্যুর সম্পূর্ণ পারিবারিক ও নিশ্চিত আনন্দের";
-
-  const trmH = h.terms || {};
-  if (document.getElementById("hdTermsBadge")) document.getElementById("hdTermsBadge").value = trmH.badge || "Company Guidelines";
-  if (document.getElementById("hdTermsTitle")) document.getElementById("hdTermsTitle").value = trmH.title || "Terms & Conditions";
-  if (document.getElementById("hdTermsSubtitle")) document.getElementById("hdTermsSubtitle").value = trmH.subtitle || "General Policies, Child Guidelines & Cancellation Rules";
-
-  // Tours List in CMS with Status Labels
-  const toursContainer = document.getElementById("cmsToursListContainer");
-  if (toursContainer) {
-    const tours = Object.values(data.tours || {});
-    toursContainer.innerHTML = tours.map(t => {
-      const st = t.status || "BOOKING_OPEN";
-      let stBadge = `<span style="background:#dcfce7; color:#15803d; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700;">🟢 Booking Open</span>`;
-      if (st === "LIMITED_SEATS") stBadge = `<span style="background:#fef3c7; color:#b45309; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700;">🟡 Limited Seats</span>`;
-      if (st === "UPCOMING") stBadge = `<span style="background:#e0f2fe; color:#0369a1; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700;">🔵 Coming Soon</span>`;
-      if (st === "BOOKING_CLOSED") stBadge = `<span style="background:#fee2e2; color:#b91c1c; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700;">🔴 Booking Closed</span>`;
-
-      return `
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="color:#1b3b5a; font-size:14px;">${escapeHtml(t.title)}</strong>
-            <span style="background:#f1f5f9; color:#0f172a; font-size:12px; padding:2px 8px; border-radius:4px; font-weight:700;">₹${Number(t.price).toLocaleString("en-IN")}</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-            ${stBadge}
-            <span style="font-size:12px; color:#64748b;">${escapeHtml(t.dates)}</span>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button type="button" class="btn-cms-action open-drawer" style="padding:4px 10px; font-size:12px;" onclick="openEditTourModal('${t.id}')"><i class="fas fa-edit"></i> সম্পূর্ণ এডিট ও স্ট্যাটাস বদল</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  // Profile Fields
-  const host = data.host_profile || {};
-  const social = data.social_links || {};
-  if (document.getElementById("cmsHostName")) document.getElementById("cmsHostName").value = host.name || "";
-  if (document.getElementById("cmsHostTitle")) document.getElementById("cmsHostTitle").value = host.title || "";
-  if (document.getElementById("cmsHostBio")) document.getElementById("cmsHostBio").value = host.bio || "";
-  if (document.getElementById("cmsYtUrl")) document.getElementById("cmsYtUrl").value = social.youtube || "";
-  if (document.getElementById("cmsFbUrl")) document.getElementById("cmsFbUrl").value = social.facebook || "";
-
-  // Contact Fields & Permanent Address
-  const contact = data.contact || {};
-  if (document.getElementById("cmsPhone1")) document.getElementById("cmsPhone1").value = contact.primary_phone || "+91 9433074880";
-  if (document.getElementById("cmsPhone2")) document.getElementById("cmsPhone2").value = contact.secondary_phone || "+91 8910073441";
-  if (document.getElementById("cmsWaNums")) document.getElementById("cmsWaNums").value = contact.whatsapp_numbers || "9433074880 / 8910073441 / 9432426448";
-  if (document.getElementById("cmsAddress")) document.getElementById("cmsAddress").value = contact.address || "Fatakgora, Chandannagar, Hooghly, West Bengal - 712136";
-  if (document.getElementById("cmsSheetsWebhook")) document.getElementById("cmsSheetsWebhook").value = contact.google_sheets_webhook || "";
-
-  // Policies & About
-  if (document.getElementById("cmsAboutText")) document.getElementById("cmsAboutText").value = data.about_company || "";
-  const pol = data.policies || {};
-  if (document.getElementById("cmsChildPolicy")) document.getElementById("cmsChildPolicy").value = (pol.child_policy || []).join("\n");
-  if (document.getElementById("cmsCancelPolicy")) document.getElementById("cmsCancelPolicy").value = (pol.cancellation_policy || []).join("\n");
-
-  // Why Us
-  const whyUsContainer = document.getElementById("cmsWhyUsContainer");
-  if (whyUsContainer) {
-    const features = data.why_us_features || [];
-    whyUsContainer.innerHTML = features.map((f, idx) => `
-      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:10px;">
-        <label class="cms-label">ফিচার ${idx + 1} শিরোনাম</label>
-        <input type="text" value="${escapeAttr(f.title)}" class="cms-input" style="margin-bottom:6px;" oninput="updateWhyUsItem(${idx}, 'title', this.value)">
-        <label class="cms-label">বিবরণ</label>
-        <textarea class="cms-input" style="height:55px; resize:none;" oninput="updateWhyUsItem(${idx}, 'desc', this.value)">${escapeHtml(f.desc)}</textarea>
-      </div>
-    `).join("");
-  }
-
-  // FAQ
-  const faqContainer = document.getElementById("cmsFaqContainer");
-  if (faqContainer) {
-    const faqs = data.faqs || [];
-    faqContainer.innerHTML = faqs.map((faq, idx) => `
-      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <label class="cms-label">প্রশ্ন ${idx + 1}</label>
-          <button type="button" style="color:#ef4444; font-size:12px;" onclick="deleteFaqItem(${idx})"><i class="fas fa-trash"></i> ডিলিট</button>
-        </div>
-        <input type="text" value="${escapeAttr(faq.q)}" class="cms-input" style="margin-bottom:6px;" oninput="updateFaqItem(${idx}, 'q', this.value)">
-        <label class="cms-label">উত্তর</label>
-        <textarea class="cms-input" style="height:55px; resize:none;" oninput="updateFaqItem(${idx}, 'a', this.value)">${escapeHtml(faq.a)}</textarea>
-      </div>
-    `).join("");
-  }
-
-  fetchAndRenderLeads();
-}
-
-// 9. Heading Updater
-function updateHeading(sec, field, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.section_headings) workingDraft.section_headings = {};
-  if (!workingDraft.section_headings[sec]) workingDraft.section_headings[sec] = {};
-  workingDraft.section_headings[sec][field] = val;
-
-  if (sec === "header" && field === "site_title") {
-    if (!workingDraft.branding) workingDraft.branding = {};
-    workingDraft.branding.site_title = val;
-  }
-  if (sec === "header" && field === "site_subtitle") {
-    if (!workingDraft.branding) workingDraft.branding = {};
-    workingDraft.branding.tagline = val;
-  }
-
-  renderAllSectionHeadings(workingDraft);
-}
-
-// 10. Password Changer
-function handleChangeAdminPassword() {
-  const p1 = document.getElementById("cmsNewPin1").value.trim();
-  const p2 = document.getElementById("cmsNewPin2").value.trim();
-
-  if (!p1) {
-    alert("অনুগ্রহ করে নতুন পাসওয়ার্ড লিখুন!");
-    return;
-  }
-  if (p1 !== p2) {
-    alert("❌ দুটি পাসওয়ার্ড মিলছে না! পুনরায় চেক করুন।");
-    return;
-  }
-
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.admin_security) workingDraft.admin_security = {};
-  workingDraft.admin_security.password = p1;
-
-  document.getElementById("cmsNewPin1").value = "";
-  document.getElementById("cmsNewPin2").value = "";
-
-  showToast("✓ নতুন পাসওয়ার্ড ড্রাফটে সেট হয়েছে! সবার জন্য চালু করতে Publish চাপুন।");
-}
-
-// 11. Tour Editor Modal with Status
-function openEditTourModal(tourId) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  const tour = workingDraft.tours[tourId];
-  if (!tour) return;
-
-  document.getElementById("cmsTourModalHeading").textContent = `ট্যুর এডিটর — ${tour.title}`;
-  document.getElementById("editTourId").value = tour.id;
-  document.getElementById("edTourTitle").value = tour.title || "";
-  document.getElementById("edTourStatus").value = tour.status || "BOOKING_OPEN";
-  document.getElementById("edTourDates").value = tour.dates || "";
-  document.getElementById("edTourDuration").value = tour.duration || "";
-  document.getElementById("edTourPrice").value = tour.price || "";
-  document.getElementById("edTourStarting").value = tour.starting_point || "";
-  document.getElementById("edTourHighlight").value = tour.short_highlight || "";
-  document.getElementById("edTourHotel").value = tour.hotel_info || "";
-  document.getElementById("edTourTransport").value = tour.transport_info || "";
-  document.getElementById("edTourFood").value = tour.food_info || "";
-  document.getElementById("edTourBannerUrl").value = tour.banner_image || "";
-
-  const prev = document.getElementById("edTourBannerPreview");
-  if (prev && tour.banner_image) {
-    prev.innerHTML = `<img src="${tour.banner_image}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;">`;
-  } else if (prev) {
-    prev.innerHTML = "";
-  }
-
-  showModal("cmsTourEditModal");
-}
-
-function openCreateTourModal() {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  const newId = "tour-" + Date.now();
-
-  document.getElementById("cmsTourModalHeading").textContent = "নতুন গ্রুপ ট্যুর যোগ করুন";
-  document.getElementById("editTourId").value = newId;
-  document.getElementById("edTourTitle").value = "";
-  document.getElementById("edTourStatus").value = "BOOKING_OPEN";
-  document.getElementById("edTourDates").value = "";
-  document.getElementById("edTourDuration").value = "";
-  document.getElementById("edTourPrice").value = "";
-  document.getElementById("edTourStarting").value = "কলকাতা";
-  document.getElementById("edTourHighlight").value = "";
-  document.getElementById("edTourHotel").value = "";
-  document.getElementById("edTourTransport").value = "";
-  document.getElementById("edTourFood").value = "";
-  document.getElementById("edTourBannerUrl").value = "assets/images/tour_purulia_square.jpg";
-  document.getElementById("edTourBannerPreview").innerHTML = "";
-
-  showModal("cmsTourEditModal");
-}
-
-function closeCmsTourModal() { hideModal("cmsTourEditModal"); }
-
-function handleTourBannerFileSelect(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const size = 800;
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      
-      const minDim = Math.min(img.width, img.height);
-      const sx = (img.width - minDim) / 2;
-      const sy = (img.height - minDim) / 2;
-      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
-      
-      const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.82);
-      document.getElementById("edTourBannerUrl").value = compressedDataUrl;
-      document.getElementById("edTourBannerPreview").innerHTML = `<img src="${compressedDataUrl}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;">`;
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function handleSaveCmsTour(e) {
-  e.preventDefault();
-  const id = document.getElementById("editTourId").value;
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.tours) workingDraft.tours = {};
-
-  const existing = workingDraft.tours[id] || { id: id, itinerary: [] };
-
-  existing.id = id;
-  existing.title = document.getElementById("edTourTitle").value.trim();
-  existing.status = document.getElementById("edTourStatus").value;
-  existing.dates = document.getElementById("edTourDates").value.trim();
-  existing.duration = document.getElementById("edTourDuration").value.trim();
-  existing.price = parseFloat(document.getElementById("edTourPrice").value) || 0;
-  existing.starting_point = document.getElementById("edTourStarting").value.trim();
-  existing.short_highlight = document.getElementById("edTourHighlight").value.trim();
-  existing.hotel_info = document.getElementById("edTourHotel").value.trim();
-  existing.transport_info = document.getElementById("edTourTransport").value.trim();
-  existing.food_info = document.getElementById("edTourFood").value.trim();
-  existing.banner_image = document.getElementById("edTourBannerUrl").value.trim() || existing.banner_image;
-
-  workingDraft.tours[id] = existing;
-
-  renderAnnualToursGrid(workingDraft);
-  populateTourDropdown(workingDraft);
-  populateCmsDashboard();
-  closeCmsTourModal();
-  showToast("✓ ট্যুর ও স্ট্যাটাস সংরক্ষিত হয়েছে! লাইভ করতে Publish চাপুন।");
-}
-
-function deleteCurrentCmsTour() {
-  const id = document.getElementById("editTourId").value;
-  if (confirm("আপনি কি নিশ্চিত এই ট্যুরটি মুছে ফেলতে চান?")) {
-    if (workingDraft && workingDraft.tours && workingDraft.tours[id]) {
-      delete workingDraft.tours[id];
-      renderAnnualToursGrid(workingDraft);
-      populateTourDropdown(workingDraft);
-      populateCmsDashboard();
-      closeCmsTourModal();
-      showToast("✓ ট্যুর মুছে ফেলা হয়েছে!");
-    }
-  }
-}
-
-// 12. Profile, Contact & Policies Update
-function updateProfileField(key, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.host_profile) workingDraft.host_profile = {};
-  workingDraft.host_profile[key] = val;
-  renderHostHero(workingDraft);
-}
-
-function updateSocialLink(key, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.social_links) workingDraft.social_links = {};
-  workingDraft.social_links[key] = val;
-  renderHostHero(workingDraft);
-}
-
-function updateContactField(key, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.contact) workingDraft.contact = {};
-  workingDraft.contact[key] = val;
-  renderFooterAndContact(workingDraft);
-}
-
-function updateAboutText(val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  workingDraft.about_company = val;
-  renderAboutAndPolicies(workingDraft);
-}
-
-function updatePolicyList(key, text) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.policies) workingDraft.policies = {};
-  workingDraft.policies[key] = text.split("\n").map(s => s.trim()).filter(s => s.length > 0);
-  renderAboutAndPolicies(workingDraft);
-}
-
-function updateWhyUsItem(idx, field, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (workingDraft.why_us_features && workingDraft.why_us_features[idx]) {
-    workingDraft.why_us_features[idx][field] = val;
-    renderWhyUsGrid(workingDraft);
-  }
-}
-
-function updateFaqItem(idx, field, val) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (workingDraft.faqs && workingDraft.faqs[idx]) {
-    workingDraft.faqs[idx][field] = val;
-    renderHomeFaqs(workingDraft);
-  }
-}
-
-function addNewFaqItem() {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.faqs) workingDraft.faqs = [];
-  workingDraft.faqs.push({ q: "নতুন প্রশ্ন লিখুন", a: "এখানে উত্তর লিখুন" });
-  renderHomeFaqs(workingDraft);
-  populateCmsDashboard();
-}
-
-function deleteFaqItem(idx) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (workingDraft.faqs) {
-    workingDraft.faqs.splice(idx, 1);
-    renderHomeFaqs(workingDraft);
-    populateCmsDashboard();
-  }
-}
-
-function updateSheetsWebhook(url) {
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished));
-  if (!workingDraft.contact) workingDraft.contact = {};
-  workingDraft.contact.google_sheets_webhook = url;
-  showToast("✓ গুগল শিট Webhook সংরক্ষিত হয়েছে!");
-}
-
-// 13. Leads
-async function fetchAndRenderLeads() {
-  const container = document.getElementById("cmsLeadsListContainer");
-  const dashCount = document.getElementById("dashLeadsCount");
-  if (!container) return;
-
-  container.innerHTML = "<p style='color:#64748b; font-size:13px;'>⏳ লিডস লোড হচ্ছে...</p>";
-
-  try {
-    const res = await fetch("https://tour-with-somjit-default-rtdb.firebaseio.com/leads.json?cache=" + Date.now());
-    const leads = await res.json();
-
-    if (leads && typeof leads === "object") {
-      const list = Object.values(leads).reverse();
-      if (dashCount) dashCount.textContent = list.length;
-
-      if (list.length === 0) {
-        container.innerHTML = "<p style='color:#64748b; font-size:13px;'>কোনো নতুন বুকিং আবেদন নেই।</p>";
-        return;
-      }
-
-      container.innerHTML = list.map(l => `
-        <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <strong style="color:#1b3b5a; font-size:14px;">${escapeHtml(l.name)} (${escapeHtml(l.age)} বছর, ${escapeHtml(l.gender)})</strong>
-            <span style="font-size:11px; color:#64748b;">${new Date(l.timestamp).toLocaleDateString("bn-IN")}</span>
-          </div>
-          <div style="font-size:13px; color:#0f172a; margin-bottom:4px;">
-            📞 <strong><a href="tel:${escapeAttr(l.phone)}" style="color:#2563eb;">${escapeHtml(l.phone)}</a></strong> | 👥 <strong>${escapeHtml(l.persons)}</strong>
-          </div>
-          <div style="font-size:12.5px; color:#d97706; font-weight:700; margin-bottom:4px;">
-            🏔️ ${escapeHtml(l.tour)}
-          </div>
-          <div style="font-size:12px; color:#475569;">
-            🛏️ ${escapeHtml(l.bedType)} | 🍲 ${escapeHtml(l.foodChoice)}
-            ${l.specialReq ? `<br>📝 <em>"${escapeHtml(l.specialReq)}"</em>` : ''}
-          </div>
-          <div style="margin-top:8px;">
-            <a href="https://wa.me/91${escapeAttr(l.phone.replace(/\D/g, ''))}" target="_blank" class="btn-cms-action open-drawer" style="padding:4px 8px; font-size:12px; text-decoration:none;">
-              <i class="fab fa-whatsapp"></i> WhatsApp মেসেজ পাঠান
-            </a>
-          </div>
-        </div>
-      `).join("");
-    } else {
-      if (dashCount) dashCount.textContent = "0";
-      container.innerHTML = "<p style='color:#64748b; font-size:13px;'>কোনো নতুন বুকিং আবেদন নেই।</p>";
-    }
-  } catch(err) {
-    container.innerHTML = "<p style='color:#f87171; font-size:13px;'>লিডস লোড করতে সমস্যা হয়েছে।</p>";
-  }
-}
-
-// 14. Cloud Publish
-function openPublishConfirmModal() { showModal("publishConfirmModal"); }
-function closePublishConfirmModal() { hideModal("publishConfirmModal"); }
-
-async function executeCloudPublish() {
-  closePublishConfirmModal();
-  showToast("⏳ Google ক্লাউড ডেটাবেসে লাইভ প্রকাশিত হচ্ছে...");
-
-  if (!workingDraft) workingDraft = JSON.parse(JSON.stringify(livePublished || {}));
-  workingDraft.updatedAt = new Date().toISOString();
-  const payloadStr = JSON.stringify(workingDraft);
-
-  try {
-    const res = await fetch("https://tour-with-somjit-default-rtdb.firebaseio.com/site_data.json", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: payloadStr
-    });
-
-    if (res.ok) {
-      livePublished = JSON.parse(payloadStr);
-      window.TWS_SITE_DATA = livePublished;
-      localStorage.setItem("tws_published_site_data", payloadStr);
-      renderAllComponents(livePublished);
-      showModal("publishSuccessModal");
-      showToast("🎉 আপনার সমস্ত পরিবর্তন সফলভাবে বিশ্বজুড়ে লাইভ হয়েছে!");
-    } else {
-      throw new Error("HTTP Status " + res.status);
-    }
-  } catch(err) {
-    livePublished = JSON.parse(payloadStr);
-    window.TWS_SITE_DATA = livePublished;
-    localStorage.setItem("tws_published_site_data", payloadStr);
-    renderAllComponents(livePublished);
-    alert("⚠️ লাইভ ডেটাবেসে আপডেট হয়েছে এবং আপনার ব্রাউজারে সংরক্ষিত হয়েছে।");
-  }
-}
-
-function viewLiveWebsite() {
-  hideModal("publishSuccessModal");
-  exitAdminVisualMode();
-}
-
-function discardWorkingDraft() {
-  if (confirm("সমস্ত অসংরক্ষিত পরিবর্তন বাতিল করতে চান?")) {
-    workingDraft = JSON.parse(JSON.stringify(livePublished));
-    renderAllComponents(livePublished);
-    populateCmsDashboard();
-    showToast("✓ পরিবর্তন বাতিল করা হয়েছে!");
-  }
-}
-
-function exportCmsBackupJson() {
-  const data = workingDraft || livePublished;
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-  const a = document.createElement('a');
-  a.setAttribute("href", dataStr);
-  a.setAttribute("download", `tour_with_somjit_master_${Date.now()}.json`);
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+function closeNav() {
+  const drawer = document.getElementById("mobileNavDrawer");
+  const backdrop = document.getElementById("drawerBackdrop");
+  if (drawer) drawer.classList.remove("active");
+  if (backdrop) backdrop.classList.remove("active");
+  document.body.classList.remove("nav-drawer-open");
 }
 
 // Modal Helpers
@@ -1195,35 +596,14 @@ function hideModal(id) {
   setTimeout(() => { el.style.display = "none"; }, 250);
 }
 
-function setupMobileDrawer() {
-  const menuBtn = document.getElementById("mobileMenuBtn");
-  const closeBtn = document.getElementById("closeMobileNavBtn");
-  const drawer = document.getElementById("mobileNavDrawer");
-
-  if (menuBtn && drawer) {
-    menuBtn.addEventListener("click", () => {
-      drawer.classList.add("active");
-      document.body.classList.add("drawer-open");
-    });
-  }
-  if (closeBtn && drawer) {
-    closeBtn.addEventListener("click", () => {
-      drawer.classList.remove("active");
-      document.body.classList.remove("drawer-open");
-    });
-  }
+function handleModalOverlayClick(e, modalId) {
+  if (e.target.id === modalId) hideModal(modalId);
 }
 
-function closeNav() {
-  const drawer = document.getElementById("mobileNavDrawer");
-  if (drawer) drawer.classList.remove("active");
-  document.body.classList.remove("drawer-open");
-}
-
-function showToast(msg) {
+function showPublicToast(msg) {
   const toast = document.createElement("div");
   toast.textContent = msg;
-  toast.style.cssText = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fbbf24; padding:10px 20px; border-radius:50px; font-weight:700; font-size:14px; z-index:999999; box-shadow:0 4px 16px rgba(0,0,0,0.3); border:1px solid #f59e0b;";
+  toast.style.cssText = "position:fixed; bottom:85px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fbbf24; padding:10px 22px; border-radius:50px; font-weight:700; font-size:13.5px; z-index:999999; box-shadow:0 4px 16px rgba(0,0,0,0.3); border:1px solid #f59e0b;";
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
